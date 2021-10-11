@@ -6,16 +6,18 @@ function RouteWithSubRoutes({ routes }) {
 
   return (
     <Switch>
-      {routes.map((route) => (
-        <Route
-          key={route.path}
-          path={route.path}
-          exact={!!route.exact}
-          render={(props) =>
-            route.redirectTo ? <Redirect to={route.redirectTo} /> : <route.component {...props} routes={route.routes} />
-          }
-        />
-      ))}
+      {routes.map((route) =>
+        route.redirectTo ? (
+          <Redirect from={route.path} to={route.redirectTo} exact key={route.path} />
+        ) : (
+          <Route
+            key={route.path}
+            path={route.path}
+            exact={!!route.exact}
+            render={(props) => <route.component {...props} routes={route.routes} />}
+          />
+        )
+      )}
     </Switch>
   )
 }

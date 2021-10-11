@@ -1,0 +1,135 @@
+.freePromo {
+  text-align: left;
+  margin: 24px 0;
+}
+
+.winner {
+  display: flex;
+  align-items: center;
+  background-color: @primary-color;
+  color: #fff;
+  margin: 0px -4px;
+  padding-left: 20px;
+  border-top: 2px dashed;
+  border-bottom: 2px dashed;
+
+  > span {
+    font-size: 66px;
+  }
+}
+
+.cc {
+  padding: 8px 0 12px 0;
+  margin-left: 10px;
+  flex: 1;
+
+  h4 {
+    font-size: 16px;
+    color: #fff;
+    margin-bottom: 4px;
+  }
+}
+
+.coin {
+  display: flex;
+  align-items: center;
+
+  > img {
+    width: 47px;
+    height: 47px;
+    flex: none;
+    margin-right: 9px;
+  }
+}
+
+.coinName {
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.3;
+  margin-bottom: 2px;
+  max-width: 108px;
+
+  + div {
+    background-color: #8d83e0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 13px;
+    display: inline-block;
+  }
+}
+
+.radioBox {
+  padding: 10px 18px;
+
+  div {
+    width: 100%;
+  }
+
+  :global {
+    .ant-radio-wrapper {
+      width: 100%;
+    }
+
+    .ant-radio {
+      flex: none;
+      white-space: nowrap;
+      opacity: 1;
+      transition: opacity 100ms;
+
+      + span {
+        flex: 1;
+      }
+    }
+  }
+}
+
+.pctNum {
+  opacity: 0;
+  font-size: 12px;
+  margin-left: 8px;
+  color: @primary-color;
+  transition: opacity 100ms;
+}
+
+.pctBar {
+  opacity: 0;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  overflow: hidden;
+  background-color: lighten(@primary-color, 44%);
+  transition: opacity 100ms;
+
+  i {
+    display: block;
+    height: 4px;
+    border-radius: 2px;
+    background-color: @primary-color;
+  }
+}
+
+.voted {
+  .radioBox {
+    pointer-events: none;
+    cursor: default;
+  }
+
+  .coinName + div {
+    white-space: nowrap;
+  }
+
+  .pctBar {
+    opacity: 1;
+  }
+
+  .pctNum {
+    opacity: 1;
+  }
+
+  :global {
+    .ant-radio {
+      opacity: 0;
+    }
+  }
+}

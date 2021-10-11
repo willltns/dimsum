@@ -1,16 +1,24 @@
+import ss from './index.module.less'
+
 import { BrowserRouter } from 'react-router-dom'
 import { MobXProviderContext } from 'mobx-react'
 
-import routes from '../../routes'
-import rootStore from '../../stores'
+import routes from '@/routes'
+import rootStore from '@/stores'
 
 import RouteWithSubRoutes from '../route-with-sub-routes'
+import Header from '@/components/header'
+import Sidebar from '@/components/siderbar'
 
 function App() {
   return (
     <MobXProviderContext.Provider value={rootStore}>
       <BrowserRouter>
-        <RouteWithSubRoutes routes={routes} />
+        <Header />
+        <div className={ss.main}>
+          <Sidebar />
+          <RouteWithSubRoutes routes={routes} />
+        </div>
       </BrowserRouter>
     </MobXProviderContext.Provider>
   )

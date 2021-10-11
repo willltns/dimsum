@@ -10,7 +10,7 @@ function Counter() {
   const { counter } = useStore()
 
   return (
-    <div className="App">
+    <div className="App" style={{ height: '300vh' }}>
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
 

@@ -1,0 +1,86 @@
+.header {
+  z-index: 999;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  border-bottom: 1px solid #f5f5f5;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  margin-bottom: 16px;
+
+  :global {
+    a.logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: @primary-color !important;
+    }
+  }
+}
+
+.headerBtn {
+  display: flex;
+  align-items: center;
+
+  > div:not(:first-of-type) {
+    margin-left: 16px;
+  }
+}
+
+.popPro {
+  width: auto;
+  padding: 24px 8px 8px;
+
+  img {
+    width: 300px;
+    height: 300px;
+
+    @media screen and (max-width: 600px) {
+      width: 200px;
+      height: 200px;
+    }
+  }
+
+  :global {
+    .ant-notification-notice-close {
+      top: 7px;
+      right: 11px;
+    }
+  }
+}
+
+.noneSticky {
+  position: relative;
+
+  &:global {
+    + div > div[class*='sidebar'] {
+      top: 0;
+      height: 100vh;
+    }
+  }
+}
+
+.sideCtrl {
+  display: none;
+  font-size: 28px;
+  margin-left: 16px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 1100px) {
+  .sideCtrl {
+    display: block;
+  }
+
+  .header {
+    position: sticky;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .headerBtn > div {
+    display: none;
+  }
+}

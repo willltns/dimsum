@@ -2,27 +2,38 @@ import loadable from '@loadable/component'
 
 import Spinner from '../components/spinner'
 
-const loadableWithSpinner = (comp) => loadable(comp, { fallback: <Spinner /> })
+const loadableWithSpinner = (comp) => loadable(comp /*{ fallback: <Spinner /> }*/)
 
 const routes = [
   {
     path: '/',
     exact: true,
-    redirectTo: '/counter',
+    component: loadableWithSpinner(() => import('../pages/home')),
   },
   {
-    path: '/counter',
-    component: loadableWithSpinner(() => import('../pages/counter')),
+    path: '/coin/:id',
+    exact: true,
+    component: loadableWithSpinner(() => import('../pages/coin-info')),
   },
   {
-    path: '/about',
-    component: loadableWithSpinner(() => import('../pages/about')),
+    path: '/add-coin',
+    exact: true,
+    component: loadableWithSpinner(() => import('../pages/add-coin')),
   },
-  // Keep 'page-not-fount' at the end
+
+  {
+    path: '/promote',
+    exact: true,
+    component: loadableWithSpinner(() => import('../pages/promote')),
+  },
   {
     path: '*',
-    component: loadableWithSpinner(() => import('../pages/page-not-found')),
+    redirectTo: '/',
   },
+  // {
+  //   path: '/counter',
+  //   component: loadableWithSpinner(() => import('../pages/counter')),
+  // },
 ]
 
 export default routes

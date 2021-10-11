@@ -44,44 +44,49 @@ module.exports = function (defaultConfig, webpackEnv) {
       process.argv[2] === 'analyze' && new BundleAnalyzerPlugin(),
     ].filter(Boolean),
 
-    // resolve: {
-    //   alias: {
-    //     '@': path.join(path.resolve(__dirname), './src'),
-    //   },
-    // },
+    resolve: {
+      alias: {
+        '@': path.join(path.resolve(__dirname), './src'),
+      },
+    },
   })
 
   // module rule list
   const oneOfList = config.module.rules.find((rule) => rule.oneOf).oneOf
 
   // less and less module support.
-  // const cssModuleLoaders = [...oneOfList.find((rule) => String(rule.test) === String(/\.module\.css$/)).use]
-  // const cssLoader = { ...cssModuleLoaders[1] } // css-loader
-  // cssLoader.options = {
-  //   ...cssLoader.options,
-  //   importLoaders: 2,
-  //   modules: { ...cssLoader.options.modules, auto: /\.module\.less/ },
-  // }
-  // cssModuleLoaders[1] = cssLoader // replace css-loader
-  // oneOfList.unshift({
-  //   test: /\.less$/,
-  //   use: [
-  //     ...cssModuleLoaders,
-  //     {
-  //       loader: require.resolve('less-loader'),
-  //       options: {
-  //         // lessOptions: {
-  //         //   modifyVars: {
-  //         //     'primary-color': '#1DA57A',
-  //         //   },
-  //         //   javascriptEnabled: true,
-  //         // },
-  //         sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
-  //       },
-  //     },
-  //   ],
-  //   sideEffects: true,
-  // })
+  const cssModuleLoaders = [...oneOfList.find((rule) => String(rule.test) === String(/\.module\.css$/)).use]
+  const cssLoader = { ...cssModuleLoaders[1] } // css-loader
+  cssLoader.options = {
+    ...cssLoader.options,
+    importLoaders: 2,
+    modules: { ...cssLoader.options.modules, auto: /\.module\.less/ },
+  }
+  cssModuleLoaders[1] = cssLoader // replace css-loader
+  oneOfList.unshift({
+    test: /\.less$/,
+    use: [
+      ...cssModuleLoaders,
+      {
+        loader: require.resolve('less-loader'),
+        options: {
+          lessOptions: {
+            modifyVars: {
+              'primary-color': '#ff8200',
+              'border-radius-base': '10px',
+              'font-size-base': '14px',
+              'height-base': '32px',
+              'height-lg': '40px',
+              'height-sm': '24px',
+            },
+            javascriptEnabled: true,
+          },
+          sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment,
+        },
+      },
+    ],
+    sideEffects: true,
+  })
 
   // Babel configuration
   const babelLoader = oneOfList.find((rule) => rule.include && rule.loader && rule.loader.includes('babel-loader'))
@@ -91,10 +96,10 @@ module.exports = function (defaultConfig, webpackEnv) {
   babelOptions.plugins.push(require.resolve('@babel/plugin-syntax-dynamic-import'))
 
   // Modular import 'antd'
-  // babelOptions.plugins.push([
-  //   require.resolve('babel-plugin-import'),
-  //   { libraryName: 'antd', libraryDirectory: 'es', style: true },
-  // ])
+  babelOptions.plugins.push([
+    require.resolve('babel-plugin-import'),
+    { libraryName: 'antd', libraryDirectory: 'es', style: true },
+  ])
 
   // htmlWebpackPlugin instance, adding filename as property, and trying to use it in index.html.
   if (isEnvProduction) {

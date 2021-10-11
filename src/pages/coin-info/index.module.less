@@ -1,0 +1,189 @@
+.wrapper {
+  padding: 32px;
+  border-radius: @border-radius-base;
+  background-color: #fff;
+}
+
+.coin {
+  display: flex;
+
+  > div:first-of-type {
+    flex: 1;
+  }
+}
+
+.infoHead {
+  display: flex;
+}
+
+.base {
+  display: flex;
+
+  > img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 16px;
+  }
+}
+
+.stat {
+  display: flex;
+  align-items: flex-end;
+
+  > span {
+    font-size: 17px;
+    margin-left: 32px;
+    margin-bottom: 11px;
+
+    b {
+      font-size: 19px;
+      color: @primary-color;
+    }
+  }
+
+  > div {
+    margin-bottom: 10px;
+  }
+}
+
+.name {
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.35;
+}
+
+.symbol {
+  font-size: 24px;
+  background-color: #8d83e0;
+  padding: 1px 8px;
+  border-radius: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.addressInfo {
+  font-size: 16px;
+  margin: 24px 0;
+  display: flex;
+  align-items: center;
+
+  span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  :global {
+    .anticon-copy {
+      margin-left: 24px;
+      font-size: 18px;
+      cursor: pointer;
+    }
+  }
+
+  &::after {
+    content: '';
+    display: inline-block;
+    height: 1px;
+    flex: 1;
+  }
+}
+
+.desc {
+  font-size: 16px;
+  padding: 0;
+  border: none !important;
+  box-shadow: none !important;
+
+  &:hover,
+  &:active {
+    border: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.links {
+  margin-top: 100px;
+  margin-left: 32px;
+  flex: none;
+
+  > div {
+    margin-bottom: 16px;
+  }
+
+  &:global {
+    > div.ant-divider {
+      margin-top: 8px;
+      border: 1px solid @primary-color;
+    }
+  }
+}
+
+.upvoteBtn {
+  width: 130px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 18px;
+  font-weight: bold;
+  display: inline-block;
+
+  + p {
+    margin: 12px 0 0;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .coin {
+    flex-direction: column;
+  }
+
+  .links {
+    margin-left: 0;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    > div {
+      width: 130px;
+    }
+
+    :global {
+      .ant-divider {
+        width: 200px;
+        min-width: 200px;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 666px) {
+  .infoHead {
+    flex-direction: column;
+  }
+
+  .stat {
+    margin-top: 24px;
+
+    > span {
+      margin: 0;
+      margin-right: 32px;
+    }
+  }
+
+  .addressInfo {
+    :global {
+      .anticon-copy {
+        align-self: flex-end;
+        position: relative;
+        top: -4px;
+      }
+    }
+  }
+
+  .address {
+    display: block;
+    width: calc(100vw - 120px);
+  }
+}
