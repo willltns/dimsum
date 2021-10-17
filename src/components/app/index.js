@@ -25,3 +25,13 @@ function App() {
 }
 
 export default App
+
+rootStore.common.getVotedList()
+window.addEventListener(
+  'beforeunload',
+  () => {
+    localStorage.setItem('__ivot', JSON.stringify(rootStore.common.votedList))
+    return null
+  },
+  false
+)

@@ -1,16 +1,32 @@
 import ss from './index.module.less'
-import birbLogo from '@/assets/img/birb.png'
+import { ReactComponent as WebsiteIcon } from '@/assets/img/link-icon/website.svg'
+import { ReactComponent as TGIcon } from '@/assets/img/link-icon/tg.svg'
+import { ReactComponent as CNIcon } from '@/assets/img/link-icon/cn.svg'
+import { ReactComponent as ENIcon } from '@/assets/img/link-icon/en.svg'
+import { ReactComponent as TwitterIcon } from '@/assets/img/link-icon/twitter.svg'
+import { ReactComponent as DiscordIcon } from '@/assets/img/link-icon/discord.svg'
+import { ReactComponent as MediumIcon } from '@/assets/img/link-icon/medium.svg'
+import { ReactComponent as Rocket } from '@/assets/img/link-icon/rocket.svg'
 
 import React from 'react'
+import { Tooltip } from 'antd'
+import { observer } from 'mobx-react'
+import { Link } from 'react-router-dom'
+
+import { useStore } from '@/utils/hooks/useStore'
+
 import CDButton from '@/components/cd-button'
-import { useHistory } from 'react-router-dom'
 import { modalInfo } from '@/components/coin-list/modalInfo'
-import { airdropTemplate, presaleTemplate } from '@/pages/add-coin/const'
 
 function CoinList(props) {
   const { promo } = props
 
-  const history = useHistory()
+  const { common, home } = useStore()
+
+  const list = promo ? common.promoCoinList : home.coinList
+
+  // 推广代币列表，但列表没有值，不渲染
+  if (promo && !list?.length) return null
 
   const title = promo ? (
     <>
@@ -19,6 +35,12 @@ function CoinList(props) {
   ) : (
     '代币'
   )
+
+  const stopProp = (e, action) => {
+    e.preventDefault()
+    e.stopPropagation()
+    typeof action === 'function' && action()
+  }
 
   return (
     <div className={ss.tTable}>
@@ -34,107 +56,96 @@ function CoinList(props) {
         </div>
       </div>
       <div className={ss.tBody}>
-        <div className={ss.tRow} onClick={() => history.push('/coin/999')}>
-          <div className={ss.name}>
-            <img src={birbLogo} alt="birb" />
-            Birb
-          </div>
-          <div>BIRB</div>
-          <div className={ss.date}>
-            <span>2020-</span>10-12<i>12:00</i>
-          </div>
-          <div className={ss.btnCol}>
-            <CDButton
-              onClick={(e) => {
-                e.stopPropagation()
-                modalInfo({ title: '预售信息', text: `${airdropTemplate}` })
-              }}
-            >
-              查看
-            </CDButton>
-          </div>
-          <div className={ss.btnCol}>
-            <CDButton onClick={(e) => e.stopPropagation()}>查看</CDButton>
-          </div>
-          <div>✈️&emsp;✈️</div>
-          <div className={ss.upvote}>
-            <CDButton onClick={(e) => e.stopPropagation()}>
-              <span>🚀</span>1999
-            </CDButton>
-          </div>
-        </div>
+        {list?.map((coin) => (
+          <Link className={ss.tRow} to={`/coin/${coin.id}`} key={coin.id}>
+            <div className={ss.name}>
+              <img src={coin.coinLogo} alt={coin.coinSymbol} />
+              {coin.coinName}
+            </div>
 
-        <div className={ss.tRow} onClick={() => history.push('/coin/999')}>
-          <div className={ss.name}>
-            <img src={birbLogo} alt="birb" />
-            Baby Doge Coin
-          </div>
-          <div>BABYDOGE</div>
-          <div className={ss.date}>
-            <span>2020-</span>10-12<i>12:00</i>
-          </div>
-          <div className={ss.btnCol}>
-            <CDButton>查看</CDButton>
-          </div>
-          <div className={ss.btnCol}>
-            <CDButton>查看</CDButton>
-          </div>
-          <div>✈️&emsp;✈️</div>
-          <div className={ss.upvote}>
-            <CDButton>
-              <span>🚀</span>1999
-            </CDButton>
-          </div>
-        </div>
+            <div>{coin.coinSymbol}</div>
 
-        <div className={ss.tRow} onClick={() => history.push('/coin/999')}>
-          <div className={ss.name}>
-            <img src={birbLogo} alt="birb" />
-            FAIRLAUNCH PAD TOKEN
-          </div>
-          <div>BIRB</div>
-          <div className={ss.date}>
-            <span>2020-</span>10-12<i>12:00</i>
-          </div>
-          <div className={ss.btnCol}>
-            <CDButton>查看</CDButton>
-          </div>
-          <div className={ss.btnCol}>
-            <CDButton>查看</CDButton>
-          </div>
-          <div>✈️&emsp;✈️</div>
-          <div className={ss.upvote}>
-            <CDButton>
-              <span>🚀</span>1999
-            </CDButton>
-          </div>
-        </div>
+            <div className={ss.date}>
+              <span>2020-</span>10-12<i>12:00</i>
+            </div>
 
-        <div className={ss.tRow} onClick={() => history.push('/coin/999')}>
-          <div className={ss.name}>
-            <img src={birbLogo} alt="birb" />
-            Birb
-          </div>
-          <div>BIRB</div>
-          <div className={ss.date}>
-            <span>2020-</span>10-12<i>12:00</i>
-          </div>
-          <div className={ss.btnCol}>
-            <CDButton>查看</CDButton>
-          </div>
-          <div className={ss.btnCol}>
-            <CDButton>查看</CDButton>
-          </div>
-          <div>✈️&emsp;✈️</div>
-          <div className={ss.upvote}>
-            <CDButton>
-              <span>🚀</span>1999
-            </CDButton>
-          </div>
-        </div>
+            <div className={ss.btnCol}>
+              <CDButton
+                onClick={(e) => stopProp(e, () => modalInfo({ title: '预售信息', text: coin.coinPresaleInfo }))}
+              >
+                查看
+              </CDButton>
+            </div>
+
+            <div className={ss.btnCol}>
+              <CDButton
+                onClick={(e) => stopProp(e, () => modalInfo({ title: '空投信息', text: coin.coinAirdropInfo }))}
+              >
+                查看
+              </CDButton>
+            </div>
+
+            <div className={ss.links}>
+              {coin.linkWebsite && (
+                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkWebsite}</span>}>
+                  <WebsiteIcon onClick={(e) => stopProp(e, () => window.open(coin.linkWebsite))} />
+                </Tooltip>
+              )}
+
+              {coin.linkChineseTg && (
+                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkChineseTg}</span>}>
+                  <span className={ss.tgIcon} onClick={(e) => stopProp(e, () => window.open(coin.linkChineseTg))}>
+                    <TGIcon />
+                    <CNIcon />
+                  </span>
+                </Tooltip>
+              )}
+
+              {coin.linkEnglishTg && (
+                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkEnglishTg}</span>}>
+                  <span className={ss.tgIcon} onClick={(e) => stopProp(e, () => window.open(coin.linkEnglishTg))}>
+                    <TGIcon />
+                    <ENIcon />
+                  </span>
+                </Tooltip>
+              )}
+
+              {coin.linkTwitter && (
+                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkTwitter}</span>}>
+                  <TwitterIcon onClick={(e) => stopProp(e, () => window.open(coin.linkTwitter))} />
+                </Tooltip>
+              )}
+
+              {coin.linkDiscord && (
+                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkDiscord}</span>}>
+                  <DiscordIcon onClick={(e) => stopProp(e, () => window.open(coin.linkDiscord))} />
+                </Tooltip>
+              )}
+
+              {coin.linkMedium && (
+                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkMedium}</span>}>
+                  <MediumIcon onClick={(e) => stopProp(e, () => window.open(coin.linkMedium))} />
+                </Tooltip>
+              )}
+            </div>
+
+            <div className={ss.upvote}>
+              <CDButton
+                className={+coin.id === +home.votingId ? ss.voting : ''}
+                primary={common.votedIdList.includes(coin.id + '')}
+                onClick={(e) =>
+                  stopProp(e, common.votedIdList.includes(coin.id + '') ? undefined : () => home.handleVote(coin))
+                }
+              >
+                <Rocket />
+                {coin.coinUpvotes}
+              </CDButton>
+            </div>
+          </Link>
+        ))}
       </div>
     </div>
   )
 }
 
-export default CoinList
+export default React.memo(observer(CoinList))

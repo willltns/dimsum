@@ -53,7 +53,7 @@ export const presaleTemplate = `
 添加流动池占比 (Liquidity Percent): 
 流动池锁定时长 (Liquidity Lockup Duration): 
 
-
+预售时间 (Presale Date) UTC+8: 
 预售链接 (Link to Presale): 
 白名单竞赛链接 (Link to Whitelist Competition): 
 
@@ -74,11 +74,13 @@ Join Telegram:
 
 `
 
-export const additionalLinkPH = `e.g.
-Btok: https://......
-Medium: https://......
-
-Charts: https://......
+export const additionalLinkPH = `Btok$$https://......
+Reddit$$https://......
+Charts$$https://......
 ···
+Website Name$$Website Link
+
+In order to generate link buttons, Please follow the above format. '$$'
+以便生成链接按钮，请根据以上格式录入链接。'$$'
 
 `

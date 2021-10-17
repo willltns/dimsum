@@ -30,10 +30,6 @@ const routes = [
     path: '*',
     redirectTo: '/',
   },
-  // {
-  //   path: '/counter',
-  //   component: loadableWithSpinner(() => import('../pages/counter')),
-  // },
 ]
 
 export default routes

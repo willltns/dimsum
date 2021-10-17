@@ -22,13 +22,15 @@
   > div {
     display: flex;
     align-items: center;
-    //overflow: hidden;
-    //width: 100%;
   }
 
   &:not(:last-of-type) {
     border-bottom: 1px solid rgba(255, 130, 0, 0.17);
   }
+}
+
+.tHead .tRow:hover {
+  color: #fff !important;
 }
 
 .tBody .tRow {
@@ -37,6 +39,7 @@
   transition: background-color 100ms;
 
   &:hover {
+    color: #333 !important;
     background-color: rgba(255, 130, 0, 0.07);
   }
 }
@@ -62,17 +65,79 @@
   }
 }
 
+.links {
+  display: flex;
+  align-items: center;
+
+  > svg {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+.linkTt {
+  :global {
+    .ant-tooltip-inner {
+      padding: 2px 0;
+      min-height: 0;
+
+      > span {
+        padding: 5px 8px;
+      }
+    }
+  }
+}
+
+.tgIcon {
+  position: relative;
+  width: 32px;
+  height: 32px;
+
+  > svg {
+    width: 32px;
+    height: 32px;
+  }
+
+  svg + svg {
+    position: absolute;
+    right: 0;
+    bottom: 1px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
 .upvote {
   width: 110px;
 
   > div {
     width: 100%;
     height: 36px;
+    overflow: hidden;
 
-    span {
-      font-size: 14px;
+    &:hover,
+    &:active {
+      color: #fff;
+      background-color: #ff8200;
+    }
+
+    svg {
+      flex: none;
+      width: 20px;
+      height: 20px;
       margin-right: 8px;
     }
+  }
+}
+
+.voting {
+  color: #ffe7d5 !important;
+  background-color: #ffce9b !important;
+
+  &:hover,
+  &:active {
+    color: #ffe7d5 !important;
+    background-color: #ffce9b !important;
   }
 }
 
@@ -133,7 +198,7 @@
         height: 32px;
       }
 
-      span {
+      svg {
         margin-right: 4px;
       }
     }

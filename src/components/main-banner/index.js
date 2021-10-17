@@ -5,6 +5,8 @@ import birbLogo from '@/assets/img/birb.png'
 import React from 'react'
 import SwiperCore, { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
+
+import { useStore } from '@/utils/hooks/useStore'
 import useMediaQuery from '@/utils/hooks/useMediaQuery'
 
 SwiperCore.use([Autoplay])
@@ -12,17 +14,18 @@ SwiperCore.use([Autoplay])
 function MainBanner() {
   const isSmall = useMediaQuery('(max-width: 600px)')
 
+  const { common } = useStore()
+  const { wideBannerList, scrollBannerList } = common
+
   return (
     <div className={ss.banner}>
-      <div className={ss.wide}>
-        <img src={birbLogo} alt="birbLogo" />
-      </div>
-      <div className={ss.wide}>
-        <img src={birbLogo} alt="birbLogo" />
-      </div>
-      <div className={ss.wide}>
-        <img src={birbLogo} alt="birbLogo" />
-      </div>
+      {wideBannerList?.map((banner) => (
+        <div className={ss.wide} key={banner.bannerUrl}>
+          <a href={banner.linkUrl} target="_blank" rel="noreferrer">
+            <img src={banner.bannerUrl} alt={banner.coinName} />
+          </a>
+        </div>
+      ))}
 
       <div className={ss.swiper}>
         <Swiper
@@ -32,21 +35,15 @@ function MainBanner() {
           spaceBetween={30}
           autoplay={{ delay: 3500, pauseOnMouseEnter: true, disableOnInteraction: false }}
         >
-          <SwiperSlide>
-            <div className={ss.prom}>
-              <img src={birbLogo} alt="birbLogo" />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={ss.prom}>
-              <img src={birbLogo} alt="birbLogo" />
-            </div>
-          </SwiperSlide>
-          <SwiperSlide>
-            <div className={ss.prom}>
-              <img src={birbLogo} alt="birbLogo" />
-            </div>
-          </SwiperSlide>
+          {scrollBannerList?.map((item) => (
+            <SwiperSlide key={item.bannerUrl}>
+              <div className={ss.prom}>
+                <a href={item.linkUrl} target="_blank" rel="noreferrer">
+                  <img src={item.bannerUrl} alt={item.coinName} />
+                </a>
+              </div>
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import ss from './index.module.less'
+import { ReactComponent as TgIcon } from '@/assets/img/link-icon/tg.svg'
 
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -13,7 +14,9 @@ function Sidebar() {
         {/*<Link to="/">空投</Link>*/}
         <Link to="/promote">推广</Link>
       </nav>
-      <div>✈️</div>
+      <div>
+        <TgIcon style={{ width: 32 }} onClick={() => window.open('https://t.me/liangjianshequ')} />
+      </div>
 
       <FreePromo />
     </div>

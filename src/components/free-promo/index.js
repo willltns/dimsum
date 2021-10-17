@@ -1,17 +1,30 @@
 import ss from './index.module.less'
 import birbLogo from '@/assets/img/birb.png'
+import { ReactComponent as Trophy } from '@/assets/img/link-icon/trophy.svg'
 
 import React from 'react'
+import Cookies from 'js-cookie'
 import { Radio, Space } from 'antd'
+
+const cookieKey = 'vi'
+const id = 2
 
 function FreePromo() {
   const [voted, setVoted] = React.useState(false)
 
+  React.useEffect(() => {
+    const votedId = Cookies.get(cookieKey)
+
+    const isVoted = +id === +votedId
+    if (!isVoted) Cookies.remove(cookieKey)
+    setVoted(isVoted)
+  }, [id])
+
   return (
     <div className={`${ss.freePromo} ${voted ? ss.voted : ''}`}>
       <div className={ss.winner}>
-        <span>🏆</span>
-        <div className={ss.cc}>
+        <Trophy className={ss.trophyIcon} />
+        <div className={ss.champ}>
           <h4>人气代币</h4>
           <div className={ss.coin}>
             <img src={birbLogo} alt="b" />
@@ -24,7 +37,13 @@ function FreePromo() {
       </div>
       <div className={ss.radioBox}>
         <h3>哪个项目获得两天免费推广？</h3>
-        <Radio.Group onChange={() => setVoted(true)}>
+        <Radio.Group
+          onChange={() => {
+            if (Cookies.get(cookieKey)) return
+            setVoted(true)
+            Cookies.set(cookieKey, id, { expires: 365 })
+          }}
+        >
           <Space direction="vertical">
             <Radio value={1}>
               Baby Cake<span className={ss.pctNum}>25%</span>

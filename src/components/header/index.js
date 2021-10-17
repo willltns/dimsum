@@ -1,32 +1,44 @@
 import ss from './index.module.less'
-import birbLogo from '@/assets/img/birb.png'
 
 import React, { useEffect } from 'react'
 import { notification } from 'antd'
+import { observer } from 'mobx-react'
 import { MenuOutlined } from '@ant-design/icons'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 
 import CDButton from '@/components/cd-button'
+import { useStore } from '@/utils/hooks/useStore'
 
 function Header() {
   const history = useHistory()
   const { pathname } = useLocation()
 
+  const { common } = useStore()
+
   useEffect(() => {
     window.scrollTo(0, 0)
     if (['/add-coin', '/promote'].includes(pathname)) return
 
+    common.getAdvert()
+  }, [pathname, common])
+
+  useEffect(() => {
+    if (!common.popBanner) return
     notification.open({
       bottom: 8,
-      key: 'popPro',
+      key: 'popPromo',
       duration: null,
-      placement: 'bottomRight',
       className: ss.popPro,
-      description: <img src={birbLogo} alt="birbLogo" />,
+      placement: 'bottomRight',
+      description: (
+        <a href={common.popBanner.linkUrl} target="_blank" rel="noreferrer">
+          <img src={common.popBanner.bannerUrl} alt={common.popBanner.coinName} />
+        </a>
+      ),
     })
 
-    return () => notification.close('popPro')
-  }, [pathname])
+    return () => notification.close('popPromo')
+  }, [common.popBanner])
 
   const isAddCoinPage = pathname === '/add-coin'
 
@@ -45,7 +57,7 @@ function Header() {
   return (
     <header className={`${ss.header} ${isAddCoinPage ? ss.noneSticky : ''}`}>
       <Link className="logo" to="/">
-        DimsumCoins
+        CoinMarsMission
       </Link>
       <div className={ss.headerBtn}>
         <CDButton onClick={() => history.push('/add-coin')}>添加代币</CDButton>
@@ -58,4 +70,4 @@ function Header() {
   )
 }
 
-export default Header
+export default React.memo(observer(Header))
