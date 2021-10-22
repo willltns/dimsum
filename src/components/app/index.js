@@ -1,5 +1,6 @@
 import ss from './index.module.less'
 
+import { notification } from 'antd'
 import { BrowserRouter } from 'react-router-dom'
 import { MobXProviderContext } from 'mobx-react'
 
@@ -9,6 +10,8 @@ import rootStore from '@/stores'
 import RouteWithSubRoutes from '../route-with-sub-routes'
 import Header from '@/components/header'
 import Sidebar from '@/components/siderbar'
+
+notification.config({ duration: 2, maxCount: 1 })
 
 function App() {
   return (

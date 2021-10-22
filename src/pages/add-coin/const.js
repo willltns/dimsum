@@ -56,7 +56,6 @@ export const presaleTemplate = `
 预售时间 (Presale Date) UTC+8: 
 预售链接 (Link to Presale): 
 白名单竞赛链接 (Link to Whitelist Competition): 
-
 `
 
 export const airdropTemplate = `
@@ -71,16 +70,14 @@ Join Telegram:
 ...
 
 空投链接 (Link to Airdrop): 
-
 `
 
-export const additionalLinkPH = `Btok$$https://......
-Reddit$$https://......
-Charts$$https://......
+export const additionalLinkPH = `Btok$$$https://...
+Charts$$$https://...
 ···
-Website Name$$Website Link
+Name$$$URL
 
-In order to generate link buttons, Please follow the above format. '$$'
-以便生成链接按钮，请根据以上格式录入链接。'$$'
+In order to generate link buttons, Please follow the above format, using '$$$' to separate the Name and URL
 
+以便生成链接按钮，请根据以上格式录入链接。'$$$'
 `

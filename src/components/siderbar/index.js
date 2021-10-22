@@ -3,7 +3,8 @@ import { ReactComponent as TgIcon } from '@/assets/img/link-icon/tg.svg'
 
 import React from 'react'
 import { Link } from 'react-router-dom'
-import FreePromo from '@/components/free-promo'
+
+import PromoVote from '@/components/promo-vote'
 
 function Sidebar() {
   return (
@@ -18,9 +19,9 @@ function Sidebar() {
         <TgIcon style={{ width: 32 }} onClick={() => window.open('https://t.me/liangjianshequ')} />
       </div>
 
-      <FreePromo />
+      <PromoVote />
     </div>
   )
 }
 
-export default Sidebar
+export default React.memo(Sidebar)

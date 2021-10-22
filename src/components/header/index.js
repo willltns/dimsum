@@ -57,7 +57,7 @@ function Header() {
   return (
     <header className={`${ss.header} ${isAddCoinPage ? ss.noneSticky : ''}`}>
       <Link className="logo" to="/">
-        CoinMarsMission
+        CoinMoments
       </Link>
       <div className={ss.headerBtn}>
         <CDButton onClick={() => history.push('/add-coin')}>添加代币</CDButton>

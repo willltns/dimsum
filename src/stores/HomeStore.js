@@ -2,45 +2,6 @@ import { makeAutoObservable, flow } from 'mobx'
 
 import { getCoinList, voteCoin } from '@/assets/xhr'
 
-const coinL = [
-  {
-    id: '1',
-    coinName: 'VV',
-    coinSymbol: 'V',
-    coinLogo: 'xcc',
-    coinLaunchDate: '2020-12-12 12:00',
-    coinPresaleInfo: '发发发',
-    coinAirdropInfo: '先休息',
-    coinUpvotes: '22231',
-    coinUpvotesToday: '231',
-    linkWebsite: 'www.baidu.com',
-    linkChineseTg: '',
-    linkEnglishTg: 't.me/liangjianshequ',
-    linkTwitter: 'twitter.com',
-    linkDiscord: '',
-    linkMedium: '',
-    linkAdditionalInfo: '',
-  },
-  {
-    id: '2',
-    coinName: 'BBCX',
-    coinSymbol: 'NN',
-    coinLogo: 'NN',
-    coinLaunchDate: '2020-12-12 12:00',
-    coinPresaleInfo: '发发发',
-    coinAirdropInfo: '先休息',
-    coinUpvotes: '22231',
-    coinUpvotesToday: '231',
-    linkWebsite: 'www.baidu.com',
-    linkChineseTg: '',
-    linkEnglishTg: 't.me/liangjianshequ',
-    linkTwitter: 'twitter.com',
-    linkDiscord: '',
-    linkMedium: '',
-    linkAdditionalInfo: '',
-  },
-]
-
 export class HomeStore {
   constructor() {
     makeAutoObservable(this, {}, { autoBind: true })
@@ -54,17 +15,8 @@ export class HomeStore {
   value = ''
   type = 1
 
-  // computed
-
   updateProp(property) {
     Object.assign(this, property)
-  }
-
-  // action
-  increase() {
-    // get rootStore
-    // const rootStore = this.getRoot()
-    this.count++
   }
 
   getCoins = flow(
@@ -78,8 +30,9 @@ export class HomeStore {
       this.loading = true
       try {
         const res = yield getCoinList(params)
+        this.coinList = res?.list || []
       } catch (err) {}
-      this.coinList = coinL
+      // this.coinList = coinL
       this.loading = false
     }.bind(this)
   )
@@ -92,34 +45,19 @@ export class HomeStore {
       const { id } = coin
       const { common } = this.getRoot()
 
-      // if (common.votedIdList.includes(id + '')) {
-      //   ++coin.coinUpvotes
-      //   ++coin.coinUpvotesToday
-      //   return
-      // }
-
-      this.votingId = coin.id
+      this.votingId = id
       try {
-        //const timestamp = yield voteCoin({ id })
-        const timestamp = yield delay(3)
+        const timestamp = yield voteCoin({ id })
+        // const timestamp = yield delay(3)
 
+        // TODO 服务器返回时间戳 + 3600000s
         const votedStr = `${id}.${new Date().getTime() + 10000}`
-        const { common } = this.getRoot()
         common.pushVoted(votedStr)
-        ++coin.coinUpvotes
-        ++coin.coinUpvotesToday
+        coin.coinUpvotes = coin.coinUpvotes ? coin.coinUpvotes + 1 : 1
+        coin.coinUpvotesToday = coin.coinUpvotesToday ? coin.coinUpvotesToday + 1 : 1
       } catch (err) {}
-
-      // const votedStr = `${id}.${new Date().getTime() + 10000}`
-      // common.pushVoted(votedStr)
-      // ++coin.coinUpvotes
-      // ++coin.coinUpvotesToday
 
       this.votingId = null
     }.bind(this)
   )
-}
-
-function delay(second) {
-  return new Promise((resolve) => setTimeout(resolve, second * 1000))
 }

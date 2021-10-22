@@ -1,5 +1,5 @@
 import { makeAutoObservable, flow } from 'mobx'
-import { getBanners, getChamp, getPromoCoins, getPromoVote } from '@/assets/xhr'
+import { getBanners, getPromoCoins, getServTime } from '@/assets/xhr'
 
 export class CommonStore {
   constructor() {
@@ -9,27 +9,29 @@ export class CommonStore {
   // state
   bannerData = []
   promoCoinList = []
-  promoVoteChamp = {}
-  promoVoteInfo = {}
   loading = false
   votedList = []
 
   // computed
   get wideBannerList() {
-    return this.bannerData?.wideBanner || []
+    if (!this.bannerData.length) return []
+    //return this.bannerData?.wideBanner || []
+    return [this.bannerData[0], this.bannerData[1]]
   }
   get scrollBannerList() {
-    return this.bannerData?.scrollBanner || []
+    if (!this.bannerData.length) return []
+    //return this.bannerData?.scrollBanner || []
+    return [this.bannerData[0], this.bannerData[1], this.bannerData[2], this.bannerData[3]]
   }
   get popBanner() {
-    return this.bannerData?.popBanner?.[0]
+    if (!this.bannerData.length) return null
+    //return this.bannerData?.popBanner?.[0]
+    return this.bannerData[3]
   }
 
   // action
-  increase() {
-    // get rootStore
-    // const rootStore = this.getRoot()
-    // this.count++
+  updateProp(property) {
+    Object.assign(this, property)
   }
 
   get votedIdList() {
@@ -40,8 +42,9 @@ export class CommonStore {
     const votedList = JSON.parse(localStorage.getItem('__ivot'))
     localStorage.removeItem('__ivot')
 
-    const curTime = new Date().getTime() // TODO server time
-    this.votedList = (votedList || []).filter((item) => item.split('.')[1] > curTime)
+    getServTime()
+      .then((res) => (this.votedList = (votedList || []).filter((item) => item.split('.')[1] > res.timestamp)))
+      .catch(() => {})
   }
 
   pushVoted(coinStr) {
@@ -53,22 +56,18 @@ export class CommonStore {
     function* () {
       this.loading = true
       try {
-        const [bannerData, promoCoinList, promoVoteChamp, promoVoteInfo] = yield Promise.all([
-          getBanners(),
-          getPromoCoins(),
-          getChamp(),
-          getPromoVote(),
-        ])
-        this.bannerData = bannerData
+        const [bannerData, promoCoinList] = yield Promise.all([getBanners(), getPromoCoins()])
+        this.bannerData = bannerData.map((item) => ({
+          ...item,
+          bannerUrl: 'https://www.asqql.com/tpqsy/demo.jpg',
+        }))
         this.promoCoinList = promoCoinList
-        this.promoVoteChamp = promoVoteChamp
-        this.promoVoteInfo = promoVoteInfo
       } catch (err) {}
       this.loading = false
     }.bind(this)
   )
 }
 
-function delay(second) {
-  return new Promise((resolve) => setTimeout(() => resolve(second), second * 1000))
-}
+// function delay(second) {
+//   return new Promise((resolve) => setTimeout(() => resolve(second), second * 1000))
+// }

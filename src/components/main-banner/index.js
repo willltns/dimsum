@@ -1,8 +1,8 @@
 import 'swiper/swiper-bundle.css'
 import ss from './index.module.less'
-import birbLogo from '@/assets/img/birb.png'
 
 import React from 'react'
+import { observer } from 'mobx-react'
 import SwiperCore, { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -50,4 +50,4 @@ function MainBanner() {
   )
 }
 
-export default MainBanner
+export default React.memo(observer(MainBanner))

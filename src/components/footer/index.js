@@ -5,10 +5,10 @@ import React from 'react'
 function Footer() {
   return (
     <footer className={ss.footer}>
-      <h1>CoinMarsMission</h1>
-      <p>CoinMarsMission © 2021 - contact@cmm.com</p>
+      <h1>CoinMoments</h1>
+      <p>CoinMoments © 2021 - contact@coinmoments.com</p>
     </footer>
   )
 }
 
-export default Footer
+export default React.memo(Footer)

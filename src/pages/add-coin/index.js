@@ -1,19 +1,22 @@
 import ss from './index.module.less'
 
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Form, Input, Upload, Button, Row, Col, Select, Modal } from 'antd'
 import { ArrowLeftOutlined, UploadOutlined } from '@ant-design/icons'
 
 import zh from './lang/zh.json'
 import en from './lang/en.json'
-import { chainEnum } from '@/consts'
+import { chainEnum, urlReg } from '@/consts'
 import { descPH, presalePH, airdropPH, presaleTemplate, airdropTemplate, additionalLinkPH } from './const'
 
 import Footer from '@/components/footer'
+import { getChainList } from '@/assets/xhr'
 
+// 是否中文
 const ifZh = (lang) => lang === 'zh'
 
+// 日期格式校验 2022-22-22 22:22
 const dateReg =
   /^(((20\d{2})-(0(1|[3-9])|1[012])-(0[1-9]|[12]\d|30))|((20\d{2})-(0[13578]|1[02])-31)|((20\d{2})-02-(0[1-9]|1\d|2[0-8]))|(((20([13579][26]|[2468][048]|0[48]))|(2000))-02-29))\s([0-1][0-9]|2[0-3]):([0-5][0-9])$/
 
@@ -34,18 +37,31 @@ function AddCoin() {
   const [state, setState] = useState({
     lang: 'zh',
     loading: false,
-    presaleInput: '',
-    airdropInput: '',
+    coinChainList: [],
+    coinPresaleInfo: '',
+    coinAirdropInfo: '',
     presaleModalVisible: false,
     airdropModalVisible: false,
   })
-  const { lang, presaleInput, airdropInput, presaleModalVisible, airdropModalVisible } = state
+  const { lang, loading, coinChainList, coinPresaleInfo, coinAirdropInfo, presaleModalVisible, airdropModalVisible } =
+    state
+
+  useEffect(() => {
+    getChainList()
+      .then((res) => setState((state) => ({ ...state, coinChainList: res || [] })))
+      .catch(() => {})
+  }, [])
 
   const tt = ifZh(lang) ? zh : en
 
   const onFinish = (values) => {
-    const { linkWebsite, linkChineseTg, linkEnglishTg, linkTwitter, linkDiscord, linkAdditionalInfo } = values
-    if ([linkWebsite, linkChineseTg, linkEnglishTg, linkTwitter, linkDiscord, linkAdditionalInfo].every((i) => !i)) {
+    const { linkWebsite, linkChineseTg, linkEnglishTg, linkTwitter, linkMedium, linkDiscord, linkAdditionalInfo } =
+      values
+    if (
+      [linkWebsite, linkChineseTg, linkEnglishTg, linkTwitter, linkMedium, linkDiscord, linkAdditionalInfo].every(
+        (i) => !i
+      )
+    ) {
       linkTipRef.current.style.opacity = 1
       scrollToError(linkTipRef.current.parentNode)
       return
@@ -53,7 +69,8 @@ function AddCoin() {
 
     setState((state) => ({ ...state, loading: true }))
 
-    const params = { ...values }
+    const params = { ...values, coinPresaleInfo, coinAirdropInfo, linkAdditionalInfo: linkAdditionalInfo?.trim() || '' }
+    params.coinLogo = params.coinLogo?.[0]?.response
     console.log(params, 'params')
     // xhr
 
@@ -64,7 +81,7 @@ function AddCoin() {
       onOk: () => history.replace('/'),
       content: (
         <div>
-          <p>已成功提交，请等待审核，将在12小时内完成审核</p>
+          <p>您提交的代币 xxx 已成功提交，请等待审核，将在12小时内完成审核</p>
           <p>如需修改和推广您的代币，请联系 xxx@xxxxx.com</p>
         </div>
       ),
@@ -74,7 +91,7 @@ function AddCoin() {
   }
 
   const onFinishFailed = ({ values, errorFields }) => {
-    if (!values?.logo?.[0]) uploadBtnRef.current.style.borderColor = '#ff4d4f'
+    if (!values?.logo?.[0]) uploadBtnRef.current.style = 'border-color: #ff4d4f; box-shadow: 0 0 2px #ff4d4f'
 
     const firstErrorLabel = errorFields?.[0]?.name
     if (!firstErrorLabel) return
@@ -100,20 +117,14 @@ function AddCoin() {
         className={ss.form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        validateMessages={{ required: ' ', whitespace: ' ' }}
+        validateMessages={{ required: ` `, whitespace: ` `, pattern: { mismatch: ` ` } }}
         onValuesChange={(changedValue, allValues) => {
-          const atLeastOne = [
-            'linkWebsite',
-            'linkChineseTg',
-            'linkEnglishTg',
-            'linkTwitter',
-            'linkDiscord',
-            'linkAdditionalInfo',
-          ]
+          // prettier-ignore
+          const atLeastOne = ['linkWebsite', 'linkChineseTg', 'linkEnglishTg', 'linkTwitter', 'linkMedium', 'linkDiscord', 'linkAdditionalInfo',]
           if (!atLeastOne.includes(Object.keys(changedValue)[0])) return
           linkTipRef.current.style.opacity = atLeastOne.every((key) => !allValues[key]) ? 1 : 0
         }}
-        initialValues={{ launchDate: '2021-00-00 00:00' }}
+        initialValues={{ coinLaunchDate: '2021-00-00 00:00' }}
       >
         <Row className={ifZh(lang) ? ss.zhMode : ss.enMode}>
           <Col>
@@ -121,10 +132,10 @@ function AddCoin() {
               <h2>{tt.coinInfoTitle}</h2>
             </Form.Item>
             <Form.Item label={tt.name} name="coinName" rules={[{ required: true, whitespace: true }]}>
-              <Input />
+              <Input placeholder="e.g. Bitcoin" />
             </Form.Item>
             <Form.Item label={tt.symbol} name="coinSymbol" rules={[{ required: true, whitespace: true }]}>
-              <Input />
+              <Input placeholder="e.g. BTC" />
             </Form.Item>
             <Form.Item
               label={tt.logo}
@@ -134,17 +145,13 @@ function AddCoin() {
               rules={[{ required: true }]}
             >
               <Upload name="logo" action="/upload.do" listType="picture" maxCount={1}>
-                <Button
-                  ref={uploadBtnRef}
-                  icon={<UploadOutlined />}
-                  onClick={() => (uploadBtnRef.current.style.borderColor = '')}
-                >
+                <Button ref={uploadBtnRef} icon={<UploadOutlined />} onClick={() => (uploadBtnRef.current.style = '')}>
                   {tt.clickToUpload}
                 </Button>
               </Upload>
             </Form.Item>
             <Form.Item label={tt.description} name="coinDescription" rules={[{ required: true, whitespace: true }]}>
-              <Input.TextArea autoSize={{ minRows: 6 }} placeholder={descPH} />
+              <Input.TextArea autoSize={{ minRows: 8 }} placeholder={descPH} />
             </Form.Item>
             <Form.Item
               label={tt.launchDate}
@@ -152,37 +159,37 @@ function AddCoin() {
               validateTrigger="onBlur"
               rules={[{ required: true }, { pattern: dateReg, message: ' ' }]}
             >
-              <Input placeholder="YYYY-MM-DD HH:mm:ss" />
+              <Input placeholder="YYYY-MM-DD HH:mm" />
             </Form.Item>
 
             <Form.Item noStyle>
-              <h2>{tt.contractAddressTitle}</h2>
+              <h2>{tt.contractInfoTitle}</h2>
             </Form.Item>
             <Form.Item label={tt.chain} name="coinChain" rules={[{ required: true }]}>
-              <Select>
-                {chainEnum.map((chain) => (
-                  <Select.Option value={chain} key={chain}>
-                    {chain}
+              <Select placeholder="Select..." getPopupContainer={(tri) => tri.parentNode}>
+                {coinChainList?.map(({ chainName, id }) => (
+                  <Select.Option value={id} key={id}>
+                    {chainName}
                   </Select.Option>
                 ))}
               </Select>
             </Form.Item>
             <Form.Item label={tt.contractAddress} name="coinAddress" rules={[{ whitespace: true }]}>
-              <Input />
+              <Input placeholder="0x0000...." />
             </Form.Item>
 
             <Form.Item noStyle>
               <h2>{tt.presale_airdrop}</h2>
               <div className={ss.paBtns}>
                 <Button
-                  className={`${presaleInput ? ss.infoFilled : ''}`}
+                  className={`${coinPresaleInfo ? ss.infoFilled : ''}`}
                   onClick={() => setState((state) => ({ ...state, presaleModalVisible: true }))}
                 >
                   {tt.presaleInformation}
                 </Button>
 
                 <Button
-                  className={`${airdropInput ? ss.infoFilled : ''}`}
+                  className={`${coinAirdropInfo ? ss.infoFilled : ''}`}
                   onClick={() => setState((state) => ({ ...state, airdropModalVisible: true }))}
                 >
                   {tt.airdropInformation}
@@ -193,27 +200,29 @@ function AddCoin() {
 
           <Col>
             <Form.Item noStyle>
-              <h2>
-                {tt.linkTitle}
-                <span className={ss.linkTip} ref={linkTipRef}>
-                  {tt.linkTip}
-                </span>
-              </h2>
+              {/* prettier-ignore */}
+              <h2>{tt.linkTitle}<span className={ss.linkTip} ref={linkTipRef}>{tt.linkTip}</span></h2>
             </Form.Item>
-            <Form.Item label={tt.website} name="linkWebsite" rules={[{ whitespace: true }]}>
-              <Input />
+            {/* prettier-ignore */}
+            <Form.Item label={tt.website} name="linkWebsite" rules={[{ whitespace: true }, { pattern: urlReg }]} validateTrigger="onBlur">
+              <Input placeholder="https://..." />
             </Form.Item>
-            <Form.Item label={tt.chineseTG} name="linkChineseTg" rules={[{ whitespace: true }]}>
-              <Input />
+            {/* prettier-ignore */}
+            <Form.Item label={tt.chineseTG} name="linkChineseTg" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+              <Input placeholder="https://..." />
             </Form.Item>
-            <Form.Item label={tt.englishTG} name="linkEnglishTg" rules={[{ whitespace: true }]}>
-              <Input />
+            {/* prettier-ignore */}
+            <Form.Item label={tt.englishTG} name="linkEnglishTg" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+              <Input placeholder="https://..." />
             </Form.Item>
-            <Form.Item label={tt.twitter} name="linkTwitter" rules={[{ whitespace: true }]}>
-              <Input />
+            <Form.Item label={tt.twitter} name="linkTwitter" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+              <Input placeholder="https://..." />
             </Form.Item>
-            <Form.Item label={tt.discord} name="linkDiscord" rules={[{ whitespace: true }]}>
-              <Input />
+            <Form.Item label={tt.medium} name="linkMedium" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+              <Input placeholder="https://..." />
+            </Form.Item>
+            <Form.Item label={tt.discord} name="linkDiscord" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+              <Input placeholder="https://..." />
             </Form.Item>
             <Form.Item label={tt.addLinkInfo} name="linkAdditionalInfo" rules={[{ whitespace: true }]}>
               <Input.TextArea autoSize={{ minRows: 6 }} placeholder={additionalLinkPH} />
@@ -222,8 +231,13 @@ function AddCoin() {
             <Form.Item noStyle>
               <h2>{tt.contactInfoTitle}</h2>
             </Form.Item>
-            <Form.Item label={tt.contactEmail} name="contractEmail" rules={[{ required: true, whitespace: true }]}>
-              <Input />
+            <Form.Item
+              label={tt.contactEmail}
+              name="contractEmail"
+              validateTrigger="onBlur"
+              rules={[{ required: true }, { type: 'email' }]}
+            >
+              <Input placeholder="contact@coinmoments.com" />
             </Form.Item>
             <Form.Item label={tt.contactTelegram} name="contactTg" rules={[{ whitespace: true }]}>
               <Input />
@@ -246,20 +260,20 @@ function AddCoin() {
           <p>{tt.presaleInformation}</p>
           <Button
             type="link"
-            disabled={!!presaleInput.trim()}
-            onClick={() => setState((state) => ({ ...state, presaleInput: presaleTemplate }))}
+            disabled={!!coinPresaleInfo.trim()}
+            onClick={() => setState((state) => ({ ...state, coinPresaleInfo: presaleTemplate }))}
           >
             {tt.injectTemplate}
           </Button>
         </div>
         <Input.TextArea
-          value={presaleInput}
+          value={coinPresaleInfo}
           placeholder={presalePH}
-          onChange={(e) => setState((state) => ({ ...state, presaleInput: e.target.value }))}
+          onChange={(e) => setState((state) => ({ ...state, coinPresaleInfo: e.target.value }))}
           autoSize={{ minRows: 10 }}
         />
         {/* prettier-ignore */}
-        <Button type="primary" onClick={() => setState((state) => ({ ...state, presaleInput: state.presaleInput.trim(), presaleModalVisible: false }))}>OK</Button>
+        <Button type="primary" onClick={() => setState((state) => ({ ...state, coinPresaleInfo: state.coinPresaleInfo.trim(), presaleModalVisible: false }))}>OK</Button>
       </Modal>
 
       {/* 空投信息补充弹窗 */}
@@ -268,20 +282,20 @@ function AddCoin() {
           <p>{tt.airdropInformation}</p>
           <Button
             type="link"
-            disabled={!!airdropInput.trim()}
-            onClick={() => setState((state) => ({ ...state, airdropInput: airdropTemplate }))}
+            disabled={!!coinAirdropInfo.trim()}
+            onClick={() => setState((state) => ({ ...state, coinAirdropInfo: airdropTemplate }))}
           >
             {tt.injectTemplate}
           </Button>
         </div>
         <Input.TextArea
-          value={airdropInput}
+          value={coinAirdropInfo}
           placeholder={airdropPH}
-          onChange={(e) => setState((state) => ({ ...state, airdropInput: e.target.value }))}
           autoSize={{ minRows: 10 }}
+          onChange={(e) => setState((state) => ({ ...state, coinAirdropInfo: e.target.value }))}
         />
         {/* prettier-ignore */}
-        <Button type="primary" onClick={() => setState((state) => ({ ...state, airdropInput: state.airdropInput.trim(), airdropModalVisible: false }))}>{tt.okBtnText}</Button>
+        <Button type="primary" loading={loading} onClick={() => setState((state) => ({ ...state, coinAirdropInfo: state.coinAirdropInfo.trim(), airdropModalVisible: false }))}>{tt.okBtnText}</Button>
       </Modal>
     </section>
   )

@@ -11,7 +11,7 @@ const routes = [
     component: loadableWithSpinner(() => import('../pages/home')),
   },
   {
-    path: '/coin/:id',
+    path: '/coin/:coinId',
     exact: true,
     component: loadableWithSpinner(() => import('../pages/coin-info')),
   },

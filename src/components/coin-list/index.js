@@ -70,19 +70,27 @@ function CoinList(props) {
             </div>
 
             <div className={ss.btnCol}>
-              <CDButton
-                onClick={(e) => stopProp(e, () => modalInfo({ title: '预售信息', text: coin.coinPresaleInfo }))}
-              >
-                查看
-              </CDButton>
+              {coin.coinPresaleInfo ? (
+                <CDButton
+                  onClick={(e) => stopProp(e, () => modalInfo({ title: '预售信息', text: coin.coinPresaleInfo }))}
+                >
+                  查看
+                </CDButton>
+              ) : (
+                '---'
+              )}
             </div>
 
             <div className={ss.btnCol}>
-              <CDButton
-                onClick={(e) => stopProp(e, () => modalInfo({ title: '空投信息', text: coin.coinAirdropInfo }))}
-              >
-                查看
-              </CDButton>
+              {coin.coinAirdropInfo ? (
+                <CDButton
+                  onClick={(e) => stopProp(e, () => modalInfo({ title: '空投信息', text: coin.coinAirdropInfo }))}
+                >
+                  查看
+                </CDButton>
+              ) : (
+                '---'
+              )}
             </div>
 
             <div className={ss.links}>

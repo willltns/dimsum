@@ -1,4 +1,4 @@
-.freePromo {
+.PromoVote {
   text-align: left;
   margin: 24px 0;
 }
@@ -37,11 +37,26 @@
   align-items: center;
   cursor: pointer;
 
-  > img {
+  > img,
+  > i {
     width: 47px;
     height: 47px;
+    border-radius: 4px;
     flex: none;
     margin-right: 9px;
+  }
+
+  > i {
+    background-color: #fff;
+    color: @primary-color;
+    font-size: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: normal;
+    font-weight: bold;
+    user-select: none;
+    pointer-events: none;
   }
 }
 
