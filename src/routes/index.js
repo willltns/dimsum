@@ -1,6 +1,6 @@
 import loadable from '@loadable/component'
 
-import Spinner from '../components/spinner'
+// import Spinner from '../components/spinner'
 
 const loadableWithSpinner = (comp) => loadable(comp /*{ fallback: <Spinner /> }*/)
 

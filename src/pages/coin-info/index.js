@@ -1,12 +1,14 @@
 import ss from './index.module.less'
+import { ReactComponent as RocketIcon } from '@/assets/img/link-icon/rocket.svg'
 
 import React, { useRef, useState, useEffect } from 'react'
 import ClipboardJS from 'clipboard'
 import { Divider, Dropdown, Input, Menu, notification, Popover } from 'antd'
 import { CopyOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router-dom'
+import { observer } from 'mobx-react'
 
-import { urlReg } from '@/consts'
+import { fileDomain, urlReg } from '@/consts'
 import { getCoinDetail } from '@/assets/xhr'
 import { useStore } from '@/utils/hooks/useStore'
 
@@ -18,7 +20,7 @@ import { modalInfo } from '@/components/coin-list/modalInfo'
 
 function CoinInfo() {
   const copyBtnRef = useRef()
-  const { common } = useStore()
+  const { common, home } = useStore()
   const { coinId } = useParams()
   const [state, setState] = useState({ coinInfo: {}, loading: true })
   const { coinInfo, loading } = state
@@ -58,7 +60,7 @@ function CoinInfo() {
           <div className={ss.coinInfo}>
             <div className={ss.infoHead}>
               <div className={ss.base}>
-                {coinInfo.coinLogo ? <img src={coinInfo.coinLogo} alt={coinInfo.coinName} /> : <i>?</i>}
+                {coinInfo.coinLogo ? <img src={fileDomain + coinInfo.coinLogo} alt={coinInfo.coinName} /> : <i>?</i>}
 
                 <div>
                   <div className={ss.name}>{coinInfo.coinName || '??'}</div>
@@ -67,10 +69,10 @@ function CoinInfo() {
               </div>
               <div className={ss.stat}>
                 <span>
-                  投票 <b>{coinInfo.coinUpvotes || '?'}</b>
+                  投票 <b>{coinInfo.coinUpvotes || '0'}</b>
                 </span>
                 <span>
-                  今日投票 <b>{coinInfo.coinUpvotesToday || '?'}</b>
+                  今日投票 <b>{coinInfo.coinUpvotesToday || '0'}</b>
                 </span>
               </div>
             </div>
@@ -186,23 +188,22 @@ function CoinInfo() {
 
         <div style={{ textAlign: 'center', marginTop: 32 }}>
           <CDButton
-            primary
-            className={ss.upvoteBtn}
-            onClick={() => {
-              const coinStr = `${999}.${new Date().getTime() + 30 * 1000}`
-              common.pushVoted(coinStr)
-            }}
+            primary={common.votedIdList.includes(coinInfo.id + '')}
+            className={`${ss.upvoteBtn} ${+coinInfo.id === +home.votingId ? ss.voting : ''}`}
+            onClick={() => (common.votedIdList.includes(coinInfo.id + '') ? null : home.handleVote(coinInfo))} // 这里有个 hack，该页面投票数更新依赖了 common.votedIdList 的变化
           >
-            🚀&emsp;投 票
+            <RocketIcon />
+            {common.votedIdList.includes(coinInfo.id + '') ? '已投票' : `投 票`}
           </CDButton>
           <p>每 1 小时可投 1 次票</p>
         </div>
       </div>
 
       <CoinList promo />
+
       <Footer />
     </section>
   )
 }
 
-export default CoinInfo
+export default observer(CoinInfo)

@@ -6,8 +6,10 @@ import { observer } from 'mobx-react'
 import { MenuOutlined } from '@ant-design/icons'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 
-import CDButton from '@/components/cd-button'
 import { useStore } from '@/utils/hooks/useStore'
+import { fileDomain } from '@/consts'
+
+import CDButton from '@/components/cd-button'
 
 function Header() {
   const history = useHistory()
@@ -32,7 +34,7 @@ function Header() {
       placement: 'bottomRight',
       description: (
         <a href={common.popBanner.linkUrl} target="_blank" rel="noreferrer">
-          <img src={common.popBanner.bannerUrl} alt={common.popBanner.coinName} />
+          <img src={fileDomain + common.popBanner.bannerUrl} alt={common.popBanner.coinName} />
         </a>
       ),
     })
@@ -57,7 +59,7 @@ function Header() {
   return (
     <header className={`${ss.header} ${isAddCoinPage ? ss.noneSticky : ''}`}>
       <Link className="logo" to="/">
-        CoinMoments
+        YYDSCoins
       </Link>
       <div className={ss.headerBtn}>
         <CDButton onClick={() => history.push('/add-coin')}>添加代币</CDButton>

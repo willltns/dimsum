@@ -69,9 +69,13 @@
   display: flex;
   align-items: center;
 
+  > *:nth-child(n + 1) {
+    margin-left: 2px;
+  }
+
   > svg {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
 }
 
@@ -90,12 +94,12 @@
 
 .tgIcon {
   position: relative;
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 
   > svg {
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
   }
 
   svg + svg {
@@ -153,23 +157,24 @@
     padding: 0 16px;
     height: 28px;
     border-radius: 7px;
+    z-index: 2;
   }
 }
 
 .tRow {
-  grid-template-columns: 18% 10% 18% 9% 9% 18% 18%;
+  grid-template-columns: 18% 10% 18% 9% 9% 20% 16%;
 }
 
 @media screen and (max-width: 1440px) {
   .tRow {
-    grid-template-columns: 22% 10% 18% 9% 9% 14% 18%;
+    grid-template-columns: 20% 10% 18% 9% 9% 18% 16%;
   }
 }
 
 @media screen and (max-width: 888px) {
   .tRow {
     font-size: 12px;
-    grid-template-columns: 22% 0 20% 10% 10% 18% 20%;
+    grid-template-columns: 22% 0 20% 10% 10% 20% 18%;
 
     > div:nth-of-type(2) {
       width: 100%;
@@ -207,7 +212,7 @@
 
 @media screen and (max-width: 600px) {
   .tRow {
-    grid-template-columns: 40% 0 20% 0 0 20% 20%;
+    grid-template-columns: 34% 0 20% 0 0 26% 20%;
   }
 
   .date span {
@@ -222,6 +227,7 @@
       width: 40px;
       height: 40px;
       margin-right: 4px;
+      flex: none;
     }
   }
 
@@ -260,6 +266,47 @@
       &:active {
         border: none !important;
         box-shadow: none !important;
+      }
+    }
+  }
+}
+
+// 链接列部分隐藏
+@media screen and (max-width: 1222px) {
+  .links > *:nth-child(n + 6) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .links > *:nth-child(n + 5) {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 410px) {
+  .links > *:nth-child(n + 4) {
+    display: none;
+  }
+
+  .links {
+    > svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .tgIcon {
+      width: 28px;
+      height: 28px;
+
+      > svg {
+        width: 28px;
+        height: 28px;
+
+        + svg {
+          width: 12px;
+          height: 12px;
+        }
       }
     }
   }

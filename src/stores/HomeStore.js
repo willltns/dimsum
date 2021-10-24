@@ -25,6 +25,7 @@ export class HomeStore {
       let params = { type: this.type, value: this.value, pageNo: this.pageNo, pageSize: this.pageSize, ...searchV }
       const isLoadMore = searchV.pageNo !== this.pageNo && searchV.pageNo !== 1
       if (searchV?.pageNo) this.updateProp({ ...searchV })
+      if (!params.value) params.value = undefined
       console.log('search', params, isLoadMore)
 
       this.loading = true
@@ -32,7 +33,6 @@ export class HomeStore {
         const res = yield getCoinList(params)
         this.coinList = res?.list || []
       } catch (err) {}
-      // this.coinList = coinL
       this.loading = false
     }.bind(this)
   )
@@ -48,13 +48,14 @@ export class HomeStore {
       this.votingId = id
       try {
         const timestamp = yield voteCoin({ id })
-        // const timestamp = yield delay(3)
+        if (timestamp < 0) console.log('已投')
 
-        // TODO 服务器返回时间戳 + 3600000s
-        const votedStr = `${id}.${new Date().getTime() + 10000}`
+        const votedStr = `${id}.${timestamp + 3600 * 1000}`
         common.pushVoted(votedStr)
         coin.coinUpvotes = coin.coinUpvotes ? coin.coinUpvotes + 1 : 1
         coin.coinUpvotesToday = coin.coinUpvotesToday ? coin.coinUpvotesToday + 1 : 1
+
+        // TODO promoCoinList & coinList votes sync
       } catch (err) {}
 
       this.votingId = null

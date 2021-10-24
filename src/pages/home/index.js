@@ -32,15 +32,28 @@ const Home = () => {
           render={() => (
             <div className={ss.searchBar}>
               <div className={ss.type}>
-                {coinTypeList.map((item) => (
-                  <Button
-                    key={item.value}
-                    type={home.type === item.value ? 'primary' : ''}
-                    onClick={() => home.getCoins({ value: '', type: item.value, pageNo: 1 })}
-                  >
-                    {item.text}
-                  </Button>
-                ))}
+                <div>
+                  {coinTypeList.slice(0, 2).map((item) => (
+                    <Button
+                      key={item.value}
+                      type={home.type === item.value ? 'primary' : ''}
+                      onClick={() => home.getCoins({ value: '', type: item.value, pageNo: 1 })}
+                    >
+                      {item.text}
+                    </Button>
+                  ))}
+                </div>
+                <div>
+                  {coinTypeList.slice(2).map((item) => (
+                    <Button
+                      key={item.value}
+                      type={home.type === item.value ? 'primary' : ''}
+                      onClick={() => home.getCoins({ value: '', type: item.value, pageNo: 1 })}
+                    >
+                      {item.text}
+                    </Button>
+                  ))}
+                </div>
               </div>
               <Input.Search
                 value={home.value}
@@ -55,7 +68,6 @@ const Home = () => {
         />
 
         <CoinList />
-
         <Observer
           render={() => (
             <div style={{ textAlign: 'center' }}>

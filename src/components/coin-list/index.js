@@ -14,6 +14,7 @@ import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 
 import { useStore } from '@/utils/hooks/useStore'
+import { fileDomain } from '@/consts'
 
 import CDButton from '@/components/cd-button'
 import { modalInfo } from '@/components/coin-list/modalInfo'
@@ -59,7 +60,7 @@ function CoinList(props) {
         {list?.map((coin) => (
           <Link className={ss.tRow} to={`/coin/${coin.id}`} key={coin.id}>
             <div className={ss.name}>
-              <img src={coin.coinLogo} alt={coin.coinSymbol} />
+              <img src={fileDomain + coin.coinLogo} alt={coin.coinSymbol} />
               {coin.coinName}
             </div>
 
@@ -95,13 +96,21 @@ function CoinList(props) {
 
             <div className={ss.links}>
               {coin.linkWebsite && (
-                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkWebsite}</span>}>
+                <Tooltip
+                  mouseLeaveDelay={0}
+                  overlayClassName={ss.linkTt}
+                  title={<span onClick={stopProp}>{coin.linkWebsite}</span>}
+                >
                   <WebsiteIcon onClick={(e) => stopProp(e, () => window.open(coin.linkWebsite))} />
                 </Tooltip>
               )}
 
               {coin.linkChineseTg && (
-                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkChineseTg}</span>}>
+                <Tooltip
+                  mouseLeaveDelay={0}
+                  overlayClassName={ss.linkTt}
+                  title={<span onClick={stopProp}>{coin.linkChineseTg}</span>}
+                >
                   <span className={ss.tgIcon} onClick={(e) => stopProp(e, () => window.open(coin.linkChineseTg))}>
                     <TGIcon />
                     <CNIcon />
@@ -110,7 +119,11 @@ function CoinList(props) {
               )}
 
               {coin.linkEnglishTg && (
-                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkEnglishTg}</span>}>
+                <Tooltip
+                  mouseLeaveDelay={0}
+                  overlayClassName={ss.linkTt}
+                  title={<span onClick={stopProp}>{coin.linkEnglishTg}</span>}
+                >
                   <span className={ss.tgIcon} onClick={(e) => stopProp(e, () => window.open(coin.linkEnglishTg))}>
                     <TGIcon />
                     <ENIcon />
@@ -119,19 +132,31 @@ function CoinList(props) {
               )}
 
               {coin.linkTwitter && (
-                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkTwitter}</span>}>
+                <Tooltip
+                  mouseLeaveDelay={0}
+                  overlayClassName={ss.linkTt}
+                  title={<span onClick={stopProp}>{coin.linkTwitter}</span>}
+                >
                   <TwitterIcon onClick={(e) => stopProp(e, () => window.open(coin.linkTwitter))} />
                 </Tooltip>
               )}
 
               {coin.linkDiscord && (
-                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkDiscord}</span>}>
+                <Tooltip
+                  mouseLeaveDelay={0}
+                  overlayClassName={ss.linkTt}
+                  title={<span onClick={stopProp}>{coin.linkDiscord}</span>}
+                >
                   <DiscordIcon onClick={(e) => stopProp(e, () => window.open(coin.linkDiscord))} />
                 </Tooltip>
               )}
 
               {coin.linkMedium && (
-                <Tooltip overlayClassName={ss.linkTt} title={<span onClick={stopProp}>{coin.linkMedium}</span>}>
+                <Tooltip
+                  mouseLeaveDelay={0}
+                  overlayClassName={ss.linkTt}
+                  title={<span onClick={stopProp}>{coin.linkMedium}</span>}
+                >
                   <MediumIcon onClick={(e) => stopProp(e, () => window.open(coin.linkMedium))} />
                 </Tooltip>
               )}
@@ -142,7 +167,7 @@ function CoinList(props) {
                 className={+coin.id === +home.votingId ? ss.voting : ''}
                 primary={common.votedIdList.includes(coin.id + '')}
                 onClick={(e) =>
-                  stopProp(e, common.votedIdList.includes(coin.id + '') ? undefined : () => home.handleVote(coin))
+                  stopProp(e, common.votedIdList.includes(coin.id + '') ? null : () => home.handleVote(coin))
                 }
               >
                 <Rocket />

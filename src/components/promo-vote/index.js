@@ -7,28 +7,9 @@ import { Radio, Space } from 'antd'
 import { useHistory } from 'react-router-dom'
 
 import { getChamp, getPromoVote, votePromoVote } from '@/assets/xhr'
+import { fileDomain } from '@/consts'
 
 const cookieKey = 'vi'
-const id = 2
-
-const resPromoInfo = {
-  id: 1,
-  type: 10,
-  voteItems: [
-    { coinName: 'Bit Coin', id: 10, optionDesc: '1', pct: '0' },
-    { coinName: 'Birb', id: 11, optionDesc: '2', pct: '0' },
-    { coinName: 'Bit Coin', id: 12, optionDesc: '1', pct: '0' },
-    { coinName: 'Birb', id: 13, optionDesc: '2', pct: '0' },
-  ],
-  voteName: '哪个代币获得两天免费推广？',
-}
-
-const resChamp = {
-  id: 1,
-  coinName: 'Birb',
-  coinLogo: 'https://www.asqql.com/tpqsy/demo.jpg',
-  coinSymbol: 'Birb',
-}
 
 function PromoVote() {
   const history = useHistory()
@@ -40,13 +21,13 @@ function PromoVote() {
 
   const getData = async () => {
     try {
-      const res = await Promise.all([getChamp(), getPromoVote()])
-    } catch (err) {
-      setState((state) => ({ ...state, champ: resChamp, promoInfo: resPromoInfo }))
-    }
+      const [champ, promoInfo] = await Promise.all([getChamp(), getPromoVote()])
+      setState((state) => ({ ...state, champ, promoInfo }))
+    } catch (err) {}
   }
 
   const handlePromoVote = async (e) => {
+    console.log(e.target)
     if (Cookies.get(cookieKey)) return
 
     const optionId = e.target.value
@@ -55,6 +36,8 @@ function PromoVote() {
     try {
       await votePromoVote({ id: optionId })
       setState((state) => ({ ...state, voted: true }))
+      // prettier-ignore
+      getPromoVote().then((promoInfo) => setState((state) => ({ ...state, promoInfo }))).catch(() => {})
     } catch (err) {
       Cookies.remove(cookieKey)
     }
@@ -74,13 +57,13 @@ function PromoVote() {
   }, [voteId])
 
   return (
-    <div className={`${ss.PromoVote} ${voted ? ss.voted : ''}`}>
+    <div className={`${ss.PromoVote} ${voted || promoInfo?.finished ? ss.voted : ''}`}>
       <div className={ss.winner}>
         <Trophy className={ss.trophyIcon} />
         <div className={ss.champ}>
           <h4>人气代币</h4>
           <div className={ss.coin} onClick={champ?.id ? () => history.push(`/coin/${champ.id}`) : null}>
-            {champ?.coinLogo ? <img src={champ?.coinLogo} alt="b" /> : <i>?</i>}
+            {champ?.coinLogo ? <img src={fileDomain + champ.coinLogo} alt={champ.coinName} /> : <i>?</i>}
             <div>
               <div className={ss.coinName}>{champ?.coinName || '???'}</div>
               <div>${champ?.coinSymbol || '???'}</div>
@@ -92,7 +75,7 @@ function PromoVote() {
       {voteId ? (
         <div className={ss.radioBox}>
           <h3>{promoInfo.voteName}</h3>
-          <Radio.Group onChange={handlePromoVote}>
+          <Radio.Group onChange={voted || promoInfo?.finished ? null : handlePromoVote}>
             <Space direction="vertical">
               {promoInfo.voteItems?.map((item) => (
                 <Radio value={item.id} key={item.id}>

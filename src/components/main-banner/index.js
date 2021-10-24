@@ -8,6 +8,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { useStore } from '@/utils/hooks/useStore'
 import useMediaQuery from '@/utils/hooks/useMediaQuery'
+import { fileDomain } from '@/consts'
 
 SwiperCore.use([Autoplay])
 
@@ -22,7 +23,7 @@ function MainBanner() {
       {wideBannerList?.map((banner) => (
         <div className={ss.wide} key={banner.bannerUrl}>
           <a href={banner.linkUrl} target="_blank" rel="noreferrer">
-            <img src={banner.bannerUrl} alt={banner.coinName} />
+            <img src={fileDomain + banner.bannerUrl} alt={banner.coinName} />
           </a>
         </div>
       ))}
@@ -39,7 +40,7 @@ function MainBanner() {
             <SwiperSlide key={item.bannerUrl}>
               <div className={ss.prom}>
                 <a href={item.linkUrl} target="_blank" rel="noreferrer">
-                  <img src={item.bannerUrl} alt={item.coinName} />
+                  <img src={fileDomain + item.bannerUrl} alt={item.coinName} />
                 </a>
               </div>
             </SwiperSlide>

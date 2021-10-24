@@ -2,16 +2,17 @@ import ss from './index.module.less'
 
 import React, { useRef, useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { Form, Input, Upload, Button, Row, Col, Select, Modal } from 'antd'
-import { ArrowLeftOutlined, UploadOutlined } from '@ant-design/icons'
+import { Form, Input, Button, Row, Col, Select, Modal } from 'antd'
+import { ArrowLeftOutlined } from '@ant-design/icons'
 
 import zh from './lang/zh.json'
 import en from './lang/en.json'
-import { chainEnum, urlReg } from '@/consts'
+import { urlReg } from '@/consts'
 import { descPH, presalePH, airdropPH, presaleTemplate, airdropTemplate, additionalLinkPH } from './const'
 
 import Footer from '@/components/footer'
-import { getChainList } from '@/assets/xhr'
+import { addCoin, getChainList } from '@/assets/xhr'
+import ImgUpload, { uploadErrorValidator } from '@/components/img-upload'
 
 // 是否中文
 const ifZh = (lang) => lang === 'zh'
@@ -48,7 +49,7 @@ function AddCoin() {
 
   useEffect(() => {
     getChainList()
-      .then((res) => setState((state) => ({ ...state, coinChainList: res || [] })))
+      .then((res) => setState((state) => ({ ...state, coinChainList: res?.list || [] })))
       .catch(() => {})
   }, [])
 
@@ -71,23 +72,22 @@ function AddCoin() {
 
     const params = { ...values, coinPresaleInfo, coinAirdropInfo, linkAdditionalInfo: linkAdditionalInfo?.trim() || '' }
     params.coinLogo = params.coinLogo?.[0]?.response
-    console.log(params, 'params')
-    // xhr
 
-    // success
-
-    Modal.success({
-      closable: false,
-      onOk: () => history.replace('/'),
-      content: (
-        <div>
-          <p>您提交的代币 xxx 已成功提交，请等待审核，将在12小时内完成审核</p>
-          <p>如需修改和推广您的代币，请联系 xxx@xxxxx.com</p>
-        </div>
-      ),
-    })
-
-    setState((state) => ({ ...state, loading: false }))
+    addCoin(params)
+      .then(() => {
+        // success
+        Modal.success({
+          closable: false,
+          onOk: () => history.replace('/'),
+          content: (
+            <div>
+              <p>您提交的代币 xxx 已成功提交，请等待审核，将在12小时内完成审核</p>
+              <p>如需修改和推广您的代币，请联系 xxx@xxxxx.com</p>
+            </div>
+          ),
+        })
+      })
+      .catch(() => setState((state) => ({ ...state, loading: false })))
   }
 
   const onFinishFailed = ({ values, errorFields }) => {
@@ -140,15 +140,11 @@ function AddCoin() {
             <Form.Item
               label={tt.logo}
               name="coinLogo"
-              getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
               valuePropName="fileList"
-              rules={[{ required: true }]}
+              getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
+              rules={[{ required: true }, uploadErrorValidator]}
             >
-              <Upload name="logo" action="/upload.do" listType="picture" maxCount={1}>
-                <Button ref={uploadBtnRef} icon={<UploadOutlined />} onClick={() => (uploadBtnRef.current.style = '')}>
-                  {tt.clickToUpload}
-                </Button>
-              </Upload>
+              <ImgUpload iconRef={uploadBtnRef} onClick={() => (uploadBtnRef.current.style = '')} />
             </Form.Item>
             <Form.Item label={tt.description} name="coinDescription" rules={[{ required: true, whitespace: true }]}>
               <Input.TextArea autoSize={{ minRows: 8 }} placeholder={descPH} />
@@ -208,20 +204,23 @@ function AddCoin() {
               <Input placeholder="https://..." />
             </Form.Item>
             {/* prettier-ignore */}
-            <Form.Item label={tt.chineseTG} name="linkChineseTg" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+            <Form.Item label={tt.chineseTG} name="linkChineseTg" rules={[{ whitespace: true }, { pattern: urlReg }]} validateTrigger="onBlur">
               <Input placeholder="https://..." />
             </Form.Item>
             {/* prettier-ignore */}
-            <Form.Item label={tt.englishTG} name="linkEnglishTg" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+            <Form.Item label={tt.englishTG} name="linkEnglishTg" rules={[{ whitespace: true }, { pattern: urlReg }]} validateTrigger="onBlur">
               <Input placeholder="https://..." />
             </Form.Item>
-            <Form.Item label={tt.twitter} name="linkTwitter" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+            {/* prettier-ignore */}
+            <Form.Item label={tt.twitter} name="linkTwitter" rules={[{ whitespace: true }, { pattern: urlReg }]} validateTrigger="onBlur">
               <Input placeholder="https://..." />
             </Form.Item>
-            <Form.Item label={tt.medium} name="linkMedium" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+            {/* prettier-ignore */}
+            <Form.Item label={tt.medium} name="linkMedium" rules={[{ whitespace: true }, { pattern: urlReg }]} validateTrigger="onBlur">
               <Input placeholder="https://..." />
             </Form.Item>
-            <Form.Item label={tt.discord} name="linkDiscord" rules={[{ whitespace: true }]} validateTrigger="onBlur">
+            {/* prettier-ignore */}
+            <Form.Item label={tt.discord} name="linkDiscord" rules={[{ whitespace: true }, { pattern: urlReg }]} validateTrigger="onBlur">
               <Input placeholder="https://..." />
             </Form.Item>
             <Form.Item label={tt.addLinkInfo} name="linkAdditionalInfo" rules={[{ whitespace: true }]}>
@@ -233,14 +232,14 @@ function AddCoin() {
             </Form.Item>
             <Form.Item
               label={tt.contactEmail}
-              name="contractEmail"
+              name="contactEmail"
               validateTrigger="onBlur"
               rules={[{ required: true }, { type: 'email' }]}
             >
-              <Input placeholder="contact@coinmoments.com" />
+              <Input placeholder="contact@yydscoins.com" />
             </Form.Item>
             <Form.Item label={tt.contactTelegram} name="contactTg" rules={[{ whitespace: true }]}>
-              <Input />
+              <Input placeholder="@yydscoins" />
             </Form.Item>
           </Col>
         </Row>

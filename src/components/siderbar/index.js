@@ -10,10 +10,9 @@ function Sidebar() {
   return (
     <div className={`${ss.sidebar} sidebar`}>
       <nav>
-        <Link to="/">代币排行</Link>
-        <Link to="/add-coin">添加代币</Link>
-        {/*<Link to="/">空投</Link>*/}
-        <Link to="/promote">推广</Link>
+        <Link to="/">&emsp;代币排行｜Coin Ranking</Link>
+        <Link to="/add-coin">添加代币｜Add a Coin</Link>
+        <Link to="/promote">&emsp;推广｜Promote</Link>
       </nav>
       <div>
         <TgIcon style={{ width: 32 }} onClick={() => window.open('https://t.me/liangjianshequ')} />
