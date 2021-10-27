@@ -167,7 +167,10 @@ function CoinList(props) {
                 className={+coin.id === +home.votingId ? ss.voting : ''}
                 primary={common.votedIdList.includes(coin.id + '')}
                 onClick={(e) =>
-                  stopProp(e, common.votedIdList.includes(coin.id + '') ? null : () => home.handleVote(coin))
+                  stopProp(
+                    e,
+                    common.votedIdList.includes(coin.id + '') ? null : () => home.handleVote(coin, promo, !promo)
+                  )
                 }
               >
                 <Rocket />

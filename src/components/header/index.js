@@ -42,8 +42,6 @@ function Header() {
     return () => notification.close('popPromo')
   }, [common.popBanner])
 
-  const isAddCoinPage = pathname === '/add-coin'
-
   const toggleSidebar = () => {
     const sidebarEl = document.querySelector('.sidebar')
 
@@ -57,7 +55,7 @@ function Header() {
   }
 
   return (
-    <header className={`${ss.header} ${isAddCoinPage ? ss.noneSticky : ''}`}>
+    <header className={ss.header}>
       <Link className="logo" to="/">
         YYDSCoins
       </Link>

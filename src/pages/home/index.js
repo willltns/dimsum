@@ -1,8 +1,9 @@
 import ss from './index.module.less'
 
 import React from 'react'
-import { Button, Input } from 'antd'
 import { Observer } from 'mobx-react'
+import { Link } from 'react-router-dom'
+import { Button, Empty, Input } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
 import { useStore } from '@/utils/hooks/useStore'
@@ -10,6 +11,7 @@ import { coinTypeList } from '@/pages/home/consts'
 
 import MainBanner from '@/components/main-banner'
 import CoinList from '@/components/coin-list'
+import Spinner from '@/components/spinner'
 import Footer from '@/components/footer'
 
 const Home = () => {
@@ -68,17 +70,37 @@ const Home = () => {
         />
 
         <CoinList />
+
         <Observer
           render={() => (
-            <div style={{ textAlign: 'center' }}>
-              <Button
-                type="primary"
-                loading={home.loading}
-                style={{ borderRadius: '0 0 40px 40px', width: 120, paddingLeft: 22 }}
-                onClick={() => home.getCoins({ pageNo: home.pageNo + 1, value: home.value, type: home.type })}
-              >
-                加载更多
-              </Button>
+            <div className={ss.listBot}>
+              {home.loading ? (
+                <Spinner />
+              ) : (
+                !!home.coinList?.length &&
+                (home.noMore ? (
+                  <span className={ss.noTip}>没有更多了</span>
+                ) : (
+                  <span
+                    className={ss.loadBtn}
+                    onClick={() => home.getCoins({ pageNo: home.pageNo + 1, value: home.value, type: home.type })}
+                  >
+                    加载更多
+                  </span>
+                ))
+              )}
+
+              {!home.loading && !home.coinList?.length && (
+                <Empty
+                  className={ss.empty}
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description={
+                    <Link to="/add-coin" className={ss.loadBtn}>
+                      Add a Coin
+                    </Link>
+                  }
+                />
+              )}
             </div>
           )}
         />

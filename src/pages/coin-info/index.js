@@ -51,6 +51,10 @@ function CoinInfo() {
     window.open(link)
   }
 
+  // 如果该 详情代币 正好推广列表里也有，那么投票数据使用推广列表里的
+  // 因为该 coinInfo 为组件内状态，当存在 推广列表 当前代币投票数更新时，该内部 state 变更不易交互
+  const upvotesData = common.promoCoinList?.find((pc) => +pc.id === +coinId) || coinInfo
+
   return (
     <section>
       <MainBanner />
@@ -69,10 +73,10 @@ function CoinInfo() {
               </div>
               <div className={ss.stat}>
                 <span>
-                  投票 <b>{coinInfo.coinUpvotes || '0'}</b>
+                  投票 <b>{upvotesData.coinUpvotes || '0'}</b>
                 </span>
                 <span>
-                  今日投票 <b>{coinInfo.coinUpvotesToday || '0'}</b>
+                  今日投票 <b>{upvotesData.coinUpvotesToday || '0'}</b>
                 </span>
               </div>
             </div>
@@ -147,7 +151,7 @@ function CoinInfo() {
                   {coinInfo.linkAdditionalInfo
                     ?.split('\n')
                     .map((s) => {
-                      const [name, link] = s.split('$$')
+                      const [name, link] = s.split('$$$')
                       if (name && urlReg.test(link)) {
                         // prettier-ignore
                         return (<Menu.Item key={link}><Popover content={link} mouseLeaveDelay={0}><a href={link} target="_blank" rel="noreferrer">{name}</a></Popover></Menu.Item>)
@@ -190,7 +194,9 @@ function CoinInfo() {
           <CDButton
             primary={common.votedIdList.includes(coinInfo.id + '')}
             className={`${ss.upvoteBtn} ${+coinInfo.id === +home.votingId ? ss.voting : ''}`}
-            onClick={() => (common.votedIdList.includes(coinInfo.id + '') ? null : home.handleVote(coinInfo))} // 这里有个 hack，该页面投票数更新依赖了 common.votedIdList 的变化
+            onClick={() =>
+              common.votedIdList.includes(coinInfo.id + '') ? null : home.handleVote(coinInfo, true, true)
+            } // 这里有个 hack，该页面投票数更新依赖了 common.votedIdList 的变化
           >
             <RocketIcon />
             {common.votedIdList.includes(coinInfo.id + '') ? '已投票' : `投 票`}

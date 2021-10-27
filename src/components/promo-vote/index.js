@@ -27,7 +27,6 @@ function PromoVote() {
   }
 
   const handlePromoVote = async (e) => {
-    console.log(e.target)
     if (Cookies.get(cookieKey)) return
 
     const optionId = e.target.value

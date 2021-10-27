@@ -23,7 +23,7 @@ const dateReg =
 
 const scrollToError = (el) => {
   const topOffset = el.getBoundingClientRect().top
-  const addonTop = window.innerWidth < 1100 ? 66 : 6
+  const addonTop = 66 // window.innerWidth < 1100 ? 66 : 6
   if (topOffset >= addonTop) return
   let scrollOffset = topOffset - addonTop
   window.scrollBy({ top: scrollOffset, left: 0 })
@@ -91,7 +91,8 @@ function AddCoin() {
   }
 
   const onFinishFailed = ({ values, errorFields }) => {
-    if (!values?.logo?.[0]) uploadBtnRef.current.style = 'border-color: #ff4d4f; box-shadow: 0 0 2px #ff4d4f'
+    if (!values?.logo?.[0])
+      uploadBtnRef.current.parentNode.parentNode.style = 'border-color: #ff4d4f; box-shadow: 0 0 2px #ff4d4f'
 
     const firstErrorLabel = errorFields?.[0]?.name
     if (!firstErrorLabel) return
@@ -144,7 +145,10 @@ function AddCoin() {
               getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
               rules={[{ required: true }, uploadErrorValidator]}
             >
-              <ImgUpload iconRef={uploadBtnRef} onClick={() => (uploadBtnRef.current.style = '')} />
+              <ImgUpload
+                iconRef={uploadBtnRef}
+                onClick={() => (uploadBtnRef.current.parentNode.parentNode.style = '')}
+              />
             </Form.Item>
             <Form.Item label={tt.description} name="coinDescription" rules={[{ required: true, whitespace: true }]}>
               <Input.TextArea autoSize={{ minRows: 8 }} placeholder={descPH} />

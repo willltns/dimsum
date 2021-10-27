@@ -1,4 +1,6 @@
-import { makeAutoObservable, flow } from 'mobx'
+import dayjs from 'dayjs'
+import { makeAutoObservable, flow, action } from 'mobx'
+
 import { getBanners, getPromoCoins, getServTime } from '@/assets/xhr'
 
 export class CommonStore {
@@ -7,10 +9,12 @@ export class CommonStore {
   }
 
   // state
+  unixTS = 0
   bannerData = []
   promoCoinList = []
   loading = false
   votedList = []
+  intervalTimer = null
 
   // computed
   get wideBannerList() {
@@ -28,6 +32,10 @@ export class CommonStore {
     Object.assign(this, property)
   }
 
+  updateUnixTS(date) {
+    this.unixTS = dayjs(date, 'YYYY-MM-DD HH:mm:ss').unix()
+  }
+
   get votedIdList() {
     return this.votedList.map((item) => item.split('.')[0])
   }
@@ -37,12 +45,21 @@ export class CommonStore {
     localStorage.removeItem('__ivot')
 
     getServTime()
-      .then((res) => (this.votedList = (votedList || []).filter((item) => item.split('.')[1] > res.timestamp)))
+      .then((res) => {
+        res?.date && this.timeStart(res?.date)
+        this.votedList = (votedList || []).filter((item) => item.split('.')[1] > res?.timestamp)
+      })
       .catch(() => {})
   }
 
   pushVoted(coinStr) {
     this.votedList.push(coinStr)
+  }
+
+  timeStart(dateStr) {
+    // prettier-ignore
+    this.intervalTimer = setInterval(action(() => ++this.unixTS), 1000)
+    this.unixTS = dayjs(dateStr, 'YYYY-MM-DD HH:mm:ss').unix()
   }
 
   // Creating async action using generator
@@ -52,13 +69,9 @@ export class CommonStore {
       try {
         const [bannerData, promoCoinList] = yield Promise.all([getBanners(), getPromoCoins()])
         this.bannerData = bannerData
-        this.promoCoinList = promoCoinList
+        this.promoCoinList = promoCoinList || []
       } catch (err) {}
       this.loading = false
     }.bind(this)
   )
 }
-
-// function delay(second) {
-//   return new Promise((resolve) => setTimeout(() => resolve(second), second * 1000))
-// }

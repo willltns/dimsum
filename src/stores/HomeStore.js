@@ -8,12 +8,14 @@ export class HomeStore {
   }
 
   // state
+  loading = true
   coinList = []
   votingId = null
   pageNo = 1
-  pageSize = 10
+  pageSize = 1
   value = ''
   type = 1
+  noMore = false
 
   updateProp(property) {
     Object.assign(this, property)
@@ -26,12 +28,13 @@ export class HomeStore {
       const isLoadMore = searchV.pageNo !== this.pageNo && searchV.pageNo !== 1
       if (searchV?.pageNo) this.updateProp({ ...searchV })
       if (!params.value) params.value = undefined
-      console.log('search', params, isLoadMore)
 
       this.loading = true
+      if (!isLoadMore) this.coinList = []
       try {
-        const res = yield getCoinList(params)
-        this.coinList = res?.list || []
+        const [res] = yield Promise.all([getCoinList(params), delay(0.7)]) // 至少 0.7s 左右的 loading 动画效果，交互体验更好
+        this.noMore = !res?.list?.length
+        this.coinList = isLoadMore ? this.coinList.concat(res?.list || []) : res?.list || []
       } catch (err) {}
       this.loading = false
     }.bind(this)
@@ -39,26 +42,36 @@ export class HomeStore {
 
   // Creating async action using generator
   handleVote = flow(
-    function* (coin) {
+    function* (coin, updateCoinList, updatePromoList) {
       if (this.votingId) return
-
       const { id } = coin
+      this.votingId = id
+
       const { common } = this.getRoot()
 
-      this.votingId = id
       try {
         const timestamp = yield voteCoin({ id })
-        if (timestamp < 0) console.log('已投')
 
-        const votedStr = `${id}.${timestamp + 3600 * 1000}`
+        const votedStr = `${id}.${timestamp}`
         common.pushVoted(votedStr)
         coin.coinUpvotes = coin.coinUpvotes ? coin.coinUpvotes + 1 : 1
         coin.coinUpvotesToday = coin.coinUpvotesToday ? coin.coinUpvotesToday + 1 : 1
 
-        // TODO promoCoinList & coinList votes sync
+        if (updateCoinList) {
+          const found = this.coinList.find((c) => c.id === id)
+          found && ++found.coinUpvotes && ++found.coinUpvotesToday
+        }
+        if (updatePromoList) {
+          const found = common.promoCoinList.find((c) => c.id === id)
+          found && ++found.coinUpvotes && ++found.coinUpvotesToday
+        }
       } catch (err) {}
 
       this.votingId = null
     }.bind(this)
   )
+}
+
+function delay(s) {
+  return new Promise((resolve) => setTimeout(resolve, s * 1000))
 }

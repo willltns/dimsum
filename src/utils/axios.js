@@ -22,7 +22,7 @@ axios.interceptors.response.use(
     const { data } = response
 
     if (data?.code === 200) return data.data
-    if (data?.message) notification.warn({ description: data.message })
+    if (data?.message) notification.error({ description: '服务异常，如有影响请稍后重试或联系管理员' })
 
     return Promise.reject(new CodeError(data))
   },
@@ -37,7 +37,7 @@ axios.interceptors.response.use(
       error.message.search('50') > -1 && notification.error({ description: '服务异常' })
       error.message === 'Network Error' && notification.error({ description: '网络异常' })
     } else {
-      notification.error({ description: '服务异常' })
+      notification.error({ description: '服务异常，如有影响请稍后重试或联系管理员' })
     }
     return Promise.reject(error)
   }

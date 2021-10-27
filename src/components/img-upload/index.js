@@ -18,37 +18,37 @@ export async function handleFileUpload({ file, onError, onSuccess }) {
   }
 }
 
-const acceptList = ['.png', '.jpg', '.jpeg']
+const acceptList = ['.png', '.jpg', '.jpeg', '.webp']
 
-function ImgUpload({ value, onChange, iconRef, onClick, ...restProps }) {
-  const onPreview = ({ response }) =>
-    Modal.info({
-      icon: null,
-      closable: true,
-      maskClosable: true,
-      className: ss.previewImg,
-      content: <img src={fileDomain + response} alt="logo" />,
-    })
+const onPreview = ({ response }) =>
+  Modal.info({
+    icon: null,
+    closable: true,
+    maskClosable: true,
+    className: ss.previewImg,
+    content: <img src={fileDomain + response} alt="logo" />,
+  })
 
-  const beforeUpload = (file, fileList) => {
-    if (fileList.length > 1) {
-      notification.warn({ description: 'Please select only one file.' })
-      return Upload.LIST_IGNORE
-    }
-
-    if (!acceptList.some((type) => file.type.includes(type.slice(1)))) {
-      notification.warn({ description: `Image extention error, only support ${acceptList.join(' / ')}.` })
-      return Upload.LIST_IGNORE
-    }
-
-    if (file.size / 1024 / 1024 > 0.1) {
-      notification.warn({ description: 'Image size should be less than 0.1 MB.' })
-      return Upload.LIST_IGNORE
-    }
-
-    return true
+const beforeUpload = (file, fileList) => {
+  if (fileList.length > 1) {
+    notification.warn({ description: 'Please select only one file.' })
+    return Upload.LIST_IGNORE
   }
 
+  if (!acceptList.some((type) => file.type.includes(type.slice(1)))) {
+    notification.warn({ description: `Image extension error, only support ${acceptList.join(' / ')}` })
+    return Upload.LIST_IGNORE
+  }
+
+  if (file.size / 1024 / 1024 > 0.1) {
+    notification.warn({ description: 'Image size should be less than 0.1 MB.' })
+    return Upload.LIST_IGNORE
+  }
+
+  return true
+}
+
+function ImgUpload({ value, onChange, iconRef, onClick, ...restProps }) {
   return (
     <Upload
       name="logo"
