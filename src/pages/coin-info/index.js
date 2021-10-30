@@ -25,8 +25,11 @@ function CoinInfo() {
   const [state, setState] = useState({ coinInfo: {}, loading: true })
   const { coinInfo, loading } = state
 
+  const key = /^[1-9]\d*$/.test(coinId) ? 'id' : 'coinUniqueUrl'
+
   useEffect(() => {
-    getCoinDetail({ id: coinId })
+    const params = { [key]: coinId }
+    getCoinDetail(params)
       .then((coinInfo) => {
         setState((state) => ({ ...state, coinInfo, loading: false }))
         document.title = `${coinInfo.coinName} (${coinInfo.coinSymbol}) | YYDSCoins`
@@ -56,7 +59,7 @@ function CoinInfo() {
 
   // 如果该 详情代币 正好推广列表里也有，那么投票数据使用推广列表里的
   // 因为该 coinInfo 为组件内状态，当存在 推广列表 当前代币投票数更新时，该内部 state 变更不易交互
-  const upvotesData = common.promoCoinList?.find((pc) => +pc.id === +coinId) || coinInfo
+  const upvotesData = common.promoCoinList?.find((pc) => +pc[key] === +coinId) || coinInfo
 
   const chainInfo = common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}
 

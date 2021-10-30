@@ -59,7 +59,7 @@ function CoinList(props) {
       </div>
       <div className={ss.tBody}>
         {list?.map((coin) => (
-          <Link className={ss.tRow} to={`/coin/${coin.id}`} key={coin.id}>
+          <Link className={ss.tRow} to={`/coin/${coin.coinUniqueUrl || coin.id}`} key={coin.id}>
             <div className={ss.name}>
               <span>
                 <img src={fileDomain + coin.coinLogo} alt={coin.coinSymbol} className={ss.coinLogo} />

@@ -61,7 +61,10 @@ function PromoVote() {
         <Trophy className={ss.trophyIcon} />
         <div className={ss.champ}>
           <h4>人气代币</h4>
-          <div className={ss.coin} onClick={champ?.id ? () => history.push(`/coin/${champ.id}`) : null}>
+          <div
+            className={ss.coin}
+            onClick={champ?.id ? () => history.push(`/coin/${champ.coinUniqueUrl || champ.id}`) : null}
+          >
             {champ?.coinLogo ? <img src={fileDomain + champ.coinLogo} alt={champ.coinName} /> : <i>?</i>}
             <div>
               <div className={ss.coinName}>{champ?.coinName || '???'}</div>
