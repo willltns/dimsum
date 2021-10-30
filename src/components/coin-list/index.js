@@ -9,6 +9,7 @@ import { ReactComponent as MediumIcon } from '@/assets/img/link-icon/medium.svg'
 import { ReactComponent as Rocket } from '@/assets/img/link-icon/rocket.svg'
 
 import React from 'react'
+import dayjs from 'dayjs'
 import { Tooltip } from 'antd'
 import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
@@ -60,14 +61,26 @@ function CoinList(props) {
         {list?.map((coin) => (
           <Link className={ss.tRow} to={`/coin/${coin.id}`} key={coin.id}>
             <div className={ss.name}>
-              <img src={fileDomain + coin.coinLogo} alt={coin.coinSymbol} />
+              <span>
+                <img src={fileDomain + coin.coinLogo} alt={coin.coinSymbol} className={ss.coinLogo} />
+
+                {common.coinChainList.find((c) => +c.id === +coin.coinChain) ? (
+                  <img
+                    src={common.coinChainList.find((c) => +c.id === +coin.coinChain).logo}
+                    alt={coin.coinSymbol}
+                    className={ss.coinChain}
+                  />
+                ) : null}
+              </span>
               {coin.coinName}
             </div>
 
             <div>{coin.coinSymbol}</div>
 
             <div className={ss.date}>
-              <span>2020-</span>10-12<i>12:00</i>
+              <span>{dayjs(coin.coinLaunchDate).format('YYYY-')}</span>
+              {dayjs(coin.coinLaunchDate).format('MM-DD')}
+              <i>{dayjs(coin.coinLaunchDate).format('HH:mm')}</i>
             </div>
 
             <div className={ss.btnCol}>

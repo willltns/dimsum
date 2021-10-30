@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { makeAutoObservable, flow } from 'mobx'
 
 import { getCoinList, voteCoin } from '@/assets/xhr'
@@ -12,8 +13,9 @@ export class HomeStore {
   coinList = []
   votingId = null
   pageNo = 1
-  pageSize = 1
+  pageSize = 10
   value = ''
+  valueSearched = false
   type = 1
   noMore = false
 
@@ -35,8 +37,11 @@ export class HomeStore {
         const [res] = yield Promise.all([getCoinList(params), delay(0.7)]) // 至少 0.7s 左右的 loading 动画效果，交互体验更好
         this.noMore = !res?.list?.length
         this.coinList = isLoadMore ? this.coinList.concat(res?.list || []) : res?.list || []
-      } catch (err) {}
-      this.loading = false
+        this.loading = false
+      } catch (error) {
+        if (!axios.isCancel(error)) this.loading = false
+        this.valueSearched = false
+      }
     }.bind(this)
   )
 

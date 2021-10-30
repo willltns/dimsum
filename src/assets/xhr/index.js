@@ -1,10 +1,12 @@
 import axios from '@/utils/axios'
 
+export const sourceRef = { current: null }
+
 export const getBanners = () => axios.post('/banner/', {})
 
 export const getPromoCoins = () => axios.post('/promo-coin/list', {})
 
-export const getCoinList = (params) => axios.post('/coin-list', params || {})
+export const getCoinList = (params) => axios.post('/coin-list', params || {}, { cancelToken: sourceRef.current?.token })
 
 export const getChainList = () => axios.post('/chain-list', {})
 

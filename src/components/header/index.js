@@ -7,6 +7,7 @@ import { MenuOutlined } from '@ant-design/icons'
 import { Link, useHistory, useLocation } from 'react-router-dom'
 
 import { useStore } from '@/utils/hooks/useStore'
+import { getChainList } from '@/assets/xhr'
 import { fileDomain } from '@/consts'
 
 import CDButton from '@/components/cd-button'
@@ -15,17 +16,24 @@ function Header() {
   const history = useHistory()
   const { pathname } = useLocation()
 
-  const { common } = useStore()
+  const { common, home } = useStore()
+
+  useEffect(() => {
+    home.getCoins({ type: 1 })
+    // prettier-ignore
+    getChainList().then((res) => common.updateProp({ coinChainList: res?.list || [] })).catch(() => {})
+  }, [home, common])
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    if (pathname !== '/coin-info') document.title = 'YYDSCoins | 探索神币'
     if (['/add-coin', '/promote'].includes(pathname)) return
 
     common.getAdvert()
   }, [pathname, common])
 
   useEffect(() => {
-    if (!common.popBanner) return
+    if (!common.popBanner?.bannerUrl) return
     notification.open({
       bottom: 8,
       key: 'popPromo',
@@ -38,9 +46,8 @@ function Header() {
         </a>
       ),
     })
-
-    return () => notification.close('popPromo')
-  }, [common.popBanner])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [common.popBanner?.bannerUrl])
 
   const toggleSidebar = () => {
     const sidebarEl = document.querySelector('.sidebar')

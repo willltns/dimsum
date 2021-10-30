@@ -1,11 +1,13 @@
 import ss from './index.module.less'
 
 import React from 'react'
+import axios from 'axios'
 import { Observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 import { Button, Empty, Input } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
+import { sourceRef } from '@/assets/xhr'
 import { useStore } from '@/utils/hooks/useStore'
 import { coinTypeList } from '@/pages/home/consts'
 
@@ -16,10 +18,6 @@ import Footer from '@/components/footer'
 
 const Home = () => {
   const { home } = useStore()
-
-  React.useLayoutEffect(() => {
-    home.getCoins({ type: 1 })
-  }, [home])
 
   return (
     <section>
@@ -39,7 +37,12 @@ const Home = () => {
                     <Button
                       key={item.value}
                       type={home.type === item.value ? 'primary' : ''}
-                      onClick={() => home.getCoins({ value: '', type: item.value, pageNo: 1 })}
+                      onClick={() => {
+                        if (home.type === item.value) return
+                        if (sourceRef.current) sourceRef.current.cancel()
+                        sourceRef.current = axios.CancelToken.source()
+                        home.getCoins({ value: '', type: item.value, pageNo: 1 })
+                      }}
                     >
                       {item.text}
                     </Button>
@@ -50,7 +53,12 @@ const Home = () => {
                     <Button
                       key={item.value}
                       type={home.type === item.value ? 'primary' : ''}
-                      onClick={() => home.getCoins({ value: '', type: item.value, pageNo: 1 })}
+                      onClick={() => {
+                        if (home.type === item.value) return
+                        if (sourceRef.current) sourceRef.current.cancel()
+                        sourceRef.current = axios.CancelToken.source()
+                        home.getCoins({ value: '', type: item.value, pageNo: 1 })
+                      }}
                     >
                       {item.text}
                     </Button>
@@ -59,11 +67,17 @@ const Home = () => {
               </div>
               <Input.Search
                 value={home.value}
-                style={{ width: 260 }}
+                style={{ width: 252, height: 40 }}
                 prefix={<SearchOutlined />}
                 placeholder="输入名称或符号，按 Enter 搜索..."
-                onChange={(e) => home.updateProp({ value: e.target.value })}
-                onSearch={() => home.getCoins({ value: home.value?.trim(), type: undefined, pageNo: 1 })}
+                onChange={(e) => home.updateProp({ value: e.target.value, valueSearched: false })}
+                onSearch={() => {
+                  if (home.valueSearched) return
+                  home.updateProp({ valueSearched: true })
+                  if (sourceRef.current) sourceRef.current.cancel()
+                  sourceRef.current = axios.CancelToken.source()
+                  home.getCoins({ value: home.value?.trim(), type: undefined, pageNo: 1 })
+                }}
               />
             </div>
           )}

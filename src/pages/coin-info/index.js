@@ -27,7 +27,10 @@ function CoinInfo() {
 
   useEffect(() => {
     getCoinDetail({ id: coinId })
-      .then((coinInfo) => setState((state) => ({ ...state, coinInfo, loading: false })))
+      .then((coinInfo) => {
+        setState((state) => ({ ...state, coinInfo, loading: false }))
+        document.title = `${coinInfo.coinName} (${coinInfo.coinSymbol}) | YYDSCoins`
+      })
       .catch(() => setState((state) => ({ ...state, loading: false })))
     return () => setState((state) => ({ ...state, coinInfo: {}, loading: true }))
   }, [coinId])
@@ -55,6 +58,8 @@ function CoinInfo() {
   // 因为该 coinInfo 为组件内状态，当存在 推广列表 当前代币投票数更新时，该内部 state 变更不易交互
   const upvotesData = common.promoCoinList?.find((pc) => +pc.id === +coinId) || coinInfo
 
+  const chainInfo = common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}
+
   return (
     <section>
       <MainBanner />
@@ -81,13 +86,13 @@ function CoinInfo() {
               </div>
             </div>
 
+            <div className={ss.launchDate}>发布时间: {coinInfo.coinLaunchDate}</div>
+
             <div className={ss.addressInfo}>
               <span>
-                Binance Smart Chain: <span className={ss.address}>{coinInfo.coinAddress || '--'}</span>
+                {chainInfo.chainName || '--'}: <span className={ss.address}>{coinInfo.coinAddress || '--'}</span>
               </span>
-              {!!coinInfo.coinAddress && (
-                <CopyOutlined id="#copy" ref={copyBtnRef} data-clipboard-text={coinInfo.coinAddress} />
-              )}
+              {!!coinInfo.coinAddress && <CopyOutlined ref={copyBtnRef} data-clipboard-text={coinInfo.coinAddress} />}
             </div>
 
             <Input.TextArea autoSize readOnly value={coinInfo.coinDescription} className={ss.desc} />

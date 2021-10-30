@@ -15,6 +15,7 @@ export class CommonStore {
   loading = false
   votedList = []
   intervalTimer = null
+  coinChainList = []
 
   // computed
   get wideBannerList() {

@@ -1,9 +1,10 @@
 import ss from './index.module.less'
 
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
 import { Form, Input, Button, Row, Col, Select, Modal } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons'
+import { observer } from 'mobx-react'
 
 import zh from './lang/zh.json'
 import en from './lang/en.json'
@@ -11,8 +12,9 @@ import { urlReg } from '@/consts'
 import { descPH, presalePH, airdropPH, presaleTemplate, airdropTemplate, additionalLinkPH } from './const'
 
 import Footer from '@/components/footer'
-import { addCoin, getChainList } from '@/assets/xhr'
+import { addCoin } from '@/assets/xhr'
 import ImgUpload, { uploadErrorValidator } from '@/components/img-upload'
+import { useStore } from '@/utils/hooks/useStore'
 
 // 是否中文
 const ifZh = (lang) => lang === 'zh'
@@ -23,7 +25,7 @@ const dateReg =
 
 const scrollToError = (el) => {
   const topOffset = el.getBoundingClientRect().top
-  const addonTop = 66 // window.innerWidth < 1100 ? 66 : 6
+  const addonTop = 66 // window.innerWidth < 1110 ? 66 : 6
   if (topOffset >= addonTop) return
   let scrollOffset = topOffset - addonTop
   window.scrollBy({ top: scrollOffset, left: 0 })
@@ -31,6 +33,7 @@ const scrollToError = (el) => {
 
 function AddCoin() {
   const history = useHistory()
+  const { common } = useStore()
 
   const uploadBtnRef = useRef(null)
   const linkTipRef = useRef(null)
@@ -38,20 +41,12 @@ function AddCoin() {
   const [state, setState] = useState({
     lang: 'zh',
     loading: false,
-    coinChainList: [],
     coinPresaleInfo: '',
     coinAirdropInfo: '',
     presaleModalVisible: false,
     airdropModalVisible: false,
   })
-  const { lang, loading, coinChainList, coinPresaleInfo, coinAirdropInfo, presaleModalVisible, airdropModalVisible } =
-    state
-
-  useEffect(() => {
-    getChainList()
-      .then((res) => setState((state) => ({ ...state, coinChainList: res?.list || [] })))
-      .catch(() => {})
-  }, [])
+  const { lang, loading, coinPresaleInfo, coinAirdropInfo, presaleModalVisible, airdropModalVisible } = state
 
   const tt = ifZh(lang) ? zh : en
 
@@ -167,7 +162,7 @@ function AddCoin() {
             </Form.Item>
             <Form.Item label={tt.chain} name="coinChain" rules={[{ required: true }]}>
               <Select placeholder="Select..." getPopupContainer={(tri) => tri.parentNode}>
-                {coinChainList?.map(({ chainName, id }) => (
+                {common.coinChainList?.map(({ chainName, id }) => (
                   <Select.Option value={id} key={id}>
                     {chainName}
                   </Select.Option>
@@ -304,4 +299,4 @@ function AddCoin() {
   )
 }
 
-export default AddCoin
+export default observer(AddCoin)
