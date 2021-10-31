@@ -15,7 +15,7 @@ export class HomeStore {
   pageNo = 1
   pageSize = 10
   value = ''
-  valueSearched = false
+  searchedInputValue = ''
   type = 1
   noMore = false
 
@@ -25,22 +25,30 @@ export class HomeStore {
 
   getCoins = flow(
     function* (searchV = {}) {
+      const { common } = this.getRoot()
+
       if (!searchV.value && searchV.type === undefined) return
-      let params = { type: this.type, value: this.value, pageNo: this.pageNo, pageSize: this.pageSize, ...searchV }
-      const isLoadMore = searchV.pageNo !== this.pageNo && searchV.pageNo !== 1
-      if (searchV?.pageNo) this.updateProp({ ...searchV })
+
+      let params = { pageSize: this.pageSize, ...searchV }
+
+      this.value = this.searchedInputValue || common.searchPromo
+      this.type = params.type
+
       if (!params.value) params.value = undefined
 
       this.loading = true
+      const isLoadMore = params.pageNo !== this.pageNo && params.pageNo !== 1
+      this.pageNo = params.pageNo
+
       if (!isLoadMore) this.coinList = []
       try {
         const [res] = yield Promise.all([getCoinList(params), delay(0.7)]) // 至少 0.7s 左右的 loading 动画效果，交互体验更好
-        this.noMore = !res?.list?.length
         this.coinList = isLoadMore ? this.coinList.concat(res?.list || []) : res?.list || []
+        this.noMore = !res?.list?.length
         this.loading = false
       } catch (error) {
         if (!axios.isCancel(error)) this.loading = false
-        this.valueSearched = false
+        this.searchedInputValue = ''
       }
     }.bind(this)
   )

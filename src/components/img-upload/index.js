@@ -73,7 +73,7 @@ export default ImgUpload
 //
 export const uploadErrorValidator = {
   validator: (rule, value) =>
-    value?.[0]?.status === undefined || value?.[0]?.status === 'done'
+    value?.[0]?.status === undefined || value?.[0]?.status === 'done' || value?.[0]?.status === 'uploading'
       ? Promise.resolve()
       : Promise.reject('Upload error, please delete or re-upload.'),
 }

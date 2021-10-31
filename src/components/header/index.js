@@ -19,7 +19,7 @@ function Header() {
   const { common, home } = useStore()
 
   useEffect(() => {
-    home.getCoins({ type: 1 })
+    home.getCoins({ value: '', type: 1, pageNo: 1 })
     // prettier-ignore
     getChainList().then((res) => common.updateProp({ coinChainList: res?.list || [] })).catch(() => {})
   }, [home, common])

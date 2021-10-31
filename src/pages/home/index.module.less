@@ -30,10 +30,30 @@
       &-focused {
         box-shadow: 0 0 2px @primary-color !important;
       }
+
+      .ant-input-prefix {
+        margin-right: 8px !important;
+      }
     }
 
     .ant-input-group-addon {
       display: none !important;
+    }
+  }
+}
+
+.promoVal {
+  &:global {
+    > span > span.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-focused) > input.ant-input {
+      color: #999;
+    }
+  }
+}
+
+.promoSearched {
+  &:global {
+    > span > span.ant-input-affix-wrapper:not(.ant-input-affix-wrapper-focused) > input.ant-input {
+      color: rgba(0, 0, 0, 0.85);
     }
   }
 }
@@ -75,7 +95,8 @@
   align-self: center;
   color: #6b6b6b;
   position: relative;
-  top: 6px;
+  top: 11px;
+  margin-right: 8px;
 }
 
 .empty {

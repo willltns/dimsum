@@ -113,14 +113,18 @@ function AddCoin() {
         className={ss.form}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
-        validateMessages={{ required: ` `, whitespace: ` `, pattern: { mismatch: ` ` } }}
+        validateMessages={{ required: ` `, whitespace: ` `, pattern: { mismatch: ` ` }, types: { email: ` ` } }}
         onValuesChange={(changedValue, allValues) => {
           // prettier-ignore
           const atLeastOne = ['linkWebsite', 'linkChineseTg', 'linkEnglishTg', 'linkTwitter', 'linkMedium', 'linkDiscord', 'linkAdditionalInfo',]
           if (!atLeastOne.includes(Object.keys(changedValue)[0])) return
           linkTipRef.current.style.opacity = atLeastOne.every((key) => !allValues[key]) ? 1 : 0
         }}
-        initialValues={{ coinLaunchDate: '2021-00-00 00:00' }}
+        initialValues={{
+          coinLaunchDate: '2021-00-00 00:00',
+          coinPresaleDate: '2021-00-00 00:00',
+          coinAirdropDate: '2021-00-00 00:00',
+        }}
       >
         <Row className={ifZh(lang) ? ss.zhMode : ss.enMode}>
           <Col>
@@ -176,19 +180,45 @@ function AddCoin() {
             <Form.Item noStyle>
               <h2>{tt.presale_airdrop}</h2>
               <div className={ss.paBtns}>
-                <Button
-                  className={`${coinPresaleInfo ? ss.infoFilled : ''}`}
-                  onClick={() => setState((state) => ({ ...state, presaleModalVisible: true }))}
-                >
-                  {tt.presaleInformation}
-                </Button>
+                {/* 预售信息填写 */}
+                <div>
+                  <Button
+                    className={`${coinPresaleInfo ? ss.infoFilled : ''}`}
+                    onClick={() => setState((state) => ({ ...state, presaleModalVisible: true }))}
+                  >
+                    {tt.presaleInformation}
+                  </Button>
+                  {!!coinPresaleInfo && (
+                    <Form.Item
+                      label={tt.coinPresaleDate}
+                      name="coinPresaleDate"
+                      validateTrigger="onBlur"
+                      rules={[{ required: true }, { pattern: dateReg, message: ' ' }]}
+                    >
+                      <Input placeholder="YYYY-MM-DD HH:mm" />
+                    </Form.Item>
+                  )}
+                </div>
 
-                <Button
-                  className={`${coinAirdropInfo ? ss.infoFilled : ''}`}
-                  onClick={() => setState((state) => ({ ...state, airdropModalVisible: true }))}
-                >
-                  {tt.airdropInformation}
-                </Button>
+                {/* 空投信息填写 */}
+                <div>
+                  <Button
+                    className={`${coinAirdropInfo ? ss.infoFilled : ''}`}
+                    onClick={() => setState((state) => ({ ...state, airdropModalVisible: true }))}
+                  >
+                    {tt.airdropInformation}
+                  </Button>
+                  {!!coinAirdropInfo && (
+                    <Form.Item
+                      label={tt.coinAirdropDate}
+                      name="coinAirdropDate"
+                      validateTrigger="onBlur"
+                      rules={[{ required: true }, { pattern: dateReg, message: ' ' }]}
+                    >
+                      <Input placeholder="YYYY-MM-DD HH:mm" />
+                    </Form.Item>
+                  )}
+                </div>
               </div>
             </Form.Item>
           </Col>
@@ -244,7 +274,7 @@ function AddCoin() {
         </Row>
 
         <div style={{ textAlign: 'center', marginTop: 16 }}>
-          <Button htmlType="submit" className={ss.submitBtn}>
+          <Button htmlType="submit" loading={loading} className={ss.submitBtn}>
             {tt.addCoin}
           </Button>
         </div>
@@ -293,7 +323,7 @@ function AddCoin() {
           onChange={(e) => setState((state) => ({ ...state, coinAirdropInfo: e.target.value }))}
         />
         {/* prettier-ignore */}
-        <Button type="primary" loading={loading} onClick={() => setState((state) => ({ ...state, coinAirdropInfo: state.coinAirdropInfo.trim(), airdropModalVisible: false }))}>{tt.okBtnText}</Button>
+        <Button type="primary" onClick={() => setState((state) => ({ ...state, coinAirdropInfo: state.coinAirdropInfo.trim(), airdropModalVisible: false }))}>{tt.okBtnText}</Button>
       </Modal>
     </section>
   )

@@ -21,7 +21,7 @@ import CDButton from '@/components/cd-button'
 import { modalInfo } from '@/components/coin-list/modalInfo'
 
 function CoinList(props) {
-  const { promo } = props
+  const { promo, listType } = props
 
   const { common, home } = useStore()
 
@@ -50,7 +50,11 @@ function CoinList(props) {
         <div className={ss.tRow}>
           <div>{title}</div>
           <div>符号</div>
-          <div>发布 (UTC+8)</div>
+          <div>
+            {listType === 4 && '预售'}
+            {listType === 5 && '空投'}
+            {(!listType || listType < 4) && '发布'} (UTC+8)
+          </div>
           <div>预售信息</div>
           <div>空投信息</div>
           <div>链接</div>
@@ -66,7 +70,7 @@ function CoinList(props) {
 
                 {common.coinChainList.find((c) => +c.id === +coin.coinChain) ? (
                   <img
-                    src={common.coinChainList.find((c) => +c.id === +coin.coinChain).logo}
+                    src={fileDomain + common.coinChainList.find((c) => +c.id === +coin.coinChain).logo}
                     alt={coin.coinSymbol}
                     className={ss.coinChain}
                   />
@@ -77,11 +81,21 @@ function CoinList(props) {
 
             <div>{coin.coinSymbol}</div>
 
-            <div className={ss.date}>
-              <span>{dayjs(coin.coinLaunchDate).format('YYYY-')}</span>
-              {dayjs(coin.coinLaunchDate).format('MM-DD')}
-              <i>{dayjs(coin.coinLaunchDate).format('HH:mm')}</i>
-            </div>
+            {(() => {
+              const dateStr =
+                listType === 4 ? coin.coinPresaleDate : listType === 5 ? coin.coinAirdropDate : coin.coinLaunchDate
+
+              if (!dateStr) return <div className={ss.date}>--</div>
+
+              const djDate = dayjs(dateStr)
+              return (
+                <div className={ss.date}>
+                  <span>{djDate.format('YYYY-')}</span>
+                  {djDate.format('MM-DD')}
+                  <i>{djDate.format('HH:mm')}</i>
+                </div>
+              )
+            })()}
 
             <div className={ss.btnCol}>
               {coin.coinPresaleInfo ? (

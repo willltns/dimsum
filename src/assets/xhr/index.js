@@ -24,4 +24,6 @@ export const votePromoVote = (params) => axios.post('/promo-vote/vote', params |
 
 export const getChamp = () => axios.post('/promo-vote/champ', {})
 
+export const getSearchPromo = () => axios.post('/search/promo', {})
+
 export const uploadFile = (params) => axios.post('/file/upload', params)

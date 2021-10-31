@@ -23,11 +23,12 @@ function CoinInfo() {
   const { common, home } = useStore()
   const { coinId } = useParams()
   const [state, setState] = useState({ coinInfo: {}, loading: true })
-  const { coinInfo, loading } = state
+  const { coinInfo } = state
 
   const key = /^[1-9]\d*$/.test(coinId) ? 'id' : 'coinUniqueUrl'
-
   useEffect(() => {
+    const key = /^[1-9]\d*$/.test(coinId) ? 'id' : 'coinUniqueUrl'
+
     const params = { [key]: coinId }
     getCoinDetail(params)
       .then((coinInfo) => {
@@ -89,14 +90,18 @@ function CoinInfo() {
               </div>
             </div>
 
-            <div className={ss.launchDate}>发布时间: {coinInfo.coinLaunchDate}</div>
+            <div className={ss.launchDate}>发布时间: {coinInfo.coinLaunchDate?.slice(0, -3) || '??'}</div>
 
-            <div className={ss.addressInfo}>
-              <span>
-                {chainInfo.chainName || '--'}: <span className={ss.address}>{coinInfo.coinAddress || '--'}</span>
-              </span>
-              {!!coinInfo.coinAddress && <CopyOutlined ref={copyBtnRef} data-clipboard-text={coinInfo.coinAddress} />}
-            </div>
+            <span className={ss.addressInfo}>
+              <div>
+                <img src={fileDomain + chainInfo.logo} alt="" />
+                {chainInfo.chainName || '--'}
+              </div>
+              <div>
+                <span className={ss.address}>{coinInfo.coinAddress || '---'}</span>
+                {!!coinInfo.coinAddress && <CopyOutlined ref={copyBtnRef} data-clipboard-text={coinInfo.coinAddress} />}
+              </div>
+            </span>
 
             <Input.TextArea autoSize readOnly value={coinInfo.coinDescription} className={ss.desc} />
           </div>

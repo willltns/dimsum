@@ -17,7 +17,7 @@ import Spinner from '@/components/spinner'
 import Footer from '@/components/footer'
 
 const Home = () => {
-  const { home } = useStore()
+  const { home, common } = useStore()
 
   return (
     <section>
@@ -30,60 +30,72 @@ const Home = () => {
       <div>
         <Observer
           render={() => (
-            <div className={ss.searchBar}>
-              <div className={ss.type}>
-                <div>
-                  {coinTypeList.slice(0, 2).map((item) => (
-                    <Button
-                      key={item.value}
-                      type={home.type === item.value ? 'primary' : ''}
-                      onClick={() => {
-                        if (home.type === item.value) return
-                        if (sourceRef.current) sourceRef.current.cancel()
-                        sourceRef.current = axios.CancelToken.source()
-                        home.getCoins({ value: '', type: item.value, pageNo: 1 })
-                      }}
-                    >
-                      {item.text}
-                    </Button>
-                  ))}
+            <>
+              <div className={ss.searchBar}>
+                <div className={ss.type}>
+                  <div>
+                    {coinTypeList.slice(0, 2).map((item) => (
+                      <Button
+                        key={item.value}
+                        type={home.type === item.value ? 'primary' : ''}
+                        onClick={() => {
+                          if (home.type === item.value) return
+                          if (sourceRef.current) sourceRef.current.cancel()
+                          sourceRef.current = axios.CancelToken.source()
+                          home.getCoins({ value: '', type: item.value, pageNo: 1 })
+                          home.updateProp({ searchedInputValue: '', value: common.searchPromo || '' })
+                        }}
+                      >
+                        {item.text}
+                      </Button>
+                    ))}
+                  </div>
+                  <div>
+                    {coinTypeList.slice(2).map((item) => (
+                      <Button
+                        key={item.value}
+                        type={home.type === item.value ? 'primary' : ''}
+                        onClick={() => {
+                          if (home.type === item.value) return
+                          if (sourceRef.current) sourceRef.current.cancel()
+                          sourceRef.current = axios.CancelToken.source()
+                          home.getCoins({ value: '', type: item.value, pageNo: 1 })
+                          home.updateProp({ searchedInputValue: '', value: common.searchPromo || '' })
+                        }}
+                      >
+                        {item.text}
+                      </Button>
+                    ))}
+                  </div>
                 </div>
-                <div>
-                  {coinTypeList.slice(2).map((item) => (
-                    <Button
-                      key={item.value}
-                      type={home.type === item.value ? 'primary' : ''}
-                      onClick={() => {
-                        if (home.type === item.value) return
-                        if (sourceRef.current) sourceRef.current.cancel()
-                        sourceRef.current = axios.CancelToken.source()
-                        home.getCoins({ value: '', type: item.value, pageNo: 1 })
-                      }}
-                    >
-                      {item.text}
-                    </Button>
-                  ))}
-                </div>
+                <Input.Search
+                  value={home.value}
+                  style={{ width: 252, height: 40 }}
+                  prefix={<SearchOutlined />}
+                  className={`${home.value && home.value === common.searchPromo ? ss.promoVal : ''} ${
+                    home.searchedInputValue === common.searchPromo ? ss.promoSearched : ''
+                  }`}
+                  placeholder="输入名称或符号，按 Enter 搜索..."
+                  onBlur={() =>
+                    home.value?.trim() && home.searchedInputValue
+                      ? null
+                      : home.updateProp({ value: common.searchPromo || '' })
+                  }
+                  onChange={(e) => home.updateProp({ value: e.target.value })}
+                  onSearch={() => {
+                    if (home.searchedInputValue === home.value) return
+                    home.updateProp({ searchedInputValue: home.value?.trim() || '' })
+                    if (sourceRef.current) sourceRef.current.cancel()
+                    sourceRef.current = axios.CancelToken.source()
+                    home.getCoins({ value: home.value?.trim() || '', type: undefined, pageNo: 1 })
+                  }}
+                />
               </div>
-              <Input.Search
-                value={home.value}
-                style={{ width: 252, height: 40 }}
-                prefix={<SearchOutlined />}
-                placeholder="输入名称或符号，按 Enter 搜索..."
-                onChange={(e) => home.updateProp({ value: e.target.value, valueSearched: false })}
-                onSearch={() => {
-                  if (home.valueSearched) return
-                  home.updateProp({ valueSearched: true })
-                  if (sourceRef.current) sourceRef.current.cancel()
-                  sourceRef.current = axios.CancelToken.source()
-                  home.getCoins({ value: home.value?.trim(), type: undefined, pageNo: 1 })
-                }}
-              />
-            </div>
+
+              <CoinList listType={home.type} />
+            </>
           )}
         />
-
-        <CoinList />
 
         <Observer
           render={() => (
@@ -93,11 +105,18 @@ const Home = () => {
               ) : (
                 !!home.coinList?.length &&
                 (home.noMore ? (
-                  <span className={ss.noTip}>没有更多了</span>
+                  <>
+                    <span className={ss.noTip}>没有更多了</span>
+                    <Link to="/add-coin" className={ss.loadBtn}>
+                      Add a Coin
+                    </Link>
+                  </>
                 ) : (
                   <span
                     className={ss.loadBtn}
-                    onClick={() => home.getCoins({ pageNo: home.pageNo + 1, value: home.value, type: home.type })}
+                    onClick={() =>
+                      home.getCoins({ value: home.searchedInputValue, type: home.type, pageNo: home.pageNo + 1 })
+                    }
                   >
                     加载更多
                   </span>

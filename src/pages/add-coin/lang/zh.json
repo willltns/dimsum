@@ -7,6 +7,8 @@
   "clickToUpload": "点击上传",
   "description": "代币描述",
   "launchDate": "发布日期 UTC+8 (YYYY-MM-DD HH:mm)",
+  "coinPresaleDate": "预售开始日期 UTC+8 (YYYY-MM-DD HH:mm)",
+  "coinAirdropDate": "空投参与日期 UTC+8 (YYYY-MM-DD HH:mm)",
   "contractInfoTitle": "合约信息",
   "chain": "主网",
   "contractAddress": "合约地址",

@@ -22,7 +22,7 @@ axios.interceptors.response.use(
     const { data } = response
 
     if (data?.code === 200) return data.data
-    if (data?.message) notification.error({ description: '服务异常，请稍后重试' })
+    if (data?.message && data?.code !== 1001) notification.error({ description: '服务异常，请稍后重试' })
 
     return Promise.reject(new CodeError(data))
   },

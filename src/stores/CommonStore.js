@@ -1,7 +1,7 @@
 import dayjs from 'dayjs'
 import { makeAutoObservable, flow, action } from 'mobx'
 
-import { getBanners, getPromoCoins, getServTime } from '@/assets/xhr'
+import { getBanners, getPromoCoins, getSearchPromo, getServTime } from '@/assets/xhr'
 
 export class CommonStore {
   constructor() {
@@ -12,6 +12,7 @@ export class CommonStore {
   unixTS = 0
   bannerData = []
   promoCoinList = []
+  searchPromo = ''
   loading = false
   votedList = []
   intervalTimer = null
@@ -67,10 +68,18 @@ export class CommonStore {
   getAdvert = flow(
     function* () {
       this.loading = true
+      const { home } = this.getRoot()
       try {
-        const [bannerData, promoCoinList] = yield Promise.all([getBanners(), getPromoCoins()])
+        const [bannerData, promoCoinList, searchData] = yield Promise.all([
+          getBanners(),
+          getPromoCoins(),
+          getSearchPromo(),
+        ])
         this.bannerData = bannerData
         this.promoCoinList = promoCoinList || []
+        this.searchPromo = searchData?.coinName || ''
+
+        if (!home.value) home.value = searchData?.coinName || ''
       } catch (err) {}
       this.loading = false
     }.bind(this)
