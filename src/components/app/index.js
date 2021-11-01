@@ -12,7 +12,7 @@ import Header from '@/components/header'
 import Sidebar from '@/components/siderbar'
 import { getServTime } from '@/assets/xhr'
 
-notification.config({ duration: 2, maxCount: 1 })
+notification.config({ top: 60, duration: 2, maxCount: 1 })
 
 function App() {
   return (

@@ -36,6 +36,7 @@ function Header() {
     if (!common.popBanner?.bannerUrl) return
     notification.open({
       bottom: 8,
+      message: null,
       key: 'popPromo',
       duration: null,
       className: ss.popPro,

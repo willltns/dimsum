@@ -7,6 +7,7 @@ import { ReactComponent as TwitterIcon } from '@/assets/img/link-icon/twitter.sv
 import { ReactComponent as DiscordIcon } from '@/assets/img/link-icon/discord.svg'
 import { ReactComponent as MediumIcon } from '@/assets/img/link-icon/medium.svg'
 import { ReactComponent as Rocket } from '@/assets/img/link-icon/rocket.svg'
+import { ReactComponent as Diamond } from '@/assets/img/diamond.svg'
 
 import React from 'react'
 import dayjs from 'dayjs'
@@ -32,7 +33,8 @@ function CoinList(props) {
 
   const title = promo ? (
     <>
-      <span className={ss.diamond}>💎</span>推广代币
+      <Diamond className={ss.diamond} />
+      推广代币
     </>
   ) : (
     '代币'
@@ -191,7 +193,7 @@ function CoinList(props) {
 
             <div className={ss.upvote}>
               <CDButton
-                className={+coin.id === +home.votingId ? ss.voting : ''}
+                className={home.votingIdList.includes(coin.id) ? ss.voting : ''}
                 primary={common.votedIdList.includes(coin.id + '')}
                 onClick={(e) =>
                   stopProp(

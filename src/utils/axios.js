@@ -22,7 +22,7 @@ axios.interceptors.response.use(
     const { data } = response
 
     if (data?.code === 200) return data.data
-    if (data?.message && data?.code !== 1001) notification.error({ description: '服务异常，请稍后重试' })
+    if (data?.message && data?.code !== 1001) notification.error({ message: '', description: '服务异常，请稍后重试' })
 
     return Promise.reject(new CodeError(data))
   },
@@ -33,13 +33,13 @@ axios.interceptors.response.use(
     if (axios.isCancel(error)) return Promise.reject(error)
 
     if (error.message) {
-      error.message.search('timeout') > -1 && notification.error({ description: '请求超时' })
-      error.message.search('404') > -1 && notification.error({ description: '资源不存在' })
-      error.message.search('400') > -1 && notification.error({ description: '请求异常' })
-      error.message.search('50') > -1 && notification.error({ description: '服务异常' })
-      error.message === 'Network Error' && notification.error({ description: '网络异常' })
+      error.message.search('timeout') > -1 && notification.error({ message: '', description: '请求超时' })
+      error.message.search('404') > -1 && notification.error({ message: '', description: '资源不存在' })
+      error.message.search('400') > -1 && notification.error({ message: '', description: '请求异常' })
+      error.message.search('50') > -1 && notification.error({ message: '', description: '服务异常' })
+      error.message === 'Network Error' && notification.error({ message: '', description: '网络异常' })
     } else {
-      notification.error({ description: '服务异常，请稍后重试' })
+      notification.error({ message: '', description: '服务异常，请稍后重试' })
     }
     return Promise.reject(error)
   }

@@ -83,6 +83,36 @@
 .launchDate {
   font-size: 16px;
   margin: 24px 0;
+  position: relative;
+}
+
+.loading {
+  font-size: 24px;
+  font-weight: bold;
+  animation: load 1.5s infinite 0s ease-in-out;
+  animation-direction: alternate;
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  transform: translate3d(-50%, 0, 0);
+}
+
+@keyframes load {
+  0% {
+    opacity: 1;
+    filter: blur(0px);
+    letter-spacing: 0;
+  }
+  10% {
+    opacity: 1;
+    filter: blur(0px);
+    letter-spacing: 0;
+  }
+  100% {
+    opacity: 0.08;
+    filter: blur(5px);
+    letter-spacing: 5px;
+  }
 }
 
 .addressInfo {
@@ -103,6 +133,15 @@
       height: 20px;
       margin-right: 6px;
       border-radius: 50%;
+    }
+
+    > i {
+      display: block;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #fff;
+      margin-right: 6px;
     }
 
     > span {

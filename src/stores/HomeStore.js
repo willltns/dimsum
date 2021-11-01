@@ -11,7 +11,7 @@ export class HomeStore {
   // state
   loading = true
   coinList = []
-  votingId = null
+  votingIdList = []
   pageNo = 1
   pageSize = 10
   value = ''
@@ -56,9 +56,9 @@ export class HomeStore {
   // Creating async action using generator
   handleVote = flow(
     function* (coin, updateCoinList, updatePromoList) {
-      if (this.votingId) return
       const { id } = coin
-      this.votingId = id
+      if (this.votingIdList.includes(id)) return
+      this.votingIdList.push(id)
 
       const { common } = this.getRoot()
 
@@ -80,7 +80,7 @@ export class HomeStore {
         }
       } catch (err) {}
 
-      this.votingId = null
+      this.votingIdList = this.votingIdList.filter((v) => v !== id)
     }.bind(this)
   )
 }

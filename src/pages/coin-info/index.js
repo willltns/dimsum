@@ -23,7 +23,7 @@ function CoinInfo() {
   const { common, home } = useStore()
   const { coinId } = useParams()
   const [state, setState] = useState({ coinInfo: {}, loading: true })
-  const { coinInfo } = state
+  const { coinInfo, loading } = state
 
   const key = /^[1-9]\d*$/.test(coinId) ? 'id' : 'coinUniqueUrl'
   useEffect(() => {
@@ -90,11 +90,15 @@ function CoinInfo() {
               </div>
             </div>
 
-            <div className={ss.launchDate}>发布时间: {coinInfo.coinLaunchDate?.slice(0, -3) || '??'}</div>
+            <div className={ss.launchDate}>
+              发布时间: {coinInfo.coinLaunchDate?.slice(0, -3) || '-'}
+              {loading && <div className={ss.loading}>Loading</div>}
+            </div>
 
             <span className={ss.addressInfo}>
               <div>
-                <img src={fileDomain + chainInfo.logo} alt="" />
+                {chainInfo.logo ? <img src={fileDomain + chainInfo.logo} alt="" /> : <i />}
+
                 {chainInfo.chainName || '--'}
               </div>
               <div>
@@ -206,7 +210,7 @@ function CoinInfo() {
         <div style={{ textAlign: 'center', marginTop: 32 }}>
           <CDButton
             primary={common.votedIdList.includes(coinInfo.id + '')}
-            className={`${ss.upvoteBtn} ${+coinInfo.id === +home.votingId ? ss.voting : ''}`}
+            className={`${ss.upvoteBtn} ${home.votingIdList.includes(coinInfo.id) ? ss.voting : ''}`}
             onClick={() =>
               common.votedIdList.includes(coinInfo.id + '') ? null : home.handleVote(coinInfo, true, true)
             } // 这里有个 hack，该页面投票数更新依赖了 common.votedIdList 的变化

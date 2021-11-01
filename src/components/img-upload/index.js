@@ -1,7 +1,7 @@
 import ss from './index.module.less'
 
 import React from 'react'
-import { Modal, notification, Upload } from 'antd'
+import { Modal, notification, Space, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { uploadFile } from '@/assets/xhr'
 import { fileDomain } from '@/consts'
@@ -31,17 +31,47 @@ const onPreview = ({ response }) =>
 
 const beforeUpload = (file, fileList) => {
   if (fileList.length > 1) {
-    notification.warn({ description: 'Please select only one file.' })
+    notification.warn({
+      message: '',
+      duration: 3,
+      placement: 'topLeft',
+      description: (
+        <Space direction="vertical">
+          <div>仅支持上传一个图片文件</div>
+          <div>Please select only one image file</div>
+        </Space>
+      ),
+    })
     return Upload.LIST_IGNORE
   }
 
   if (!acceptList.some((type) => file.type.includes(type.slice(1)))) {
-    notification.warn({ description: `Image extension error, only support ${acceptList.join(' / ')}` })
+    notification.warn({
+      message: '',
+      duration: 3,
+      placement: 'topLeft',
+      description: (
+        <Space direction="vertical">
+          <div>不支持的文件类型，仅支持的有 {acceptList.join(' / ')}</div>
+          <div>Unacceptable file type, only accept {acceptList.join(' / ')}</div>
+        </Space>
+      ),
+    })
     return Upload.LIST_IGNORE
   }
 
   if (file.size / 1024 / 1024 > 0.1) {
-    notification.warn({ description: 'Image size should be less than 0.1 MB.' })
+    notification.warn({
+      message: '',
+      duration: 3,
+      placement: 'topLeft',
+      description: (
+        <Space direction="vertical">
+          <div>请上传大小不超过 0.1 MB 的图片文件</div>
+          <div>Image File size should be less than 0.1 MB.</div>
+        </Space>
+      ),
+    })
     return Upload.LIST_IGNORE
   }
 
