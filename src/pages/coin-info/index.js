@@ -47,7 +47,7 @@ function CoinInfo() {
     clipboard.on('success', () => {
       copyBtnRef.current.style = 'opacity: 0; pointer-events: none'
       notification.success({ message: '合约已复制', description: coinInfo.coinAddress })
-      setTimeout(() => (copyBtnRef.current.style = 'opacity: 1; pointer-events: default'), 3000)
+      setTimeout(() => copyBtnRef.current && (copyBtnRef.current.style = 'opacity: 1; pointer-events: default'), 3000)
     })
 
     return () => clipboard.destroy()
@@ -91,7 +91,7 @@ function CoinInfo() {
             </div>
 
             <div className={ss.launchDate}>
-              发布时间: {coinInfo.coinLaunchDate?.slice(0, -3) || '-'}
+              发布时间：{coinInfo.coinLaunchDate?.slice(0, -3) || '-'}
               {loading && <div className={ss.loading}>Loading</div>}
             </div>
 
@@ -211,8 +211,10 @@ function CoinInfo() {
           <CDButton
             primary={common.votedIdList.includes(coinInfo.id + '')}
             className={`${ss.upvoteBtn} ${home.votingIdList.includes(coinInfo.id) ? ss.voting : ''}`}
-            onClick={() =>
-              common.votedIdList.includes(coinInfo.id + '') ? null : home.handleVote(coinInfo, true, true)
+            onClick={
+              coinInfo.id
+                ? () => (common.votedIdList.includes(coinInfo.id + '') ? null : home.handleVote(coinInfo, true, true))
+                : undefined
             } // 这里有个 hack，该页面投票数更新依赖了 common.votedIdList 的变化
           >
             <RocketIcon />

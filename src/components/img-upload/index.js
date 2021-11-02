@@ -93,7 +93,9 @@ function ImgUpload({ value, onChange, iconRef, onClick, ...restProps }) {
       fileList={value}
       {...restProps}
     >
+      <i className="size">&lt; 0.1 MB</i>
       <UploadOutlined ref={iconRef} onClick={onClick} />
+      <p className="type">{acceptList.join(', ')}</p>
     </Upload>
   )
 }
