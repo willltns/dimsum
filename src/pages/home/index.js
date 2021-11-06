@@ -85,6 +85,8 @@ const Home = () => {
                   </div>
                 </div>
                 <Input.Search
+                  autoComplete="off"
+                  spellCheck={false}
                   value={home.value}
                   ref={searchInputRef}
                   style={{ width: 252, height: 40 }}

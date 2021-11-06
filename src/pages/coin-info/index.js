@@ -91,7 +91,7 @@ function CoinInfo() {
             </div>
 
             <div className={ss.launchDate}>
-              发布1时间：{coinInfo.coinLaunchDate?.slice(0, -3) || '-'}
+              发布时间：{coinInfo.coinLaunchDate?.slice(0, -3) || '-'}
               {loading && <div className={ss.loading}>Loading</div>}
             </div>
 
