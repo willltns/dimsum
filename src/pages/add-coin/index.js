@@ -17,7 +17,7 @@ import { descPH, presalePH, airdropPH, presaleTemplate, airdropTemplate, additio
 
 import Footer from '@/components/footer'
 import { addCoin } from '@/assets/xhr'
-import ImgUpload, { uploadErrorValidator } from '@/components/img-upload'
+import ImgUpload, { handleFileUpload } from '@/components/img-upload'
 import { useStore } from '@/utils/hooks/useStore'
 
 // 是否中文
@@ -54,7 +54,7 @@ function AddCoin() {
 
   const tt = ifZh(lang) ? zh : en
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     const { linkWebsite, linkChineseTg, linkEnglishTg, linkTwitter, linkMedium, linkDiscord, linkAdditionalInfo } =
       values
     if (
@@ -69,54 +69,60 @@ function AddCoin() {
 
     setState((state) => ({ ...state, loading: true }))
 
-    const params = { ...values, coinPresaleInfo, coinAirdropInfo, linkAdditionalInfo: linkAdditionalInfo?.trim() || '' }
-    params.coinLogo = params.coinLogo?.[0]?.response
+    try {
+      const params = {
+        ...values,
+        coinPresaleInfo,
+        coinAirdropInfo,
+        linkAdditionalInfo: linkAdditionalInfo?.trim() || '',
+      }
+      params.coinLogo = await handleFileUpload(values.coinLogo[0]?.originFileObj)
 
-    addCoin(params)
-      .then(() => {
-        // success
-        Modal.success({
-          icon: null,
-          width: 520,
-          closable: false,
-          autoFocusButton: null,
-          okText: '好的, 我知道了',
-          className: ss.sucAddModal,
-          okButtonProps: { type: 'default' },
-          maskStyle: { backgroundColor: 'rgba(0, 0, 0, 0.8)' },
-          onOk: () => void setTimeout(() => history.replace('/'), 500),
-          content: (
-            <div>
-              <h2>
-                谢谢您，您的代币将会尽快上市！
-                <RocketIcon />
-              </h2>
-              <img src={Logo} alt="logo" />
-              <p>当您的代币上市通过后，您的社区和邮箱都将收到通知。</p>
-              <p>请注意，如果您的代币长时间未活跃，可能会被下市处理。</p>
-              <p>如果您的项目有预售、空投等信息未填写或需要调整，请联系我们，我们将为您调整信息</p>
-              <p>另外，我们还提供本站曝光服务及中文社区推广服务，有意请联系</p>
-              <div className="contact-add">
-                <span>
-                  <TgIcon />
-                  <a href={tg} target="_blank" rel="noreferrer">
-                    @YYDSCoinsPromo
-                  </a>
-                </span>
-                <span>
-                  <EmailIcon />
-                  <a href={`mailto:${email}`}>{email}</a>
-                </span>
-              </div>
+      await addCoin(params)
+
+      Modal.success({
+        icon: null,
+        width: 520,
+        closable: false,
+        autoFocusButton: null,
+        okText: '好的, 我知道了',
+        className: ss.sucAddModal,
+        okButtonProps: { type: 'default' },
+        maskStyle: { backgroundColor: 'rgba(0, 0, 0, 0.8)' },
+        onOk: () => void setTimeout(() => history.replace('/'), 500),
+        content: (
+          <div>
+            <h2>
+              谢谢您，您的代币将会尽快上市！
+              <RocketIcon />
+            </h2>
+            <img src={Logo} alt="logo" />
+            <p>当您的代币上市通过后，您的社区和邮箱都将收到通知。</p>
+            <p>请注意，如果您的代币长时间未活跃，可能会被下市处理。</p>
+            <p>如果您的项目有预售、空投等信息未填写或需要调整，请联系我们，我们将为您调整信息</p>
+            <p>另外，我们还提供本站曝光服务及中文社区推广服务，有意请联系</p>
+            <div className="contact-add">
+              <span>
+                <TgIcon />
+                <a href={tg} target="_blank" rel="noreferrer">
+                  @YYDSCoinsPromo
+                </a>
+              </span>
+              <span>
+                <EmailIcon />
+                <a href={`mailto:${email}`}>{email}</a>
+              </span>
             </div>
-          ),
-        })
+          </div>
+        ),
       })
-      .catch(() => setState((state) => ({ ...state, loading: false })))
+    } catch (err) {
+      setState((state) => ({ ...state, loading: false }))
+    }
   }
 
   const onFinishFailed = ({ values, errorFields }) => {
-    if (!values?.logo?.[0])
+    if (!values?.coinLogo?.[0])
       uploadBtnRef.current.parentNode.parentNode.style = 'border-color: #ff4d4f; box-shadow: 0 0 2px #ff4d4f'
 
     const firstErrorLabel = errorFields?.[0]?.name
@@ -172,7 +178,7 @@ function AddCoin() {
               name="coinLogo"
               valuePropName="fileList"
               getValueFromEvent={(e) => (Array.isArray(e) ? e : e && e.fileList)}
-              rules={[{ required: true }, uploadErrorValidator]}
+              rules={[{ required: true }]}
             >
               <ImgUpload
                 iconRef={uploadBtnRef}

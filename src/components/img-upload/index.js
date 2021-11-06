@@ -6,28 +6,30 @@ import { UploadOutlined } from '@ant-design/icons'
 import { uploadFile } from '@/assets/xhr'
 import { fileDomain } from '@/consts'
 
-export async function handleFileUpload({ file, onError, onSuccess }) {
-  const formData = new FormData()
-  formData.append('file', file)
-
+export async function handleFileUpload(file) {
   try {
-    const res = await uploadFile(formData)
-    onSuccess(res, file)
+    if (!file) throw new Error('')
+    const formData = new FormData()
+    formData.append('file', file)
+
+    return await uploadFile(formData)
   } catch (err) {
-    onError('上传出错，请重新尝试')
+    notification.error({
+      message: '',
+      duration: 3,
+      placement: 'topLeft',
+      description: (
+        <Space direction="vertical">
+          <div>代币图片上传错误，请重新尝试</div>
+          <div>Coin logo upload error, please try again</div>
+        </Space>
+      ),
+    })
+    throw new Error('上传图片出错，请重新尝试')
   }
 }
 
 const acceptList = ['.png', '.jpg', '.jpeg', '.webp']
-
-const onPreview = ({ response }) =>
-  Modal.info({
-    icon: null,
-    closable: true,
-    maskClosable: true,
-    className: ss.previewImg,
-    content: <img src={fileDomain + response} alt="logo" />,
-  })
 
 const beforeUpload = (file, fileList) => {
   if (fileList.length > 1) {
@@ -75,7 +77,7 @@ const beforeUpload = (file, fileList) => {
     return Upload.LIST_IGNORE
   }
 
-  return true
+  return false
 }
 
 function ImgUpload({ value, onChange, iconRef, onClick, ...restProps }) {
@@ -85,7 +87,6 @@ function ImgUpload({ value, onChange, iconRef, onClick, ...restProps }) {
       maxCount={1}
       listType="picture-card"
       accept={acceptList.join(',')}
-      customRequest={handleFileUpload}
       beforeUpload={beforeUpload}
       className={ss.imgUpload}
       onPreview={onPreview}
@@ -102,10 +103,12 @@ function ImgUpload({ value, onChange, iconRef, onClick, ...restProps }) {
 
 export default ImgUpload
 
-//
-export const uploadErrorValidator = {
-  validator: (rule, value) =>
-    value?.[0]?.status === undefined || value?.[0]?.status === 'done' || value?.[0]?.status === 'uploading'
-      ? Promise.resolve()
-      : Promise.reject('Upload error, please delete or re-upload.'),
+function onPreview({ response, thumbUrl }) {
+  Modal.info({
+    icon: null,
+    closable: true,
+    maskClosable: true,
+    className: ss.previewImg,
+    content: <img src={response ? fileDomain + response : thumbUrl} alt="logo" />,
+  })
 }

@@ -64,6 +64,11 @@ function CoinInfo() {
 
   const chainInfo = common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}
 
+  console.log(
+    coinInfo.linkAdditionalInfo,
+    typeof coinInfo.linkAdditionalInfo,
+    coinInfo.linkAdditionalInfo?.indexOf('$$$http') === -1
+  )
   return (
     <section>
       <MainBanner />
@@ -162,7 +167,9 @@ function CoinInfo() {
             <Dropdown
               zIndex={999}
               trigger="click"
-              disabled={coinInfo.linkAdditionalInfo?.indexOf('$$$http') === -1}
+              disabled={
+                coinInfo.linkAdditionalInfo === undefined || coinInfo.linkAdditionalInfo?.indexOf('$$$http') === -1
+              }
               overlay={
                 <Menu className={ss.linkMenus}>
                   {coinInfo.linkAdditionalInfo
