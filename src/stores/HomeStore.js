@@ -18,6 +18,8 @@ export class HomeStore {
   searchedInputValue = ''
   type = 1
   noMore = false
+  scrollTop = 0
+  loadingAdd = 'auto'
 
   updateProp(property) {
     Object.assign(this, property)

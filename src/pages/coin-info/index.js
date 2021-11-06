@@ -91,7 +91,7 @@ function CoinInfo() {
             </div>
 
             <div className={ss.launchDate}>
-              发布时间：{coinInfo.coinLaunchDate?.slice(0, -3) || '-'}
+              发布1时间：{coinInfo.coinLaunchDate?.slice(0, -3) || '-'}
               {loading && <div className={ss.loading}>Loading</div>}
             </div>
 
@@ -162,7 +162,7 @@ function CoinInfo() {
             <Dropdown
               zIndex={999}
               trigger="click"
-              disabled={!coinInfo.linkAdditionalInfo}
+              disabled={coinInfo.linkAdditionalInfo?.indexOf('$$$http') === -1}
               overlay={
                 <Menu className={ss.linkMenus}>
                   {coinInfo.linkAdditionalInfo
@@ -213,9 +213,15 @@ function CoinInfo() {
             className={`${ss.upvoteBtn} ${home.votingIdList.includes(coinInfo.id) ? ss.voting : ''}`}
             onClick={
               coinInfo.id
-                ? () => (common.votedIdList.includes(coinInfo.id + '') ? null : home.handleVote(coinInfo, true, true))
+                ? (e) => {
+                    e.target?.firstChild.classList.add(ss.mooning)
+                    if (common.votedIdList.includes(coinInfo.id + '')) return
+                    home.handleVote(coinInfo, true, true)
+                    // 这里有个 hack，该页面投票数更新依赖了 common.votedIdList 的变化
+                  }
                 : undefined
-            } // 这里有个 hack，该页面投票数更新依赖了 common.votedIdList 的变化
+            }
+            onMouseEnter={(e) => e.target.firstChild?.classList.remove(ss.mooning)}
           >
             <RocketIcon />
             {common.votedIdList.includes(coinInfo.id + '') ? '已投票' : `投 票`}

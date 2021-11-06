@@ -1,4 +1,5 @@
 import ss from './index.module.less'
+import YYDSLogo from '@/assets/img/YYDS_LOGO_HOR.png'
 
 import React, { useEffect } from 'react'
 import { notification } from 'antd'
@@ -26,7 +27,7 @@ function Header() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    if (pathname !== '/coin-info') document.title = 'YYDSCoins | 探索神币'
+    if (pathname !== '/coin-info') document.title = 'YYDSCoins | 寻找 1000x 代币'
     if (['/add-coin', '/promote'].includes(pathname)) return
 
     common.getAdvert()
@@ -64,8 +65,8 @@ function Header() {
 
   return (
     <header className={ss.header}>
-      <Link className="logo" to="/">
-        YYDSCoins
+      <Link to="/">
+        <img src={YYDSLogo} alt="YYDSCoins" style={{ height: 40 }} />
       </Link>
       <div className={ss.headerBtn}>
         <CDButton onClick={() => history.push('/add-coin')}>添加代币</CDButton>

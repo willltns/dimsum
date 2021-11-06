@@ -19,6 +19,18 @@ import Footer from '@/components/footer'
 const Home = () => {
   const { home, common } = useStore()
 
+  const searchInputRef = React.useRef(null)
+
+  React.useEffect(() => window.scrollTo(0, home.scrollTop), [home])
+
+  React.useLayoutEffect(
+    () => () =>
+      home.updateProp({
+        scrollTop: window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0,
+      }),
+    [home]
+  )
+
   return (
     <section>
       <MainBanner />
@@ -38,8 +50,10 @@ const Home = () => {
                       <Button
                         key={item.value}
                         type={home.type === item.value ? 'primary' : ''}
-                        onClick={() => {
+                        onClick={(e) => {
                           if (home.type === item.value) return
+                          // prettier-ignore
+                          home.updateProp({ loadingAdd: window.innerHeight - e.target.getBoundingClientRect().top - 300, })
                           if (sourceRef.current) sourceRef.current.cancel()
                           sourceRef.current = axios.CancelToken.source()
                           home.getCoins({ value: '', type: item.value, pageNo: 1 })
@@ -55,8 +69,10 @@ const Home = () => {
                       <Button
                         key={item.value}
                         type={home.type === item.value ? 'primary' : ''}
-                        onClick={() => {
+                        onClick={(e) => {
                           if (home.type === item.value) return
+                          // prettier-ignore
+                          home.updateProp({ loadingAdd: window.innerHeight - e.target.getBoundingClientRect().top - 300, })
                           if (sourceRef.current) sourceRef.current.cancel()
                           sourceRef.current = axios.CancelToken.source()
                           home.getCoins({ value: '', type: item.value, pageNo: 1 })
@@ -70,6 +86,7 @@ const Home = () => {
                 </div>
                 <Input.Search
                   value={home.value}
+                  ref={searchInputRef}
                   style={{ width: 252, height: 40 }}
                   prefix={<SearchOutlined />}
                   className={`${home.value && home.value === common.searchPromo ? ss.promoVal : ''} ${
@@ -84,7 +101,10 @@ const Home = () => {
                   onChange={(e) => home.updateProp({ value: e.target.value })}
                   onSearch={() => {
                     if (home.searchedInputValue === home.value) return
-                    home.updateProp({ searchedInputValue: home.value?.trim() || '' })
+                    home.updateProp({
+                      searchedInputValue: home.value?.trim() || '',
+                      loadingAdd: window.innerHeight - searchInputRef.current?.input.getBoundingClientRect().top - 300,
+                    })
                     if (sourceRef.current) sourceRef.current.cancel()
                     sourceRef.current = axios.CancelToken.source()
                     home.getCoins({ value: home.value?.trim() || '', type: undefined, pageNo: 1 })
@@ -99,7 +119,7 @@ const Home = () => {
 
         <Observer
           render={() => (
-            <div className={ss.listBot}>
+            <div className={ss.listBot} style={{ height: home.loading ? home.loadingAdd : 'auto' }}>
               {home.loading ? (
                 <Spinner />
               ) : (
@@ -114,9 +134,10 @@ const Home = () => {
                 ) : (
                   <span
                     className={ss.loadBtn}
-                    onClick={() =>
+                    onClick={() => {
+                      home.updateProp({ loadingAdd: 'auto' })
                       home.getCoins({ value: home.searchedInputValue, type: home.type, pageNo: home.pageNo + 1 })
-                    }
+                    }}
                   >
                     加载更多
                   </span>

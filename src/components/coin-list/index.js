@@ -35,6 +35,7 @@ function CoinList(props) {
     <>
       <Diamond className={ss.diamond} />
       推广代币
+      <Diamond className={ss.diamond} />
     </>
   ) : (
     '代币'
@@ -86,12 +87,11 @@ function CoinList(props) {
             {(() => {
               const dateStr =
                 listType === 4 ? coin.coinPresaleDate : listType === 5 ? coin.coinAirdropDate : coin.coinLaunchDate
-
               if (!dateStr) return <div className={ss.date}>--</div>
-
               const djDate = dayjs(dateStr)
+              const style = djDate.isAfter(common.serverDateStr) ? { color: '#ff8200' } : undefined
               return (
-                <div className={ss.date}>
+                <div className={ss.date} style={style}>
                   <span>{djDate.format('YYYY-')}</span>
                   {djDate.format('MM-DD')}
                   <i>{djDate.format('HH:mm')}</i>
@@ -195,12 +195,14 @@ function CoinList(props) {
               <CDButton
                 className={home.votingIdList.includes(coin.id) ? ss.voting : ''}
                 primary={common.votedIdList.includes(coin.id + '')}
-                onClick={(e) =>
+                onClick={(e) => {
+                  e.target.firstChild?.classList.add(ss.mooning)
                   stopProp(
                     e,
                     common.votedIdList.includes(coin.id + '') ? null : () => home.handleVote(coin, promo, !promo)
                   )
-                }
+                }}
+                onMouseEnter={(e) => e.target.firstChild?.classList.remove(ss.mooning)}
               >
                 <Rocket />
                 {coin.coinUpvotes}

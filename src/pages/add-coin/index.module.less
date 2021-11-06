@@ -155,6 +155,68 @@
   }
 }
 
+.sucAddModal {
+  h2 {
+    text-align: center;
+    position: relative;
+
+    svg {
+      width: 48px;
+      height: 48px;
+      position: absolute;
+      top: -14px;
+    }
+  }
+
+  img {
+    height: 44px;
+    display: block;
+    margin: 28px auto;
+  }
+
+  p {
+    font-size: 15px;
+  }
+
+  :global {
+    .ant-modal-confirm-btns {
+      display: flex;
+      justify-content: center;
+      float: none;
+    }
+
+    .contact-add {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin: 32px 0;
+
+      > span {
+        display: flex;
+        align-items: center;
+      }
+
+      svg {
+        width: 28px;
+        height: 28px;
+        margin-right: 8px;
+      }
+
+      a {
+        color: @primary-color !important;
+        font-size: 15px;
+        font-weight: bold;
+        letter-spacing: 1px;
+        text-decoration: underline;
+
+        &:hover {
+          color: darken(@primary-color, 10%) !important;
+        }
+      }
+    }
+  }
+}
+
 .modalHead {
   display: flex;
   justify-content: space-between;

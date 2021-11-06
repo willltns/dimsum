@@ -10,6 +10,7 @@ export class CommonStore {
 
   // state
   unixTS = 0
+  serverDateStr = ''
   bannerData = []
   promoCoinList = []
   searchPromo = ''
@@ -36,6 +37,7 @@ export class CommonStore {
 
   updateUnixTS(date) {
     this.unixTS = dayjs(date, 'YYYY-MM-DD HH:mm:ss').unix()
+    this.serverDateStr = date
   }
 
   get votedIdList() {
@@ -62,6 +64,7 @@ export class CommonStore {
     // prettier-ignore
     this.intervalTimer = setInterval(action(() => ++this.unixTS), 1000)
     this.unixTS = dayjs(dateStr, 'YYYY-MM-DD HH:mm:ss').unix()
+    this.serverDateStr = dateStr
   }
 
   // Creating async action using generator

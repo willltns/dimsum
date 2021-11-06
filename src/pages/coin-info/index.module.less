@@ -211,20 +211,52 @@
   align-items: center;
   justify-content: center;
 
-  + p {
-    margin: 12px 0 0;
-  }
-
-  svg {
-    width: 32px;
-    height: 32px;
-    margin-right: 12px;
-  }
-
   &:hover,
   &:active {
     color: #fff;
     background-color: #ff8200;
+  }
+
+  + p {
+    margin: 12px 0 0;
+  }
+
+  > svg {
+    width: 32px;
+    height: 32px;
+    margin-right: 12px;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  &:hover > svg {
+    animation: bounce 400ms alternate infinite ease-in-out;
+  }
+
+  > svg.mooning {
+    animation: mooningAni 1000ms ease-in;
+  }
+}
+
+@keyframes bounce {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(20%);
+  }
+}
+
+@keyframes mooningAni {
+  0% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(80vw) translateY(-80vw) scale(4);
   }
 }
 

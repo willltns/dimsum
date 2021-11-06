@@ -1,2 +1,3 @@
-export const tg = 'https://t.me/liangjianshequ'
-export const twitter = 'https://twitter.com/liangjianshequ'
+export const tg = 'https://t.me/YYDSCoinsPromo'
+export const email = 'contact@yydscoins.com'
+export const twitter = 'https://twitter.com/YYDSCoins'

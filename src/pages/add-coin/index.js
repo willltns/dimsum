@@ -1,4 +1,8 @@
 import ss from './index.module.less'
+import { ReactComponent as TgIcon } from '@/assets/img/link-icon/tg.svg'
+import { ReactComponent as EmailIcon } from '@/assets/img/link-icon/email.svg'
+import { ReactComponent as RocketIcon } from '@/assets/img/link-icon/rocket.svg'
+import Logo from '@/assets/img/YYDS_LOGO_HOR.png'
 
 import React, { useRef, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
@@ -8,7 +12,7 @@ import { observer } from 'mobx-react'
 
 import zh from './lang/zh.json'
 import en from './lang/en.json'
-import { urlReg } from '@/consts'
+import { email, tg, urlReg } from '@/consts'
 import { descPH, presalePH, airdropPH, presaleTemplate, airdropTemplate, additionalLinkPH } from './const'
 
 import Footer from '@/components/footer'
@@ -72,12 +76,38 @@ function AddCoin() {
       .then(() => {
         // success
         Modal.success({
+          icon: null,
+          width: 520,
           closable: false,
-          onOk: () => history.replace('/'),
+          autoFocusButton: null,
+          okText: '好的, 我知道了',
+          className: ss.sucAddModal,
+          okButtonProps: { type: 'default' },
+          maskStyle: { backgroundColor: 'rgba(0, 0, 0, 0.8)' },
+          onOk: () => void setTimeout(() => history.replace('/'), 500),
           content: (
             <div>
-              <p>您提交的代币 xxx 已成功提交，请等待审核，将在12小时内完成审核</p>
-              <p>如需修改和推广您的代币，请联系 xxx@xxxxx.com</p>
+              <h2>
+                谢谢您，您的代币将会尽快上市！
+                <RocketIcon />
+              </h2>
+              <img src={Logo} alt="logo" />
+              <p>当您的代币上市通过后，您的社区和邮箱都将收到通知。</p>
+              <p>请注意，如果您的代币长时间未活跃，可能会被下市处理。</p>
+              <p>如果您的项目有预售、空投等信息未填写或需要调整，请联系我们，我们将为您调整信息</p>
+              <p>另外，我们还提供本站曝光服务及中文社区推广服务，有意请联系</p>
+              <div className="contact-add">
+                <span>
+                  <TgIcon />
+                  <a href={tg} target="_blank" rel="noreferrer">
+                    @YYDSCoinsPromo
+                  </a>
+                </span>
+                <span>
+                  <EmailIcon />
+                  <a href={`mailto:${email}`}>{email}</a>
+                </span>
+              </div>
             </div>
           ),
         })
@@ -265,10 +295,10 @@ function AddCoin() {
               validateTrigger="onBlur"
               rules={[{ required: true }, { type: 'email' }]}
             >
-              <Input placeholder="contact@yydscoins.com" />
+              <Input placeholder={email} />
             </Form.Item>
             <Form.Item label={tt.contactTelegram} name="contactTg" rules={[{ whitespace: true }]}>
-              <Input placeholder="@yydscoins" />
+              <Input placeholder="@YYDSCoinsPromo" />
             </Form.Item>
           </Col>
         </Row>

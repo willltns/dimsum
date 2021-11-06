@@ -1,6 +1,7 @@
 import ss from './index.module.less'
 import { ReactComponent as TgIcon } from '@/assets/img/link-icon/tg.svg'
 import { ReactComponent as TWIcon } from '@/assets/img/link-icon/twitter.svg'
+import { ReactComponent as EmailIcon } from '@/assets/img/link-icon/email.svg'
 
 import React from 'react'
 import dayjs from 'dayjs'
@@ -8,7 +9,7 @@ import { Space } from 'antd'
 import { Link } from 'react-router-dom'
 import { Observer } from 'mobx-react'
 
-import { tg, twitter } from '@/consts'
+import { email, tg, twitter } from '@/consts'
 import PromoVote from '@/components/promo-vote'
 import { useStore } from '@/utils/hooks/useStore'
 
@@ -25,6 +26,9 @@ function Sidebar() {
         <Space>
           <TgIcon style={{ width: 32, cursor: 'pointer' }} onClick={() => window.open(tg)} />
           <TWIcon style={{ width: 32, cursor: 'pointer' }} onClick={() => window.open(twitter)} />
+          <a href={`mailto:${email}`}>
+            <EmailIcon style={{ width: 27, marginLeft: 2, cursor: 'pointer' }} />
+          </a>
         </Space>
         <PromoVote />
       </div>
