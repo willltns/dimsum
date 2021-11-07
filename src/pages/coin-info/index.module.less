@@ -202,6 +202,15 @@
   }
 }
 
+.linkPop {
+  :global {
+    .ant-popover-inner-content {
+      word-break: break-all;
+      max-width: 300px;
+    }
+  }
+}
+
 .upvoteBtn {
   width: 150px;
   height: 48px;
@@ -268,29 +277,6 @@
   &:active {
     color: #ffe7d5 !important;
     background-color: #ffce9b !important;
-  }
-}
-
-.linkMenus {
-  text-align: center;
-  overflow: hidden;
-
-  :global {
-    .ant-dropdown-menu-item {
-      padding: 8px;
-
-      a {
-        color: @primary-color !important;
-      }
-
-      &:hover {
-        background-color: @primary-color;
-
-        a {
-          color: #fff !important;
-        }
-      }
-    }
   }
 }
 

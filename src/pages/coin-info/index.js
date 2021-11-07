@@ -3,7 +3,7 @@ import { ReactComponent as RocketIcon } from '@/assets/img/link-icon/rocket.svg'
 
 import React, { useRef, useState, useEffect } from 'react'
 import ClipboardJS from 'clipboard'
-import { Divider, Dropdown, Input, Menu, notification, Popover } from 'antd'
+import { Divider, Input, notification, Popover } from 'antd'
 import { CopyOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
@@ -64,11 +64,6 @@ function CoinInfo() {
 
   const chainInfo = common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}
 
-  console.log(
-    coinInfo.linkAdditionalInfo,
-    typeof coinInfo.linkAdditionalInfo,
-    coinInfo.linkAdditionalInfo?.indexOf('$$$http') === -1
-  )
   return (
     <section>
       <MainBanner />
@@ -164,30 +159,15 @@ function CoinInfo() {
               </Popover>
             )}
 
-            <Dropdown
-              zIndex={999}
-              trigger="click"
-              disabled={
-                coinInfo.linkAdditionalInfo === undefined || coinInfo.linkAdditionalInfo?.indexOf('$$$http') === -1
-              }
-              overlay={
-                <Menu className={ss.linkMenus}>
-                  {coinInfo.linkAdditionalInfo
-                    ?.split('\n')
-                    .map((s) => {
-                      const [name, link] = s.split('$$$')
-                      if (name && urlReg.test(link)) {
-                        // prettier-ignore
-                        return (<Menu.Item key={link}><Popover content={link} mouseLeaveDelay={0}><a href={link} target="_blank" rel="noreferrer">{name}</a></Popover></Menu.Item>)
-                      }
-                      return null
-                    })
-                    .filter(Boolean)}
-                </Menu>
-              }
-            >
-              <CDButton>更多...</CDButton>
-            </Dropdown>
+            {coinInfo.linkAdditionalInfo
+              ?.split('\n')
+              .map((s) => {
+                const [name, link] = s.split('$$$')
+                // prettier-ignore
+                if (name && urlReg.test(link)) {return (<Popover overlayClassName={ss.linkPop} content={link} mouseLeaveDelay={0}><CDButton data-link={link} onClick={openWeb}>{name}</CDButton></Popover>)}
+                return null
+              })
+              .filter(Boolean)}
 
             <Divider />
 

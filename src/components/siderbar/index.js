@@ -18,7 +18,14 @@ function Sidebar() {
   return (
     <div className={`${ss.sidebar} sidebar`}>
       <div>
-        <nav>
+        <nav
+          onClick={(e) => {
+            const sidebarEl = e.target?.parentNode.parentNode.parentNode
+            if (!sidebarEl.style.transform) return
+            sidebarEl.style.transform = ''
+            setTimeout(() => (sidebarEl.style = ''), 200)
+          }}
+        >
           <Link to="/">&emsp;代币排行｜Coin Ranking</Link>
           <Link to="/add-coin">添加代币｜Add a Coin</Link>
           <Link to="/promote">&emsp;推广｜Promote</Link>
