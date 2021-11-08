@@ -1,0 +1,175 @@
+.promo {
+  padding: 32px 24px;
+  background-color: #fff;
+  border-radius: 10px;
+
+  > h1 {
+    font-size: 35px;
+    text-align: center;
+    color: #545454;
+    font-weight: bold;
+    margin: 48px 0 32px;
+    position: relative;
+
+    &::after {
+      content: '';
+      display: block;
+      width: 60%;
+      height: 4px;
+      background-color: #545454;
+      position: absolute;
+      top: -16px;
+      right: 0;
+    }
+  }
+
+  > div {
+    max-width: 1016px;
+    margin: 0 auto;
+  }
+}
+
+.intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  > div {
+    width: 36%;
+    font-size: 16px;
+    color: #545454;
+    font-weight: bold;
+
+    p {
+      margin: 0;
+    }
+
+    em {
+      margin: 24px 0;
+      display: block;
+      font-weight: 800;
+      font-style: normal;
+      background-image: -webkit-linear-gradient(#ff8200, #c1771b, #ff8200); /* For Chrome and Safari */
+      background-image: -moz-linear-gradient(#ff8200, #c1771b, #ff8200); /* For old Fx (3.6 to 15) */
+      background-image: -ms-linear-gradient(#ff8200, #c1771b, #ff8200); /* For pre-releases of IE 10*/
+      background-image: -o-linear-gradient(#ff8200, #c1771b, #ff8200); /* For old Opera (11.1 to 12.0) */
+      background-image: linear-gradient(#ff8200, #c1771b, #ff8200); /* Standard syntax; must be last */
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+    }
+  }
+
+  > img[alt*='home'] {
+    object-fit: cover;
+    width: 40%;
+    height: 100%;
+  }
+  > img[alt='logo'] {
+    object-fit: cover;
+    width: 16%;
+    height: 100%;
+  }
+}
+
+.promoPkg {
+  font-size: 16px;
+
+  > h2 {
+    font-size: 22px;
+    color: #545454;
+    font-weight: 600;
+    margin-bottom: 24px;
+    text-align: center;
+  }
+
+  h4 {
+    font-size: 18px;
+    color: #e0911b;
+    margin-bottom: 16px;
+
+    + ul > li {
+      margin: 4px 0;
+    }
+  }
+
+  > div {
+    display: flex;
+    margin-bottom: 16px;
+    > * {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+}
+
+.contact {
+  font-size: 16px;
+  text-align: center;
+
+  h2 {
+    font-size: 22px;
+    color: #545454;
+    font-weight: 600;
+    margin-bottom: 24px;
+  }
+
+  a {
+    font-weight: 500;
+    color: @primary-color !important;
+    text-decoration: underline;
+  }
+
+  p {
+    margin-bottom: 24px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .promoPkg > div {
+    flex-direction: column;
+    > span:first-child {
+      margin-bottom: 16px;
+    }
+  }
+
+  .intro {
+    > div {
+      width: 50%;
+    }
+
+    > img[alt*='home'] {
+      width: 45%;
+    }
+
+    > img[alt='logo'] {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .intro {
+    flex-direction: column;
+    > div {
+      width: 100%;
+    }
+
+    > img[alt*='home'] {
+      width: 100%;
+      margin-top: 24px;
+    }
+  }
+}
+
+@media screen and (max-width: 444px) {
+  .promo {
+    padding: 32px 16px;
+  }
+
+  .promoPkg h4 {
+    font-size: 16px;
+  }
+}

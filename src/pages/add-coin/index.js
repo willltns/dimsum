@@ -100,7 +100,7 @@ function AddCoin() {
             <p>当您的代币上市通过后，您的社区和邮箱都将收到通知。</p>
             <p>请注意，如果您的代币长时间未活跃，可能会被下市处理。</p>
             <p>如果您的项目有预售、空投等信息未填写或需要调整，请联系我们，我们将为您调整信息</p>
-            <p>另外，我们还提供本站曝光服务及中文社区推广服务，有意请联系</p>
+            <p>另外，我们还提供网站推广服务及中国投资者推广服务，有意请联系</p>
             <div className="contact-add">
               <span>
                 <TgIcon />
@@ -108,10 +108,10 @@ function AddCoin() {
                   @YYDSCoinsPromo
                 </a>
               </span>
-              <span>
+              {/*<span>
                 <EmailIcon />
                 <a href={`mailto:${email}`}>{email}</a>
-              </span>
+              </span>*/}
             </div>
           </div>
         ),
@@ -295,15 +295,10 @@ function AddCoin() {
             <Form.Item noStyle>
               <h2>{tt.contactInfoTitle}</h2>
             </Form.Item>
-            <Form.Item
-              label={tt.contactEmail}
-              name="contactEmail"
-              validateTrigger="onBlur"
-              rules={[{ required: true }, { type: 'email' }]}
-            >
+            <Form.Item label={tt.contactEmail} name="contactEmail" validateTrigger="onBlur" rules={[{ type: 'email' }]}>
               <Input placeholder={email} />
             </Form.Item>
-            <Form.Item label={tt.contactTelegram} name="contactTg" rules={[{ whitespace: true }]}>
+            <Form.Item label={tt.contactTelegram} name="contactTg" rules={[{ required: true, whitespace: true }]}>
               <Input placeholder="@YYDSCoinsPromo" />
             </Form.Item>
           </Col>
