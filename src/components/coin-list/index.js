@@ -89,7 +89,7 @@ function CoinList(props) {
                 listType === 4 ? coin.coinPresaleDate : listType === 5 ? coin.coinAirdropDate : coin.coinLaunchDate
               if (!dateStr) return <div className={ss.date}>--</div>
               const djDate = dayjs(dateStr)
-              const style = djDate.isAfter(common.serverDateStr) ? { color: '#ff8200' } : undefined
+              const style = djDate.isAfter(common.serverDateStr) ? { color: '#c' } : undefined
               return (
                 <div className={ss.date} style={style}>
                   <span>{djDate.format('YYYY-')}</span>

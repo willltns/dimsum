@@ -27,7 +27,7 @@ function Header() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    if (pathname !== '/coin-info') document.title = 'YYDSCoins | 寻找 1000x 代币'
+    if (pathname !== '/coin-info') document.title = 'YYDSCoins | 寻找 1000x 代币, Best Chinese Coin Listing'
     if (['/add-coin', '/promote'].includes(pathname)) return
 
     common.getAdvert()

@@ -164,19 +164,28 @@
       width: 48px;
       height: 48px;
       position: absolute;
-      top: -14px;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 
   img {
-    height: 44px;
+    height: 40px;
+    width: 194px;
     display: block;
-    margin: 28px auto;
+    margin: 24px auto;
   }
 
   p {
     font-size: 15px;
     margin-bottom: 16px;
+  }
+
+  b {
+    color: @primary-color;
+    font-size: 16px;
+    font-weight: 600;
   }
 
   :global {
@@ -190,7 +199,7 @@
       display: flex;
       align-items: center;
       justify-content: space-around;
-      margin: 32px 0;
+      margin: 16px 0 32px;
 
       > span {
         display: flex;

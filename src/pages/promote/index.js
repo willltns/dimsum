@@ -17,7 +17,7 @@ function Promote() {
             <p>YYDSCoins is the best Mandarin coin listing, based on a community rating platform.</p>
             <p>Chinese users are actively voting on their favourite tokens.</p>
             <em>As token developers, we are the site to grow your outreach to Chinese investors.</em>
-            <p>Click on "Add-a-Coin", or see below for more promotional services. </p>
+            <p>Click on "List-a-Project", or see below for more promotional services. </p>
           </div>
           <img src={HomePage} alt="home page" />
           <img src={Logo} alt="logo" />

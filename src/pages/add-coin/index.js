@@ -1,6 +1,5 @@
 import ss from './index.module.less'
 import { ReactComponent as TgIcon } from '@/assets/img/link-icon/tg.svg'
-import { ReactComponent as EmailIcon } from '@/assets/img/link-icon/email.svg'
 import { ReactComponent as RocketIcon } from '@/assets/img/link-icon/rocket.svg'
 import Logo from '@/assets/img/YYDS_LOGO_HOR.png'
 
@@ -12,7 +11,7 @@ import { observer } from 'mobx-react'
 
 import zh from './lang/zh.json'
 import en from './lang/en.json'
-import { email, tg, urlReg } from '@/consts'
+import { tg, urlReg } from '@/consts'
 import { descPH, presalePH, airdropPH, presaleTemplate, airdropTemplate, additionalLinkPH } from './const'
 
 import Footer from '@/components/footer'
@@ -80,42 +79,7 @@ function AddCoin() {
 
       await addCoin(params)
 
-      Modal.success({
-        icon: null,
-        width: 520,
-        closable: false,
-        autoFocusButton: null,
-        okText: '好的, 我知道了',
-        className: ss.sucAddModal,
-        okButtonProps: { type: 'default' },
-        maskStyle: { backgroundColor: 'rgba(0, 0, 0, 0.8)' },
-        onOk: () => void setTimeout(() => history.replace('/'), 500),
-        content: (
-          <div>
-            <h2>
-              谢谢您，您的代币将会尽快上市！
-              <RocketIcon />
-            </h2>
-            <img src={Logo} alt="logo" />
-            <p>当您的代币上市通过后，您的社区和邮箱都将收到通知。</p>
-            <p>请注意，如果您的代币长时间未活跃，可能会被下市处理。</p>
-            <p>如果您的项目有预售、空投等信息未填写或需要调整，请联系我们，我们将为您调整信息</p>
-            <p>另外，我们还提供网站推广服务及中国投资者推广服务，有意请联系</p>
-            <div className="contact-add">
-              <span>
-                <TgIcon />
-                <a href={tg} target="_blank" rel="noreferrer">
-                  @YYDSCoinsPromo
-                </a>
-              </span>
-              {/*<span>
-                <EmailIcon />
-                <a href={`mailto:${email}`}>{email}</a>
-              </span>*/}
-            </div>
-          </div>
-        ),
-      })
+      afterAdd(tt, history)
     } catch (err) {
       setState((state) => ({ ...state, loading: false }))
     }
@@ -295,11 +259,16 @@ function AddCoin() {
             <Form.Item noStyle>
               <h2>{tt.contactInfoTitle}</h2>
             </Form.Item>
-            <Form.Item label={tt.contactEmail} name="contactEmail" validateTrigger="onBlur" rules={[{ type: 'email' }]}>
-              <Input placeholder={email} />
+            <Form.Item
+              label={tt.contactEmail}
+              name="contactEmail"
+              validateTrigger="onBlur"
+              rules={[{ required: true }, { type: 'email' }]}
+            >
+              <Input placeholder="xxxxx@gmail.com" />
             </Form.Item>
             <Form.Item label={tt.contactTelegram} name="contactTg" rules={[{ required: true, whitespace: true }]}>
-              <Input placeholder="@YYDSCoinsPromo" />
+              <Input placeholder="@Your contact telegram account" />
             </Form.Item>
           </Col>
         </Row>
@@ -361,3 +330,41 @@ function AddCoin() {
 }
 
 export default observer(AddCoin)
+
+// 添加代币成功提示
+function afterAdd(tt, history) {
+  Modal.success({
+    icon: null,
+    width: 520,
+    centered: true,
+    closable: false,
+    autoFocusButton: null,
+    okText: tt.sucSerCCap,
+    className: ss.sucAddModal,
+    okButtonProps: { type: 'default' },
+    maskStyle: { backgroundColor: 'rgba(0, 0, 0, 0.8)' },
+    onOk: () => void setTimeout(() => history.replace('/'), 500),
+    content: (
+      <div>
+        <h2>
+          {tt.sucTitle}
+          <RocketIcon />
+        </h2>
+        <img src={Logo} alt="logo" />
+        <p>{tt.sucContactCap}</p>
+        {/*<p>{tt.sucWarnCap}</p>*/}
+        <p>{tt.sucUpdateCap}</p>
+        <b>{tt.sucSerCap}</b>
+        <p>{tt.sucSerPCap}</p>
+        <div className="contact-add">
+          <span>
+            <TgIcon />
+            <a href={tg} target="_blank" rel="noreferrer">
+              @YYDSCoinsPromo
+            </a>
+          </span>
+        </div>
+      </div>
+    ),
+  })
+}

@@ -130,7 +130,7 @@ const Home = () => {
                   <>
                     <span className={ss.noTip}>没有更多了</span>
                     <Link to="/add-coin" className={ss.loadBtn}>
-                      Add a Coin
+                      List a Project
                     </Link>
                   </>
                 ) : (
@@ -152,7 +152,7 @@ const Home = () => {
                   image={Empty.PRESENTED_IMAGE_SIMPLE}
                   description={
                     <Link to="/add-coin" className={ss.loadBtn}>
-                      Add a Coin
+                      List a Project
                     </Link>
                   }
                 />

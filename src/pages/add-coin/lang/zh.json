@@ -29,5 +29,14 @@
   "contactInfoTitle": "联系方式",
   "contactEmail": "联系邮箱",
   "contactTelegram": "联系电报",
-  "addCoin": "添加代币"
+  "addCoin": "添加代币",
+  "sucTitle": "谢谢，您的代币将会尽快上市！",
+  "sucContactCap": "当您的代币批准上市时，您将通过您的社区和联系电报收到通知。",
+  "sucWarnCap": "请注意，如果您的代币在一段时间内不活跃，它将被下市。",
+  "sucUpdateCap": "如果您需要更新提交的信息，如预售、空投等信息，请联系我们进行更改。",
+  "sucSerCap": "其他服务:",
+  "sucSerPCap": "我们还提供网站推广服务和中国投资者推广服务。如果您有兴趣，请联系我们。",
+  "sucSerFCap": "或者您可以在此处填写表格：",
+  "sucSerTCap": "，我们将在 24 小时内回复。",
+  "sucSerCCap": "好，知道了"
 }

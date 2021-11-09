@@ -3,14 +3,17 @@ import Logo from '@/assets/img/YYDS_LOGO_HOR.png'
 
 import React from 'react'
 
-import { email } from '@/consts'
+import { tg } from '@/consts'
 
 function Footer() {
   return (
     <footer className={ss.footer}>
       <img src={Logo} alt="logo" />
       <p>
-        YYDSCoins © 2021 - <a href={`mailto:${email}`}>{email}</a>
+        YYDSCoins © 2021 -{' '}
+        <a href={tg} target="_blank" rel="noreferrer">
+          @YYDSCoinsPromo
+        </a>
       </p>
     </footer>
   )
