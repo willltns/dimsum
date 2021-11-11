@@ -2,7 +2,7 @@ import ss from './index.module.less'
 import YYDSLogo from '@/assets/img/YYDS_LOGO_HOR.png'
 
 import React, { useEffect } from 'react'
-import { notification } from 'antd'
+import { Divider, notification, Space } from 'antd'
 import { observer } from 'mobx-react'
 import { MenuOutlined } from '@ant-design/icons'
 import { Link, useHistory, useLocation } from 'react-router-dom'
@@ -27,7 +27,8 @@ function Header() {
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    if (pathname !== '/coin-info') document.title = 'YYDSCoins | 寻找 1000x 代币, Best Chinese Coin Listing'
+    if (pathname !== '/coin-info')
+      document.title = 'YYDSCoins - 中国社区加密货币收录平台 | Best Chinese Community Coin Listing'
     if (['/add-coin', '/promote'].includes(pathname)) return
 
     common.getAdvert()
@@ -69,9 +70,22 @@ function Header() {
         <img src={YYDSLogo} alt="YYDSCoins" style={{ height: 40 }} />
       </Link>
       <div className={ss.headerBtn}>
-        <CDButton onClick={() => history.push('/add-coin')}>添加代币</CDButton>
+        <CDButton onClick={() => history.push('/add-coin')}>{common.isZH ? '添加代币' : 'List a Project'}</CDButton>
         <CDButton primary onClick={() => history.push('/promote')}>
-          推广
+          {common.isZH ? '推广' : 'Promote'}
+        </CDButton>
+        <CDButton
+          style={{ width: 92 }}
+          onClick={() => {
+            const lang = common.isZH ? 'en' : 'zh'
+            localStorage.setItem('lang', lang)
+            common.updateProp({ language: lang })
+          }}
+        >
+          <Space size={0} split={<Divider type="vertical" />} className={common.isZH ? ss.zh : ss.en}>
+            <span>中</span>
+            <span>EN</span>
+          </Space>
         </CDButton>
         <MenuOutlined className={ss.sideCtrl} onClick={toggleSidebar} />
       </div>

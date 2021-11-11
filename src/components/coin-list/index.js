@@ -17,14 +17,19 @@ import { Link } from 'react-router-dom'
 
 import { useStore } from '@/utils/hooks/useStore'
 import { fileDomain } from '@/consts'
+import zh from './lang/zh.json'
+import en from './lang/en.json'
 
 import CDButton from '@/components/cd-button'
 import { modalInfo } from '@/components/coin-list/modalInfo'
+
+const lang = { zh, en }
 
 function CoinList(props) {
   const { promo, listType } = props
 
   const { common, home } = useStore()
+  const language = lang[common.language]
 
   const list = promo ? common.promoCoinList : home.coinList
 
@@ -34,11 +39,11 @@ function CoinList(props) {
   const title = promo ? (
     <>
       <Diamond className={ss.diamond} />
-      推广代币
+      {language.pName}
       <Diamond className={ss.diamond} />
     </>
   ) : (
-    '代币'
+    language.name
   )
 
   const stopProp = (e, action) => {
@@ -52,16 +57,16 @@ function CoinList(props) {
       <div className={ss.tHead}>
         <div className={ss.tRow}>
           <div>{title}</div>
-          <div>符号</div>
+          <div>{language.symbol}</div>
           <div>
-            {listType === 4 && '预售'}
-            {listType === 5 && '空投'}
-            {(!listType || listType < 4) && '发布'} (UTC+8)
+            {listType === 4 && language.datePres}
+            {listType === 5 && language.dateAird}
+            {(!listType || listType < 4) && language.dateLaunch} (UTC+8)
           </div>
-          <div>预售信息</div>
-          <div>空投信息</div>
-          <div>链接</div>
-          <div>投票</div>
+          <div>{language.presale}</div>
+          <div>{language.airdrop}</div>
+          <div>{language.links}</div>
+          <div>{language.upvotes}</div>
         </div>
       </div>
       <div className={ss.tBody}>
@@ -89,7 +94,7 @@ function CoinList(props) {
                 listType === 4 ? coin.coinPresaleDate : listType === 5 ? coin.coinAirdropDate : coin.coinLaunchDate
               if (!dateStr) return <div className={ss.date}>--</div>
               const djDate = dayjs(dateStr)
-              const style = djDate.isAfter(common.serverDateStr) ? { color: '#c' } : undefined
+              const style = djDate.isAfter(common.serverDateStr) ? { color: '#ff8200' } : undefined
               return (
                 <div className={ss.date} style={style}>
                   <span>{djDate.format('YYYY-')}</span>
@@ -102,9 +107,18 @@ function CoinList(props) {
             <div className={ss.btnCol}>
               {coin.coinPresaleInfo ? (
                 <CDButton
-                  onClick={(e) => stopProp(e, () => modalInfo({ title: '预售信息', text: coin.coinPresaleInfo }))}
+                  onClick={(e) =>
+                    stopProp(e, () =>
+                      modalInfo({
+                        title:
+                          language.presale + (coin.coinPresaleDate ? ` - ${coin.coinPresaleDate.slice(0, -3)}` : ''),
+                        text: coin.coinPresaleInfo,
+                        okText: common.isZH ? '好的' : 'Ok',
+                      })
+                    )
+                  }
                 >
-                  查看
+                  {language.check}
                 </CDButton>
               ) : (
                 '---'
@@ -114,9 +128,18 @@ function CoinList(props) {
             <div className={ss.btnCol}>
               {coin.coinAirdropInfo ? (
                 <CDButton
-                  onClick={(e) => stopProp(e, () => modalInfo({ title: '空投信息', text: coin.coinAirdropInfo }))}
+                  onClick={(e) =>
+                    stopProp(e, () =>
+                      modalInfo({
+                        title:
+                          language.airdrop + (coin.coinAirdropDate ? ` - ${coin.coinAirdropDate.slice(0, -3)}` : ''),
+                        text: coin.coinAirdropInfo,
+                        okText: common.isZH ? '好的' : 'Ok',
+                      })
+                    )
+                  }
                 >
-                  查看
+                  {language.check}
                 </CDButton>
               ) : (
                 '---'

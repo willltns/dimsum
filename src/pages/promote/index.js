@@ -14,7 +14,7 @@ function Promote() {
       <div className={ss.promo}>
         <div className={ss.intro}>
           <div>
-            <p>YYDSCoins is the best Mandarin coin listing, based on a community rating platform.</p>
+            <p>YYDSCoins is the best Chinese coin listing, based on a community rating platform.</p>
             <p>Chinese users are actively voting on their favourite tokens.</p>
             <em>As token developers, we are the site to grow your outreach to Chinese investors.</em>
             <p>Click on "List-a-Project", or see below for more promotional services. </p>

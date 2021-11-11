@@ -46,3 +46,5 @@ document.addEventListener('visibilitychange', function () {
   // prettier-ignore
   getServTime().then(res => rootStore.common.updateUnixTS(res?.date)).catch(()=> {})
 })
+
+rootStore.common.updateProp({ language: localStorage.getItem('lang') || 'zh' })

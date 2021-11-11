@@ -21,6 +21,36 @@
   }
 }
 
+.zh {
+  > div {
+    transition: transform 200ms;
+  }
+  > div:first-child {
+    transform: scale(1.6);
+    font-weight: bold;
+  }
+
+  > div:last-child {
+    transform: scale(0.88);
+    color: #545454;
+  }
+}
+
+.en {
+  > div {
+    transition: transform 500ms;
+  }
+  > div:last-child {
+    transform: scale(1.6);
+    font-weight: 550;
+  }
+
+  > div:first-child {
+    transform: scale(0.88);
+    color: #545454;
+  }
+}
+
 .popPro {
   width: auto;
   padding: 24px 8px 8px;
@@ -56,14 +86,16 @@
   .sideCtrl {
     display: block;
   }
+}
 
-  .header {
-    position: sticky;
+@media screen and (max-width: 630px) {
+  .headerBtn > div:nth-child(1) {
+    display: none;
   }
 }
 
-@media screen and (max-width: 450px) {
-  .headerBtn > div {
+@media screen and (max-width: 490px) {
+  .headerBtn > div:nth-child(2) {
     display: none;
   }
 }

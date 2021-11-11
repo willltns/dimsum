@@ -1,6 +1,6 @@
 import ss from './index.module.less'
 import { ReactComponent as TgIcon } from '@/assets/img/link-icon/tg.svg'
-import { ReactComponent as TWIcon } from '@/assets/img/link-icon/twitter.svg'
+// import { ReactComponent as TWIcon } from '@/assets/img/link-icon/twitter.svg'
 
 import React from 'react'
 import dayjs from 'dayjs'
@@ -8,7 +8,7 @@ import { Space } from 'antd'
 import { Link } from 'react-router-dom'
 import { Observer } from 'mobx-react'
 
-import { tg, twitter } from '@/consts'
+import { tg /*twitter*/ } from '@/consts'
 import PromoVote from '@/components/promo-vote'
 import { useStore } from '@/utils/hooks/useStore'
 
@@ -32,8 +32,11 @@ function Sidebar() {
           </Link>
         </nav>
         <Space>
-          <TgIcon style={{ width: 32, cursor: 'pointer' }} onClick={() => window.open(tg)} />
-          <TWIcon style={{ width: 32, cursor: 'pointer' }} onClick={() => window.open(twitter)} />
+          <TgIcon
+            style={{ width: 32, cursor: 'pointer', position: 'relative', right: 14, top: 5 }}
+            onClick={() => window.open(tg)}
+          />
+          {/*<TWIcon style={{ width: 32, cursor: 'pointer' }} onClick={() => window.open(twitter)} />*/}
         </Space>
         <PromoVote />
       </div>

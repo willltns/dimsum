@@ -67,8 +67,8 @@ function PromoVote() {
           >
             {champ?.coinLogo ? <img src={fileDomain + champ.coinLogo} alt={champ.coinName} /> : <i>?</i>}
             <div>
-              <div className={ss.coinName}>{champ?.coinName || '???'}</div>
-              <div>${champ?.coinSymbol || '???'}</div>
+              <div className={ss.coinName}>{champ?.coinName || '??'}</div>
+              <div>${champ?.coinSymbol || '??'}</div>
             </div>
           </div>
         </div>

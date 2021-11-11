@@ -1,25 +1,22 @@
 import ss from './index.module.less'
 
 import React from 'react'
-import axios from 'axios'
+import { Empty } from 'antd'
 import { Observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
-import { Button, Empty, Input } from 'antd'
-import { SearchOutlined } from '@ant-design/icons'
 
-import { sourceRef } from '@/assets/xhr'
 import { useStore } from '@/utils/hooks/useStore'
-import { coinTypeList } from '@/pages/home/consts'
+import zh from './lang/zh.json'
+import en from './lang/en.json'
 
 import MainBanner from '@/components/main-banner'
 import CoinList from '@/components/coin-list'
 import Spinner from '@/components/spinner'
 import Footer from '@/components/footer'
+import Search from '@/pages/home/search'
 
 const Home = () => {
   const { home, common } = useStore()
-
-  const searchInputRef = React.useRef(null)
 
   React.useEffect(() => window.scrollTo(0, home.scrollTop), [home])
 
@@ -37,88 +34,12 @@ const Home = () => {
 
       <CoinList promo />
 
-      <p className={ss.upvoteTip}>代币每小时可投票一次</p>
+      <Observer render={() => <p className={ss.upvoteTip}>{common.isZH ? zh.voteTime : en.voteTime}</p>} />
+
+      <Search />
 
       <div>
-        <Observer
-          render={() => (
-            <>
-              <div className={ss.searchBar}>
-                <div className={ss.type}>
-                  <div>
-                    {coinTypeList.slice(0, 2).map((item) => (
-                      <Button
-                        key={item.value}
-                        type={home.type === item.value ? 'primary' : ''}
-                        onClick={(e) => {
-                          if (home.type === item.value) return
-                          // prettier-ignore
-                          home.updateProp({ loadingAdd: window.innerHeight - e.target.getBoundingClientRect().top - 300, })
-                          if (sourceRef.current) sourceRef.current.cancel()
-                          sourceRef.current = axios.CancelToken.source()
-                          home.getCoins({ value: '', type: item.value, pageNo: 1 })
-                          home.updateProp({ searchedInputValue: '', value: common.searchPromo || '' })
-                        }}
-                      >
-                        {item.text}
-                      </Button>
-                    ))}
-                  </div>
-                  <div>
-                    {coinTypeList.slice(2).map((item) => (
-                      <Button
-                        key={item.value}
-                        type={home.type === item.value ? 'primary' : ''}
-                        onClick={(e) => {
-                          if (home.type === item.value) return
-                          // prettier-ignore
-                          home.updateProp({ loadingAdd: window.innerHeight - e.target.getBoundingClientRect().top - 300, })
-                          if (sourceRef.current) sourceRef.current.cancel()
-                          sourceRef.current = axios.CancelToken.source()
-                          home.getCoins({ value: '', type: item.value, pageNo: 1 })
-                          home.updateProp({ searchedInputValue: '', value: common.searchPromo || '' })
-                        }}
-                      >
-                        {item.text}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                <Input.Search
-                  autoComplete="off"
-                  spellCheck={false}
-                  value={home.value}
-                  ref={searchInputRef}
-                  style={{ width: 252, height: 40 }}
-                  prefix={<SearchOutlined />}
-                  className={`${home.value && home.value === common.searchPromo ? ss.promoVal : ''} ${
-                    home.searchedInputValue === common.searchPromo ? ss.promoSearched : ''
-                  }`}
-                  placeholder="输入名称或符号，按 Enter 搜索..."
-                  onBlur={() =>
-                    home.value?.trim() && home.searchedInputValue
-                      ? null
-                      : home.updateProp({ value: common.searchPromo || '' })
-                  }
-                  onChange={(e) => home.updateProp({ value: e.target.value })}
-                  onSearch={() => {
-                    if (home.searchedInputValue === home.value) return
-                    home.updateProp({
-                      searchedInputValue: home.value?.trim() || '',
-                      loadingAdd: window.innerHeight - searchInputRef.current?.input.getBoundingClientRect().top - 300,
-                    })
-                    if (sourceRef.current) sourceRef.current.cancel()
-                    sourceRef.current = axios.CancelToken.source()
-                    home.getCoins({ value: home.value?.trim() || '', type: undefined, pageNo: 1 })
-                  }}
-                />
-              </div>
-
-              <CoinList listType={home.type} />
-            </>
-          )}
-        />
-
+        <Observer render={() => <CoinList listType={home.type} />} />
         <Observer
           render={() => (
             <div className={ss.listBot} style={{ height: home.loading ? home.loadingAdd : 'auto' }}>
@@ -128,7 +49,7 @@ const Home = () => {
                 !!home.coinList?.length &&
                 (home.noMore ? (
                   <>
-                    <span className={ss.noTip}>没有更多了</span>
+                    <span className={ss.noTip}>{common.isZH ? zh.noMore : en.noMore}</span>
                     <Link to="/add-coin" className={ss.loadBtn}>
                       List a Project
                     </Link>
@@ -141,7 +62,7 @@ const Home = () => {
                       home.getCoins({ value: home.searchedInputValue, type: home.type, pageNo: home.pageNo + 1 })
                     }}
                   >
-                    加载更多
+                    {common.isZH ? zh.loadMore : en.loadMore}
                   </span>
                 ))
               )}

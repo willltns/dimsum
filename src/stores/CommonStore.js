@@ -9,6 +9,7 @@ export class CommonStore {
   }
 
   // state
+  language = 'zh'
   unixTS = 0
   serverDateStr = ''
   bannerData = []
@@ -20,6 +21,9 @@ export class CommonStore {
   coinChainList = []
 
   // computed
+  get isZH() {
+    return this.language === 'zh'
+  }
   get wideBannerList() {
     return this.bannerData?.wideBanner || []
   }

@@ -4,12 +4,12 @@ import { ReactComponent as New } from '@/assets/img/new.svg'
 import { ReactComponent as Presale } from '@/assets/img/presale.svg'
 import { ReactComponent as Airdrop } from '@/assets/img/airdrop.svg'
 
-export const coinTypeList = [
+export const getCoinTypeList = (language) => [
   {
     value: 1,
     text: (
       <>
-        <Hot /> 今日热门
+        <Hot /> {language.s1}
       </>
     ),
   },
@@ -17,7 +17,7 @@ export const coinTypeList = [
     value: 2,
     text: (
       <>
-        <Best />️ 历史最佳
+        <Best />️ {language.s2}
       </>
     ),
   },
@@ -25,7 +25,7 @@ export const coinTypeList = [
     value: 3,
     text: (
       <>
-        <New />️ 新币
+        <New />️ {language.s3}
       </>
     ),
   },
@@ -33,7 +33,7 @@ export const coinTypeList = [
     value: 4,
     text: (
       <>
-        <Presale /> 预售
+        <Presale /> {language.s4}
       </>
     ),
   },
@@ -41,7 +41,7 @@ export const coinTypeList = [
     value: 5,
     text: (
       <>
-        <Airdrop /> 空投
+        <Airdrop /> {language.s5}
       </>
     ),
   },

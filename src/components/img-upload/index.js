@@ -1,10 +1,9 @@
 import ss from './index.module.less'
 
 import React from 'react'
-import { Modal, notification, Space, Upload } from 'antd'
+import { notification, Space, Upload } from 'antd'
 import { UploadOutlined } from '@ant-design/icons'
 import { uploadFile } from '@/assets/xhr'
-import { fileDomain } from '@/consts'
 
 export async function handleFileUpload(file) {
   try {
@@ -89,7 +88,6 @@ function ImgUpload({ value, onChange, iconRef, onClick, ...restProps }) {
       accept={acceptList.join(',')}
       beforeUpload={beforeUpload}
       className={ss.imgUpload}
-      onPreview={onPreview}
       onChange={onChange}
       fileList={value}
       {...restProps}
@@ -102,13 +100,3 @@ function ImgUpload({ value, onChange, iconRef, onClick, ...restProps }) {
 }
 
 export default ImgUpload
-
-function onPreview({ response, thumbUrl }) {
-  Modal.info({
-    icon: null,
-    closable: true,
-    maskClosable: true,
-    className: ss.previewImg,
-    content: <img src={response ? fileDomain + response : thumbUrl} alt="logo" />,
-  })
-}

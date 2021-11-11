@@ -19,9 +19,6 @@ import { addCoin } from '@/assets/xhr'
 import ImgUpload, { handleFileUpload } from '@/components/img-upload'
 import { useStore } from '@/utils/hooks/useStore'
 
-// 是否中文
-const ifZh = (lang) => lang === 'zh'
-
 // 日期格式校验 2022-22-22 22:22
 const dateReg =
   /^(((20\d{2})-(0(1|[3-9])|1[012])-(0[1-9]|[12]\d|30))|((20\d{2})-(0[13578]|1[02])-31)|((20\d{2})-02-(0[1-9]|1\d|2[0-8]))|(((20([13579][26]|[2468][048]|0[48]))|(2000))-02-29))\s([0-1][0-9]|2[0-3]):([0-5][0-9])$/
@@ -40,18 +37,18 @@ function AddCoin() {
 
   const uploadBtnRef = useRef(null)
   const linkTipRef = useRef(null)
+  const addSecRef = useRef(null)
 
   const [state, setState] = useState({
-    lang: 'zh',
     loading: false,
     coinPresaleInfo: '',
     coinAirdropInfo: '',
     presaleModalVisible: false,
     airdropModalVisible: false,
   })
-  const { lang, loading, coinPresaleInfo, coinAirdropInfo, presaleModalVisible, airdropModalVisible } = state
+  const { loading, coinPresaleInfo, coinAirdropInfo, presaleModalVisible, airdropModalVisible } = state
 
-  const tt = ifZh(lang) ? zh : en
+  const tt = common.isZH ? zh : en
 
   const onFinish = async (values) => {
     const { linkWebsite, linkChineseTg, linkEnglishTg, linkTwitter, linkMedium, linkDiscord, linkAdditionalInfo } =
@@ -79,7 +76,7 @@ function AddCoin() {
 
       await addCoin(params)
 
-      afterAdd(tt, history)
+      afterAdd(tt, history, addSecRef.current)
     } catch (err) {
       setState((state) => ({ ...state, loading: false }))
     }
@@ -96,15 +93,11 @@ function AddCoin() {
   }
 
   return (
-    <section className={ss.addCoin}>
+    <section className={ss.addCoin} ref={addSecRef}>
       <div className={ss.head}>
         <Link replace to="/">
           <ArrowLeftOutlined /> {tt.backText}
         </Link>
-        <div onClick={() => setState((state) => ({ ...state, lang: ifZh(lang) ? 'en' : 'zh' }))}>
-          <span className={ifZh(lang) ? '' : ss.selected}>En</span> /{' '}
-          <span className={ifZh(lang) ? ss.selected : ''}>中</span>
-        </div>
       </div>
 
       <Form
@@ -126,7 +119,7 @@ function AddCoin() {
           coinAirdropDate: '2021-00-00 00:00',
         }}
       >
-        <Row className={ifZh(lang) ? ss.zhMode : ss.enMode}>
+        <Row className={common.isZH ? ss.zhMode : ss.enMode}>
           <Col>
             <Form.Item noStyle>
               <h2>{tt.coinInfoTitle}</h2>
@@ -259,12 +252,7 @@ function AddCoin() {
             <Form.Item noStyle>
               <h2>{tt.contactInfoTitle}</h2>
             </Form.Item>
-            <Form.Item
-              label={tt.contactEmail}
-              name="contactEmail"
-              validateTrigger="onBlur"
-              rules={[{ required: true }, { type: 'email' }]}
-            >
+            <Form.Item label={tt.contactEmail} name="contactEmail" validateTrigger="onBlur" rules={[{ type: 'email' }]}>
               <Input placeholder="xxxxx@gmail.com" />
             </Form.Item>
             <Form.Item label={tt.contactTelegram} name="contactTg" rules={[{ required: true, whitespace: true }]}>
@@ -332,7 +320,7 @@ function AddCoin() {
 export default observer(AddCoin)
 
 // 添加代币成功提示
-function afterAdd(tt, history) {
+function afterAdd(tt, history, container) {
   Modal.success({
     icon: null,
     width: 520,
@@ -342,8 +330,9 @@ function afterAdd(tt, history) {
     okText: tt.sucSerCCap,
     className: ss.sucAddModal,
     okButtonProps: { type: 'default' },
+    getContainer: () => container,
     maskStyle: { backgroundColor: 'rgba(0, 0, 0, 0.8)' },
-    onOk: () => void setTimeout(() => history.replace('/'), 500),
+    onOk: () => void setTimeout(() => history.replace('/'), 400),
     content: (
       <div>
         <h2>
@@ -356,6 +345,11 @@ function afterAdd(tt, history) {
         <p>{tt.sucUpdateCap}</p>
         <b>{tt.sucSerCap}</b>
         <p>{tt.sucSerPCap}</p>
+        <p>
+          {tt.sucSerVlCap}
+          <i onClick={() => setTimeout(() => history.replace('/promote'), 250)}>Promote</i>
+          {tt.sucSerVrCap}
+        </p>
         <div className="contact-add">
           <span>
             <TgIcon />
