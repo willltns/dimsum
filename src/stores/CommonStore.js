@@ -85,8 +85,6 @@ export class CommonStore {
         this.bannerData = bannerData
         this.promoCoinList = promoCoinList || []
         this.searchPromo = searchData?.coinName || ''
-
-        if (!home.value) home.value = searchData?.coinName || ''
       } catch (err) {}
       this.loading = false
     }.bind(this)

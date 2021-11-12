@@ -1,6 +1,6 @@
 import ss from './index.module.less'
 import Logo from '@/assets/img/YYDS_LOGO_HOR.png'
-import HomePage from '@/assets/img/home_page.png'
+import homeIntro from '@/assets/img/home_intro.png'
 
 import React from 'react'
 
@@ -19,7 +19,7 @@ function Promote() {
             <em>As token developers, we are the site to grow your outreach to Chinese investors.</em>
             <p>Click on "List-a-Project", or see below for more promotional services. </p>
           </div>
-          <img src={HomePage} alt="home page" />
+          <img src={homeIntro} alt="home page" />
           <img src={Logo} alt="logo" />
         </div>
 

@@ -27,13 +27,9 @@ export class HomeStore {
 
   getCoins = flow(
     function* (searchV = {}) {
-      const { common } = this.getRoot()
-
-      if (!searchV.value && searchV.type === undefined) return
-
       let params = { pageSize: this.pageSize, ...searchV }
 
-      this.value = this.searchedInputValue || common.searchPromo
+      this.value = this.searchedInputValue
       this.type = params.type
 
       if (!params.value) params.value = undefined

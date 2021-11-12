@@ -143,7 +143,7 @@ function AddCoin() {
               />
             </Form.Item>
             <Form.Item label={tt.description} name="coinDescription" rules={[{ required: true, whitespace: true }]}>
-              <Input.TextArea autoSize={{ minRows: 8 }} placeholder={descPH} />
+              <Input.TextArea autoSize={{ minRows: 8 }} placeholder={descPH} allowClear />
             </Form.Item>
             <Form.Item
               label={tt.launchDate}
@@ -246,7 +246,7 @@ function AddCoin() {
               <Input placeholder="https://..." />
             </Form.Item>
             <Form.Item label={tt.addLinkInfo} name="linkAdditionalInfo" rules={[{ whitespace: true }]}>
-              <Input.TextArea autoSize={{ minRows: 6 }} placeholder={additionalLinkPH} />
+              <Input.TextArea autoSize={{ minRows: 6 }} placeholder={additionalLinkPH} allowClear />
             </Form.Item>
 
             <Form.Item noStyle>
@@ -283,6 +283,7 @@ function AddCoin() {
           </Button>
         </div>
         <Input.TextArea
+          allowClear
           value={coinPresaleInfo}
           placeholder={presalePH}
           onChange={(e) => setState((state) => ({ ...state, coinPresaleInfo: e.target.value }))}
@@ -305,6 +306,7 @@ function AddCoin() {
           </Button>
         </div>
         <Input.TextArea
+          allowClear
           value={coinAirdropInfo}
           placeholder={airdropPH}
           autoSize={{ minRows: 10 }}

@@ -20,6 +20,20 @@ function Search() {
 
   const searchInputRef = React.useRef(null)
 
+  const handleInputSearch = () => {
+    const trimmedValue = home.value?.trim() || ''
+    if (!!trimmedValue && home.searchedInputValue === trimmedValue) return // 已搜索
+    if (!trimmedValue && !common.searchPromo) return // 空
+    if (!trimmedValue && !!common.searchPromo && common.searchPromo === home.searchedInputValue) return // 已搜索
+    home.updateProp({
+      searchedInputValue: trimmedValue || common.searchPromo,
+      loadingAdd: window.innerHeight - searchInputRef.current?.input.getBoundingClientRect().top - 300,
+    })
+    if (sourceRef.current) sourceRef.current.cancel()
+    sourceRef.current = axios.CancelToken.source()
+    home.getCoins({ value: trimmedValue || common.searchPromo, type: undefined, pageNo: 1 })
+  }
+
   return (
     <div className={`${ss.searchBar} ${common.isZH ? '' : ss.en}`}>
       <div className={ss.type}>
@@ -37,7 +51,7 @@ function Search() {
                   if (sourceRef.current) sourceRef.current.cancel()
                   sourceRef.current = axios.CancelToken.source()
                   home.getCoins({ value: '', type: item.value, pageNo: 1 })
-                  home.updateProp({ searchedInputValue: '', value: common.searchPromo || '' })
+                  home.updateProp({ searchedInputValue: '', value: '' })
                 }}
               >
                 {item.text}
@@ -58,7 +72,7 @@ function Search() {
                   if (sourceRef.current) sourceRef.current.cancel()
                   sourceRef.current = axios.CancelToken.source()
                   home.getCoins({ value: '', type: item.value, pageNo: 1 })
-                  home.updateProp({ searchedInputValue: '', value: common.searchPromo || '' })
+                  home.updateProp({ searchedInputValue: '', value: '' })
                 }}
               >
                 {item.text}
@@ -67,29 +81,15 @@ function Search() {
         </div>
       </div>
       <Input.Search
+        size="large"
         autoComplete="off"
         spellCheck={false}
         value={home.value}
         ref={searchInputRef}
-        prefix={<SearchOutlined />}
-        className={`${home.value && home.value === common.searchPromo ? ss.promoVal : ''} ${
-          home.searchedInputValue === common.searchPromo ? ss.promoSearched : ''
-        }`}
-        placeholder={language.s6}
-        onBlur={() =>
-          home.value?.trim() && home.searchedInputValue ? null : home.updateProp({ value: common.searchPromo || '' })
-        }
+        onSearch={handleInputSearch}
+        placeholder={common.searchPromo || language.s6}
+        prefix={<SearchOutlined onClick={handleInputSearch} />}
         onChange={(e) => home.updateProp({ value: e.target.value })}
-        onSearch={() => {
-          if (home.searchedInputValue === home.value) return
-          home.updateProp({
-            searchedInputValue: home.value?.trim() || '',
-            loadingAdd: window.innerHeight - searchInputRef.current?.input.getBoundingClientRect().top - 300,
-          })
-          if (sourceRef.current) sourceRef.current.cancel()
-          sourceRef.current = axios.CancelToken.source()
-          home.getCoins({ value: home.value?.trim() || '', type: undefined, pageNo: 1 })
-        }}
       />
     </div>
   )
