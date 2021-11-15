@@ -84,7 +84,7 @@ function CoinInfo() {
 
                 <div>
                   <div className={ss.name}>{coinInfo.coinName || '??'}</div>
-                  <div className={ss.symbol}>${coinInfo.coinSymbol || '??'}</div>
+                  <div className={ss.symbol}>{coinInfo.coinSymbol || '??'}</div>
                 </div>
               </div>
               <div className={ss.stat}>

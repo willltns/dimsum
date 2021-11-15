@@ -19,6 +19,7 @@ export class CommonStore {
   votedList = []
   intervalTimer = null
   coinChainList = []
+  promoVote = { voted: false, champ: null, promoInfo: null }
 
   // computed
   get isZH() {
@@ -38,6 +39,9 @@ export class CommonStore {
   updateProp(property) {
     Object.assign(this, property)
   }
+  updatePromoVote(property) {
+    Object.assign(this.promoVote, property)
+  }
 
   updateUnixTS(date) {
     this.unixTS = dayjs(date, 'YYYY-MM-DD HH:mm:ss').unix()
@@ -49,19 +53,19 @@ export class CommonStore {
   }
 
   getVotedList() {
-    const votedList = JSON.parse(localStorage.getItem('__ivot'))
-    localStorage.removeItem('__ivot')
+    const votedList = localStorage.getItem('__ivot')?.split(',') || []
 
     getServTime()
       .then((res) => {
-        res?.date && this.timeStart(res?.date)
-        this.votedList = (votedList || []).filter((item) => item.split('.')[1] > res?.timestamp)
+        res?.date && this.timeStart(res.date)
+        this.votedList = votedList.filter((item) => item?.split('.')?.[1] > res?.timestamp)
       })
       .catch(() => {})
   }
 
   pushVoted(coinStr) {
     this.votedList.push(coinStr)
+    setTimeout(() => localStorage.setItem('__ivot', this.votedList.toString()))
   }
 
   timeStart(dateStr) {
@@ -75,7 +79,6 @@ export class CommonStore {
   getAdvert = flow(
     function* () {
       this.loading = true
-      const { home } = this.getRoot()
       try {
         const [bannerData, promoCoinList, searchData] = yield Promise.all([
           getBanners(),

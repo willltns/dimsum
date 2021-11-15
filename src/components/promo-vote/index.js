@@ -5,26 +5,21 @@ import React from 'react'
 import Cookies from 'js-cookie'
 import { Radio, Space } from 'antd'
 import { useHistory } from 'react-router-dom'
+import { observer } from 'mobx-react'
 
-import { getChamp, getPromoVote, votePromoVote } from '@/assets/xhr'
+import { getPromoVote, votePromoVote } from '@/assets/xhr'
+import { useStore } from '@/utils/hooks/useStore'
 import { fileDomain } from '@/consts'
 
 const cookieKey = 'vi'
 
 function PromoVote() {
   const history = useHistory()
+  const { common } = useStore()
 
-  const [state, setState] = React.useState({ voted: false, champ: null, promoInfo: null })
-  const { voted, champ, promoInfo } = state
+  const { voted, champ, promoInfo } = common.promoVote
 
   const voteId = promoInfo?.id
-
-  const getData = async () => {
-    try {
-      const [champ, promoInfo] = await Promise.all([getChamp(), getPromoVote()])
-      setState((state) => ({ ...state, champ, promoInfo }))
-    } catch (err) {}
-  }
 
   const handlePromoVote = async (e) => {
     if (Cookies.get(cookieKey)) return
@@ -34,17 +29,13 @@ function PromoVote() {
 
     try {
       await votePromoVote({ id: optionId })
-      setState((state) => ({ ...state, voted: true }))
+      common.updatePromoVote({ voted: true })
       // prettier-ignore
-      getPromoVote().then((promoInfo) => setState((state) => ({ ...state, promoInfo }))).catch(() => {})
+      getPromoVote().then(promoInfo => common.updatePromoVote({ promoInfo })).catch(() => {})
     } catch (err) {
       Cookies.remove(cookieKey)
     }
   }
-
-  React.useEffect(() => {
-    getData()
-  }, [])
 
   React.useEffect(() => {
     if (!voteId) return
@@ -52,8 +43,8 @@ function PromoVote() {
 
     const isVoted = +voteId === +votedId
     if (!isVoted) Cookies.remove(cookieKey)
-    setState((state) => ({ ...state, voted: isVoted }))
-  }, [voteId])
+    common.updatePromoVote({ voted: isVoted })
+  }, [voteId, common])
 
   return (
     <div className={`${ss.PromoVote} ${voted || promoInfo?.finished ? ss.voted : ''}`}>
@@ -67,8 +58,8 @@ function PromoVote() {
           >
             {champ?.coinLogo ? <img src={fileDomain + champ.coinLogo} alt={champ.coinName} /> : <i>?</i>}
             <div>
-              <div className={ss.coinName}>{champ?.coinName || '??'}</div>
-              <div>${champ?.coinSymbol || '??'}</div>
+              <div className={`${ss.coinName} coin-name`}>{champ?.coinName || '??'}</div>
+              <div>{champ?.coinSymbol || '??'}</div>
             </div>
           </div>
         </div>
@@ -96,4 +87,4 @@ function PromoVote() {
   )
 }
 
-export default React.memo(PromoVote)
+export default React.memo(observer(PromoVote))

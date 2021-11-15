@@ -1,0 +1,32 @@
+.surveyMod {
+  color: #545454;
+
+  :global {
+    .ant-modal-body {
+      padding: 40px;
+    }
+
+    .coin-name {
+      max-width: inherit;
+    }
+
+    h3 {
+      margin-top: 16px;
+      margin-bottom: 2px;
+
+      + div {
+        .ant-space-item {
+          margin-top: 6px;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 450px) {
+    :global {
+      .ant-modal-body {
+        padding: 24px 16px;
+      }
+    }
+  }
+}
