@@ -1,5 +1,4 @@
 import ss from './index.module.less'
-import YYDSLogo from '@/assets/img/YYDS_LOGO_HOR.png'
 
 import React, { useEffect } from 'react'
 import { Divider, notification, Space } from 'antd'
@@ -67,7 +66,7 @@ function Header() {
   return (
     <header className={ss.header}>
       <Link to="/">
-        <img src={YYDSLogo} alt="YYDSCoins" style={{ height: 40 }} />
+        <img src="/logo_hor.png" alt="YYDSCoins" style={{ height: 40 }} />
       </Link>
       <div className={ss.headerBtn}>
         <CDButton onClick={() => history.push('/add-coin')}>{common.isZH ? '添加代币' : 'List a Project'}</CDButton>

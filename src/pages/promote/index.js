@@ -1,5 +1,4 @@
 import ss from './index.module.less'
-import Logo from '@/assets/img/YYDS_LOGO_HOR.png'
 import homeIntro from '@/assets/img/home_intro.png'
 
 import React from 'react'
@@ -20,7 +19,7 @@ function Promote() {
             <p>Click on "List-a-Project", or see below for more promotional services. </p>
           </div>
           <img src={homeIntro} alt="home page" />
-          <img src={Logo} alt="logo" />
+          <img src="/logo_hor.png" alt="logo" />
         </div>
 
         <h1>How to create a powerful campaign?</h1>

@@ -18,6 +18,7 @@ import MainBanner from '@/components/main-banner'
 import CoinList from '@/components/coin-list'
 import Footer from '@/components/footer'
 import CDButton from '@/components/cd-button'
+import ShareBtns from './ShareBtns'
 import { modalInfo } from '@/components/coin-list/modalInfo'
 
 const copiedTitle = { current: null }
@@ -243,6 +244,8 @@ function CoinInfo() {
           </CDButton>
           <p>{lang.voteTime}</p>
         </div>
+
+        <ShareBtns coinInfo={coinInfo} />
       </div>
 
       <CoinList promo />

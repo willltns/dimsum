@@ -1,7 +1,6 @@
 import ss from './index.module.less'
 import { ReactComponent as TgIcon } from '@/assets/img/link-icon/tg.svg'
 import { ReactComponent as RocketIcon } from '@/assets/img/link-icon/rocket.svg'
-import Logo from '@/assets/img/YYDS_LOGO_HOR.png'
 
 import React, { useRef, useState } from 'react'
 import { Link, useHistory } from 'react-router-dom'
@@ -341,7 +340,7 @@ function afterAdd(tt, history, container) {
           {tt.sucTitle}
           <RocketIcon />
         </h2>
-        <img src={Logo} alt="logo" />
+        <img src="/logo_hor.png" alt="logo" />
         <p>{tt.sucContactCap}</p>
         {/*<p>{tt.sucWarnCap}</p>*/}
         <p>{tt.sucUpdateCap}</p>
