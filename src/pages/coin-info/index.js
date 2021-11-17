@@ -245,7 +245,12 @@ function CoinInfo() {
           <p>{lang.voteTime}</p>
         </div>
 
-        <ShareBtns coinInfo={coinInfo} />
+        {!!coinInfo.id && (
+          <ShareBtns
+            coinInfo={coinInfo}
+            chainAbbr={(common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}).symbol}
+          />
+        )}
       </div>
 
       <CoinList promo />

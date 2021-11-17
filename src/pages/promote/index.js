@@ -19,7 +19,7 @@ function Promote() {
             <p>Click on "List-a-Project", or see below for more promotional services. </p>
           </div>
           <img src={homeIntro} alt="home page" />
-          <img src="/logo_hor.png" alt="logo" />
+          <img src="/logo.png" alt="logo" />
         </div>
 
         <h1>How to create a powerful campaign?</h1>

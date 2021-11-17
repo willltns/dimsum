@@ -340,7 +340,7 @@ function afterAdd(tt, history, container) {
           {tt.sucTitle}
           <RocketIcon />
         </h2>
-        <img src="/logo_hor.png" alt="logo" />
+        <img src="/logo.png" alt="logo" />
         <p>{tt.sucContactCap}</p>
         {/*<p>{tt.sucWarnCap}</p>*/}
         <p>{tt.sucUpdateCap}</p>

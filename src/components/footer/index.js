@@ -7,7 +7,7 @@ import { tg } from '@/consts'
 function Footer() {
   return (
     <footer className={ss.footer}>
-      <img src="/logo_hor.png" alt="logo" />
+      <img src="/logo.png" alt="logo" />
       <p>
         YYDSCoins © 2021 -{' '}
         <a href={tg} target="_blank" rel="noreferrer">
