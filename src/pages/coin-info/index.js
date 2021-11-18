@@ -73,7 +73,7 @@ function CoinInfo() {
   const chainInfo = common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}
 
   return (
-    <section>
+    <section className={ss.ciS}>
       <MainBanner />
 
       <div className={ss.wrapper}>

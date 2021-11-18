@@ -53,7 +53,9 @@
 
 .popPro {
   width: auto;
-  padding: 24px 8px 8px;
+  padding: 16px 4px 4px;
+  margin-bottom: 8px;
+  left: 8px;
 
   img {
     width: 333px;
@@ -61,16 +63,25 @@
     object-fit: cover;
     border-radius: 8px;
 
-    @media screen and (max-width: 375px) {
-      width: 300px;
-      height: 300px;
+    @media screen and (max-width: 500px) {
+      width: 277px;
+      height: 277px;
+    }
+    @media screen and (max-width: 444px) {
+      width: 234px;
+      height: 234px;
     }
   }
 
   :global {
     .ant-notification-notice-close {
-      top: 7px;
-      right: 11px;
+      top: 0;
+      right: 3px;
+      width: 30px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 }

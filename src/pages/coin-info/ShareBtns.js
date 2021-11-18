@@ -12,6 +12,7 @@ import { observer } from 'mobx-react'
 import { ShareAltOutlined, CopyOutlined, CheckCircleOutlined, RiseOutlined } from '@ant-design/icons'
 
 import { fileDomain } from '@/consts'
+import { isAndroid, isMobile } from '@/utils/mobileDetect'
 import { useStore } from '@/utils/hooks/useStore'
 
 function fixedEncodeURIComponent(str) {
@@ -80,9 +81,11 @@ function ShareBtns(props) {
         <div data-platform="weibo">
           <WeiboIcon />
         </div>
-        <div data-platform="telegram">
-          <TelegramIcon />
-        </div>
+        {(!isMobile() || isAndroid()) && (
+          <div data-platform="telegram">
+            <TelegramIcon />
+          </div>
+        )}
         <div data-platform="twitter">
           <TwitterIcon />
         </div>

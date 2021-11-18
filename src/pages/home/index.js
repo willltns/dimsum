@@ -29,7 +29,7 @@ const Home = () => {
   )
 
   return (
-    <section>
+    <section className={ss.homeS}>
       <MainBanner />
 
       <CoinList promo />

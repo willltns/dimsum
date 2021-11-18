@@ -38,8 +38,8 @@ function Header() {
     notification.open({
       bottom: 8,
       message: null,
-      key: 'popPromo',
       duration: null,
+      key: 'popPromo',
       className: ss.popPro,
       placement: 'bottomRight',
       description: (
