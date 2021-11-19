@@ -6,7 +6,7 @@ import React from 'react'
 import dayjs from 'dayjs'
 import { Space } from 'antd'
 import { Link } from 'react-router-dom'
-import { Observer } from 'mobx-react'
+import { observer, Observer } from 'mobx-react'
 
 import { tg /*twitter*/ } from '@/consts'
 import PromoVote from '@/components/promo-vote'
@@ -29,6 +29,10 @@ function Sidebar() {
           <Link to="/add-coin">添加代币｜List a Project</Link>
           <Link to="/promote" style={{ right: 1 }}>
             推广｜Promote
+          </Link>
+          <Link to="/yyds-intro">
+            {common.isZH ? '什么是' : 'What is'}
+            <span>YYDS</span>?
           </Link>
         </nav>
         <Space>
@@ -61,4 +65,4 @@ function Sidebar() {
   )
 }
 
-export default React.memo(Sidebar)
+export default React.memo(observer(Sidebar))

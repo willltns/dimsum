@@ -30,12 +30,10 @@ const logoFB = {
 }
 
 function CoinList(props) {
-  const { promo, listType } = props
+  const { list, listType, promo } = props
 
   const { common, home } = useStore()
   const language = lang[common.language]
-
-  const list = promo ? common.promoCoinList : home.coinList
 
   // 推广代币列表，但列表没有值，不渲染
   if (promo && !list?.length) return null

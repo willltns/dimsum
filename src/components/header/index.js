@@ -1,4 +1,6 @@
 import ss from './index.module.less'
+import { ReactComponent as CNIcon } from '@/assets/img/link-icon/cn.svg'
+import { ReactComponent as ENIcon } from '@/assets/img/link-icon/en.svg'
 
 import React, { useEffect } from 'react'
 import { Divider, notification, Space } from 'antd'
@@ -20,6 +22,7 @@ function Header() {
 
   useEffect(() => {
     home.getCoins({ value: '', type: 1, pageNo: 1 })
+    common.getAdvert()
     // prettier-ignore
     getChainList().then((res) => common.updateProp({ coinChainList: res?.list || [] })).catch(() => {})
   }, [home, common])
@@ -28,9 +31,9 @@ function Header() {
     window.scrollTo(0, 0)
     if (pathname !== '/coin-info')
       document.title = 'YYDSCoins - 中国社区加密货币收录平台 | Best Chinese Community Coin Listing'
-    if (['/add-coin', '/promote'].includes(pathname)) return
 
-    common.getAdvert()
+    // if (['/add-coin', '/promote'].includes(pathname)) return
+    // common.getAdvert()
   }, [pathname, common])
 
   useEffect(() => {
@@ -74,16 +77,20 @@ function Header() {
           {common.isZH ? '推广' : 'Promote'}
         </CDButton>
         <CDButton
-          style={{ width: 92 }}
+          className={ss.langBtn}
           onClick={() => {
             const lang = common.isZH ? 'en' : 'zh'
             localStorage.setItem('lang', lang)
             common.updateProp({ language: lang })
           }}
         >
-          <Space size={0} split={<Divider type="vertical" />} className={common.isZH ? ss.zh : ss.en}>
-            <span>中</span>
-            <span>EN</span>
+          <Space
+            size={3}
+            split={<Divider type="vertical" />}
+            className={`${ss.langTog} ${common.isZH ? ss.zh : ss.en}`}
+          >
+            <CNIcon />
+            <ENIcon />
           </Space>
         </CDButton>
         <MenuOutlined className={ss.sideCtrl} onClick={toggleSidebar} />

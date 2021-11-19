@@ -50,6 +50,7 @@ rootStore.common.getVotedList()
 // 页面可见时获取服务器时间，校准页面时钟
 document.addEventListener('visibilitychange', function () {
   if (document.visibilityState !== 'visible') return
+  // rootStore.common.getAdvert()
   // prettier-ignore
   getServTime().then(res => res?.date && rootStore.common.updateUnixTS(res.date)).catch(()=> {})
 })

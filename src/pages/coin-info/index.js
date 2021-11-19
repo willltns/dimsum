@@ -253,7 +253,7 @@ function CoinInfo() {
         )}
       </div>
 
-      <CoinList promo />
+      <CoinList promo list={common.promoCoinList} />
 
       <Footer />
     </section>

@@ -32,14 +32,14 @@ const Home = () => {
     <section className={ss.homeS}>
       <MainBanner />
 
-      <CoinList promo />
+      <CoinList promo list={common.promoCoinList} />
 
       <Observer render={() => <p className={ss.upvoteTip}>{common.isZH ? zh.voteTime : en.voteTime}</p>} />
 
       <Search />
 
       <div>
-        <Observer render={() => <CoinList listType={home.type} />} />
+        <Observer render={() => <CoinList list={home.coinList} listType={home.type} />} />
         <Observer
           render={() => (
             <div className={ss.listBot} style={{ height: home.loading ? home.loadingAdd : 'auto' }}>
