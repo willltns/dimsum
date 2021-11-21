@@ -14,7 +14,8 @@ import en from './lang/en.json'
 
 const lang = { zh, en }
 
-function Search() {
+function Search(props) {
+  const { allCoins, activeType } = props
   const { home, common } = useStore()
   const language = lang[common.language]
 
@@ -34,63 +35,48 @@ function Search() {
     home.getCoins({ value: trimmedValue || common.searchPromo, type: undefined, pageNo: 1 })
   }
 
+  const handleTabClick = (e, item) => {
+    if (activeType === item.value) return
+
+    if (!allCoins) return home.getNewCoins(item.value)
+
+    // prettier-ignore
+    home.updateProp({ loadingAdd: window.innerHeight - e.target.getBoundingClientRect().top - 300, })
+    if (sourceRef.current) sourceRef.current.cancel()
+    sourceRef.current = axios.CancelToken.source()
+    home.getCoins({ value: '', type: item.value, pageNo: 1 })
+    home.updateProp({ searchedInputValue: '', value: '' })
+  }
+
   return (
     <div className={`${ss.searchBar} ${common.isZH ? '' : ss.en}`}>
       <div className={ss.type}>
-        <div>
-          {getCoinTypeList(language)
-            .slice(0, 2)
-            .map((item) => (
-              <Button
-                key={item.value}
-                type={home.type === item.value ? 'primary' : ''}
-                onClick={(e) => {
-                  if (home.type === item.value) return
-                  // prettier-ignore
-                  home.updateProp({ loadingAdd: window.innerHeight - e.target.getBoundingClientRect().top - 300, })
-                  if (sourceRef.current) sourceRef.current.cancel()
-                  sourceRef.current = axios.CancelToken.source()
-                  home.getCoins({ value: '', type: item.value, pageNo: 1 })
-                  home.updateProp({ searchedInputValue: '', value: '' })
-                }}
-              >
-                {item.text}
-              </Button>
-            ))}
-        </div>
-        <div>
-          {getCoinTypeList(language)
-            .slice(2)
-            .map((item) => (
-              <Button
-                key={item.value}
-                type={home.type === item.value ? 'primary' : ''}
-                onClick={(e) => {
-                  if (home.type === item.value) return
-                  // prettier-ignore
-                  home.updateProp({ loadingAdd: window.innerHeight - e.target.getBoundingClientRect().top - 300, })
-                  if (sourceRef.current) sourceRef.current.cancel()
-                  sourceRef.current = axios.CancelToken.source()
-                  home.getCoins({ value: '', type: item.value, pageNo: 1 })
-                  home.updateProp({ searchedInputValue: '', value: '' })
-                }}
-              >
-                {item.text}
-              </Button>
-            ))}
-        </div>
+        {getCoinTypeList(language)
+          .slice(...(allCoins ? [0, 2] : [2]))
+          .map((item) => (
+            <Button
+              key={item.value}
+              type={activeType === item.value ? 'primary' : ''}
+              onClick={(e) => handleTabClick(e, item)}
+            >
+              {item.text}
+            </Button>
+          ))}
       </div>
-      <Input.Search
-        size="large"
-        autoComplete="off"
-        spellCheck={false}
-        value={home.value}
-        ref={searchInputRef}
-        onSearch={handleInputSearch}
-        placeholder={common.searchPromo || language.s6}
-        prefix={<SearchOutlined onClick={handleInputSearch} />}
-        onChange={(e) => home.updateProp({ value: e.target.value })}
-      />
+
+      {allCoins && (
+        <Input.Search
+          size="large"
+          autoComplete="off"
+          spellCheck={false}
+          value={home.value}
+          ref={searchInputRef}
+          onSearch={handleInputSearch}
+          placeholder={common.searchPromo || language.s6}
+          prefix={<SearchOutlined onClick={handleInputSearch} />}
+          onChange={(e) => home.updateProp({ value: e.target.value })}
+        />
+      )}
     </div>
   )
 }

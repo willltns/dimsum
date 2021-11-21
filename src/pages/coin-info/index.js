@@ -19,7 +19,6 @@ import CoinList from '@/components/coin-list'
 import Footer from '@/components/footer'
 import CDButton from '@/components/cd-button'
 import ShareBtns from './ShareBtns'
-import { modalInfo } from '@/components/coin-list/modalInfo'
 
 const copiedTitle = { current: null }
 
@@ -72,6 +71,10 @@ function CoinInfo() {
 
   const chainInfo = common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}
 
+  let description = ''
+  if (common.isZH) description = coinInfo.coinDescription || coinInfo.coinDescriptionEN
+  else description = coinInfo.coinDescriptionEN || coinInfo.coinDescription
+
   return (
     <section className={ss.ciS}>
       <MainBanner />
@@ -123,7 +126,7 @@ function CoinInfo() {
               </div>
             </span>
 
-            <Input.TextArea autoSize readOnly value={coinInfo.coinDescription} className={ss.desc} />
+            <Input.TextArea autoSize readOnly value={description} className={ss.desc} />
           </div>
 
           <div className={ss.links}>
@@ -187,36 +190,16 @@ function CoinInfo() {
 
             {(coinInfo.coinPresaleInfo || coinInfo.coinAirdropInfo) && <Divider />}
 
-            {!!coinInfo.coinPresaleInfo && (
-              <CDButton
-                className={ss.presBtn}
-                onClick={() =>
-                  modalInfo({
-                    title:
-                      lang.presaleI + (coinInfo.coinPresaleDate ? ` - ${coinInfo.coinPresaleDate.slice(0, -3)}` : ''),
-                    text: coinInfo.coinPresaleInfo,
-                    okText: common.isZH ? '好的' : 'Ok',
-                  })
-                }
-              >
+            {urlReg.test(coinInfo.coinPresaleInfo) && (
+              <CDButton className={ss.presBtn} onClick={() => window.open(coinInfo.coinPresaleInfo)}>
                 {lang.presaleI}
                 {coinInfo.coinPresaleDate && <i>{coinInfo.coinPresaleDate.slice(0, -3)}</i>}
               </CDButton>
             )}
 
-            {!!coinInfo.coinAirdropInfo && (
-              <CDButton
-                className={ss.airdBtn}
-                onClick={() =>
-                  modalInfo({
-                    title:
-                      lang.airdropI + (coinInfo.coinAirdropDate ? ` - ${coinInfo.coinAirdropDate.slice(0, -3)}` : ''),
-                    text: coinInfo.coinAirdropInfo,
-                    okText: common.isZH ? '好的' : 'Ok',
-                  })
-                }
-              >
-                {lang.airdropI}
+            {urlReg.test(coinInfo.coinAirdropInfo) && (
+              <CDButton className={ss.wlsBtn} onClick={() => window.open(coinInfo.coinAirdropInfo)}>
+                {lang.wlsI}
                 {coinInfo.coinAirdropDate && <i>{coinInfo.coinAirdropDate.slice(0, -3)}</i>}
               </CDButton>
             )}

@@ -4,10 +4,10 @@
   "symbol": "符号",
   "dateLaunch": "发布",
   "datePres": "预售",
-  "dateAird": "空投",
-  "presale": "预售信息",
-  "airdrop": "空投信息",
+  "dateWL": "白名单",
+  "presale": "预售地址",
+  "whitelist": "白名单地址",
   "links": "链接",
   "upvotes": "投票",
-  "check": "查看"
+  "check": "前往"
 }

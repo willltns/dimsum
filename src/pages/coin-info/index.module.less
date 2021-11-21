@@ -53,11 +53,13 @@
 
 .infoHead {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .base {
   display: flex;
   word-break: break-word;
+  margin-right: 32px;
 
   > img,
   > i {
@@ -84,16 +86,19 @@
 .stat {
   display: flex;
   align-items: flex-end;
+  margin-top: 24px;
 
   > span {
     font-size: 17px;
-    margin-left: 32px;
-    margin-bottom: 11px;
     flex: none;
 
     b {
       font-size: 19px;
       color: @primary-color;
+    }
+
+    &:last-child {
+      margin-left: 32px;
     }
   }
 
@@ -243,7 +248,7 @@
 }
 
 .presBtn,
-.airdBtn {
+.wlsBtn {
   position: relative;
 
   > i {
@@ -378,9 +383,11 @@
     flex-direction: column;
   }
 
-  .stat {
-    margin-top: 24px;
+  .base {
+    margin-right: 0;
+  }
 
+  .stat {
     > span {
       margin: 0;
       margin-right: 32px;
@@ -388,7 +395,7 @@
   }
 
   .shareBtns {
-    top: 66px;
+    top: 72px;
   }
 }
 

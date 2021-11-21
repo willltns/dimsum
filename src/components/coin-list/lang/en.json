@@ -4,9 +4,9 @@
   "symbol": "Symbol",
   "dateLaunch": "Launch",
   "datePres": "Presale",
-  "dateAird": "Airdrop",
-  "presale": "Presale Info",
-  "airdrop": "Airdrop Info",
+  "dateWL": "Whitelist",
+  "presale": "Presale Link",
+  "whitelist": "Whitelist Link",
   "links": "Links",
   "upvotes": "Upvotes",
   "check": "Check"

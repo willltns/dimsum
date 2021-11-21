@@ -16,12 +16,11 @@ import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 
 import { useStore } from '@/utils/hooks/useStore'
-import { fileDomain } from '@/consts'
+import { fileDomain, urlReg } from '@/consts'
 import zh from './lang/zh.json'
 import en from './lang/en.json'
 
 import CDButton from '@/components/cd-button'
-import { modalInfo } from '@/components/coin-list/modalInfo'
 
 const lang = { zh, en }
 
@@ -62,11 +61,11 @@ function CoinList(props) {
           <div>{language.symbol}</div>
           <div>
             {listType === 4 && language.datePres}
-            {listType === 5 && language.dateAird}
+            {listType === 5 && language.dateWL}
             {(!listType || listType < 4) && language.dateLaunch} (UTC+8)
           </div>
           <div>{language.presale}</div>
-          <div>{language.airdrop}</div>
+          <div>{language.whitelist}</div>
           <div>{language.links}</div>
           <div>{language.upvotes}</div>
         </div>
@@ -113,19 +112,8 @@ function CoinList(props) {
             })()}
 
             <div className={ss.btnCol}>
-              {coin.coinPresaleInfo ? (
-                <CDButton
-                  onClick={(e) =>
-                    stopProp(e, () =>
-                      modalInfo({
-                        title:
-                          language.presale + (coin.coinPresaleDate ? ` - ${coin.coinPresaleDate.slice(0, -3)}` : ''),
-                        text: coin.coinPresaleInfo,
-                        okText: common.isZH ? '好的' : 'Ok',
-                      })
-                    )
-                  }
-                >
+              {urlReg.test(coin.coinPresaleInfo) ? (
+                <CDButton onClick={(e) => stopProp(e, () => window.open(coin.coinPresaleInfo))}>
                   {language.check}
                 </CDButton>
               ) : (
@@ -134,19 +122,8 @@ function CoinList(props) {
             </div>
 
             <div className={ss.btnCol}>
-              {coin.coinAirdropInfo ? (
-                <CDButton
-                  onClick={(e) =>
-                    stopProp(e, () =>
-                      modalInfo({
-                        title:
-                          language.airdrop + (coin.coinAirdropDate ? ` - ${coin.coinAirdropDate.slice(0, -3)}` : ''),
-                        text: coin.coinAirdropInfo,
-                        okText: common.isZH ? '好的' : 'Ok',
-                      })
-                    )
-                  }
-                >
+              {urlReg.test(coin.coinAirdropInfo) ? (
+                <CDButton onClick={(e) => stopProp(e, () => window.open(coin.coinAirdropInfo))}>
                   {language.check}
                 </CDButton>
               ) : (
@@ -155,7 +132,7 @@ function CoinList(props) {
             </div>
 
             <div className={ss.links}>
-              {coin.linkWebsite && (
+              {urlReg.test(coin.linkWebsite) && (
                 <Tooltip
                   mouseLeaveDelay={0}
                   overlayClassName={ss.linkTt}
@@ -165,7 +142,7 @@ function CoinList(props) {
                 </Tooltip>
               )}
 
-              {coin.linkChineseTg && (
+              {urlReg.test(coin.linkChineseTg) && (
                 <Tooltip
                   mouseLeaveDelay={0}
                   overlayClassName={ss.linkTt}
@@ -178,7 +155,7 @@ function CoinList(props) {
                 </Tooltip>
               )}
 
-              {coin.linkEnglishTg && (
+              {urlReg.test(coin.linkEnglishTg) && (
                 <Tooltip
                   mouseLeaveDelay={0}
                   overlayClassName={ss.linkTt}
@@ -191,7 +168,7 @@ function CoinList(props) {
                 </Tooltip>
               )}
 
-              {coin.linkTwitter && (
+              {urlReg.test(coin.linkTwitter) && (
                 <Tooltip
                   mouseLeaveDelay={0}
                   overlayClassName={ss.linkTt}
@@ -201,7 +178,7 @@ function CoinList(props) {
                 </Tooltip>
               )}
 
-              {coin.linkDiscord && (
+              {urlReg.test(coin.linkDiscord) && (
                 <Tooltip
                   mouseLeaveDelay={0}
                   overlayClassName={ss.linkTt}
@@ -211,7 +188,7 @@ function CoinList(props) {
                 </Tooltip>
               )}
 
-              {coin.linkMedium && (
+              {urlReg.test(coin.linkMedium) && (
                 <Tooltip
                   mouseLeaveDelay={0}
                   overlayClassName={ss.linkTt}

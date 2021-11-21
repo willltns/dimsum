@@ -22,6 +22,7 @@ function Header() {
 
   useEffect(() => {
     home.getCoins({ value: '', type: 1, pageNo: 1 })
+    home.getNewCoins(3)
     common.getAdvert()
     // prettier-ignore
     getChainList().then((res) => common.updateProp({ coinChainList: res?.list || [] })).catch(() => {})
@@ -77,7 +78,7 @@ function Header() {
           {common.isZH ? '推广' : 'Promote'}
         </CDButton>
         <CDButton
-          className={ss.langBtn}
+          className={`${ss.langBtn} ${common.isZH ? ss.bgZ : ss.bgE}`}
           onClick={() => {
             const lang = common.isZH ? 'en' : 'zh'
             localStorage.setItem('lang', lang)

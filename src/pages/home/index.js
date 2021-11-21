@@ -32,13 +32,44 @@ const Home = () => {
     <section className={ss.homeS}>
       <MainBanner />
 
-      <CoinList promo list={common.promoCoinList} />
+      <Observer
+        render={() => (
+          <>
+            {/* 推广代币列表 */}
+            <CoinList promo list={common.promoCoinList} />
 
-      <Observer render={() => <p className={ss.upvoteTip}>{common.isZH ? zh.voteTime : en.voteTime}</p>} />
+            <p className={ss.upvoteTip}>{common.isZH ? zh.voteTime : en.voteTime}</p>
+            <Search activeType={home.newCoinType} />
 
-      <Search />
+            {/* 新币列表 */}
+            <CoinList list={home.newCoinsMap[home.newCoinType] || []} listType={home.newCoinType} />
+            {!home.newCoinsMap[home.newCoinType]?.length && (
+              <Empty
+                className={ss.empty}
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+                description={
+                  <Link to="/add-coin" className={ss.loadBtn}>
+                    List a {home.newCoinType === 3 && 'New Launch'}
+                    {home.newCoinType === 4 && 'New Presale'}
+                    {home.newCoinType === 5 && 'New Whitelist Competition'}
+                  </Link>
+                }
+              />
+            )}
+          </>
+        )}
+      />
 
-      <div>
+      {/* 所有币，today's hot, top listing. */}
+      <Observer
+        render={() => (
+          <>
+            <p className={ss.upvoteTip}>{common.isZH ? zh.voteTime : en.voteTime}</p>
+            <Search allCoins activeType={home.type} />
+          </>
+        )}
+      />
+      <div className={ss.allCoinsSec}>
         <Observer render={() => <CoinList list={home.coinList} listType={home.type} />} />
         <Observer
           render={() => (

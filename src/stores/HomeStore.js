@@ -20,6 +20,8 @@ export class HomeStore {
   noMore = false
   scrollTop = 0
   loadingAdd = 'auto'
+  newCoinType = 3
+  newCoinsMap = {}
 
   updateProp(property) {
     Object.assign(this, property)
@@ -47,6 +49,20 @@ export class HomeStore {
       } catch (error) {
         if (!axios.isCancel(error)) this.loading = false
         this.searchedInputValue = ''
+      }
+    }.bind(this)
+  )
+
+  getNewCoins = flow(
+    function* (type) {
+      const params = { pageNo: 1, pageSize: 15, type }
+
+      try {
+        const res = yield getCoinList(params) // 至少 0.7s 左右的 loading 动画效果，交互体验更好
+        this.newCoinType = type
+        this.newCoinsMap[type] = res?.list || []
+      } catch (error) {
+        // if (!axios.isCancel(error))
       }
     }.bind(this)
   )

@@ -34,9 +34,8 @@ function Promote() {
                 <li>1 day promotion - 0.3 BNB</li>
                 <li>3 days promotion - 0.7 BNB</li>
                 <li>
-                  <b>5 days promotion - 0.9 BNB</b>
+                  <b>1 week promotion - 1.2 BNB</b>
                 </li>
-                <li>1 week promotion - 1 BNB</li>
               </ul>
             </span>
             <span>
@@ -45,8 +44,9 @@ function Promote() {
               </h4>
               <ul>
                 <li>1 day promotion - 0.7 BNB</li>
+                <li>3 days promotion - 2 BNB</li>
                 <li>
-                  <b>3 days promotion - 1.8 BNB</b>
+                  <b>1 week promotion - 4 BNB</b>
                 </li>
               </ul>
             </span>
@@ -58,11 +58,10 @@ function Promote() {
               </h4>
               <ul>
                 <li>1 day promotion - 0.5 BNB</li>
-                <li>3 days promotion - 1 BNB</li>
+                <li>3 days promotion - 1.3 BNB</li>
                 <li>
-                  <b>5 days promotion - 1.5 BNB</b>
+                  <b>1 week promotion - 2.5 BNB</b>
                 </li>
-                <li>1 week promotion - 2 BNB</li>
               </ul>
             </span>
             <span>
@@ -70,10 +69,10 @@ function Promote() {
                 Pop-up on all pages (333px * 333px<i> - 1:1</i>)
               </h4>
               <ul>
+                <li>1 day promotion - 1 BNB</li>
                 <li>
-                  <b>1 day promotion - 1 BNB</b>
+                  <b>3 days promotion - 2 BNB</b>
                 </li>
-                <li>3 days promotion - 2 BNB</li>
               </ul>
             </span>
           </div>

@@ -20,11 +20,15 @@ const routes = [
     exact: true,
     component: loadableWithSpinner(() => import('../pages/add-coin')),
   },
-
   {
     path: '/promote',
     exact: true,
     component: loadableWithSpinner(() => import('../pages/promote')),
+  },
+  {
+    path: '/disclaimer',
+    exact: true,
+    component: loadableWithSpinner(() => import('../pages/disclaimer')),
   },
   {
     path: '*',

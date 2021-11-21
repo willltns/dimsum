@@ -8,7 +8,7 @@ import SwiperCore, { Autoplay } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import { fileDomain } from '@/consts'
-// import { shuffle } from '@/utils/arrayShuffle'
+import { shuffle } from '@/utils/arrayShuffle'
 import { useStore } from '@/utils/hooks/useStore'
 import useMediaQuery from '@/utils/hooks/useMediaQuery'
 
@@ -21,25 +21,21 @@ function MainBanner() {
   const { common } = useStore()
   const { wideBannerList, scrollBannerList } = common
 
-  const wideList = (wideBannerList || [])
-    .slice()
-    .sort((a, b) => (dayjs(a.shelfTime).isAfter(dayjs(b.shelfTime)) ? -1 : 1))
-  const scrollList = (scrollBannerList || [])
-    .slice()
-    .sort((a, b) => (dayjs(a.shelfTime).isAfter(dayjs(b.shelfTime)) ? -1 : 1))
+  // const wideList = (wideBannerList || [])
+  //   .slice()
+  //   .sort((a, b) => (dayjs(a.shelfTime).isAfter(dayjs(b.shelfTime)) ? -1 : 1))
+  // const scrollList = (scrollBannerList || [])
+  //   .slice()
+  //   .sort((a, b) => (dayjs(a.shelfTime).isAfter(dayjs(b.shelfTime)) ? -1 : 1))
 
-  // TODO
-  // let wideList = (wideBannerList || []).slice()
-  //
-  // let scrollList = (scrollBannerList || []).slice()
-  //
-  // if (isHomePage) {
-  //   wideList = wideList.sort((a, b) => (dayjs(a.shelfTime).isAfter(dayjs(b.shelfTime)) ? -1 : 1))
-  //   scrollList = scrollList.sort((a, b) => (dayjs(a.shelfTime).isAfter(dayjs(b.shelfTime)) ? -1 : 1))
-  // } else {
-  //   wideList = shuffle(wideList)
-  //   scrollList = shuffle(scrollList)
-  // }
+  let wideList = (wideBannerList || []).slice()
+  let scrollList = (scrollBannerList || []).slice()
+
+  wideList = wideList.sort((a, b) => (dayjs(a.shelfTime).isAfter(dayjs(b.shelfTime)) ? -1 : 1))
+  scrollList = scrollList.sort((a, b) => (dayjs(a.shelfTime).isAfter(dayjs(b.shelfTime)) ? -1 : 1))
+
+  if (!isHomePage) wideList = shuffle(wideList)
+  if (isSmall) scrollList = shuffle(scrollList)
 
   return (
     <div className={ss.banner}>
