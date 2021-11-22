@@ -134,10 +134,21 @@
     height: 40px !important;
     padding: 0 14px !important;
     box-shadow: 0 0 3px #eaeaea !important;
+    transition: all 200ms;
 
-    &:active,
-    &:focus {
-      background-color: @primary-color !important;
+    &:global {
+      &.ant-btn-primary:hover,
+      &.ant-btn-primary:focus {
+        background-color: @primary-color;
+      }
+    }
+
+    :global {
+      .ant-btn-loading-icon {
+        position: absolute !important;
+        left: 50%;
+        color: #6e62d8;
+      }
     }
 
     > span {

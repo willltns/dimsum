@@ -11,7 +11,7 @@ import { ReactComponent as Diamond } from '@/assets/img/diamond.svg'
 
 import React from 'react'
 import dayjs from 'dayjs'
-import { Tooltip, Image } from 'antd'
+import { Image, Popover } from 'antd'
 import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 
@@ -113,9 +113,11 @@ function CoinList(props) {
 
             <div className={ss.btnCol}>
               {urlReg.test(coin.coinPresaleInfo) ? (
-                <CDButton onClick={(e) => stopProp(e, () => window.open(coin.coinPresaleInfo))}>
-                  {language.check}
-                </CDButton>
+                <Popover overlayClassName={ss.linkPopO} content={coin.coinPresaleInfo} mouseLeaveDelay={0}>
+                  <CDButton onClick={(e) => stopProp(e, () => window.open(coin.coinPresaleInfo))}>
+                    {language.check}
+                  </CDButton>
+                </Popover>
               ) : (
                 '---'
               )}
@@ -123,9 +125,11 @@ function CoinList(props) {
 
             <div className={ss.btnCol}>
               {urlReg.test(coin.coinAirdropInfo) ? (
-                <CDButton onClick={(e) => stopProp(e, () => window.open(coin.coinAirdropInfo))}>
-                  {language.check}
-                </CDButton>
+                <Popover overlayClassName={ss.linkPopO} content={coin.coinAirdropInfo} mouseLeaveDelay={0}>
+                  <CDButton onClick={(e) => stopProp(e, () => window.open(coin.coinAirdropInfo))}>
+                    {language.check}
+                  </CDButton>
+                </Popover>
               ) : (
                 '---'
               )}
@@ -133,69 +137,45 @@ function CoinList(props) {
 
             <div className={ss.links}>
               {urlReg.test(coin.linkWebsite) && (
-                <Tooltip
-                  mouseLeaveDelay={0}
-                  overlayClassName={ss.linkTt}
-                  title={<span onClick={stopProp}>{coin.linkWebsite}</span>}
-                >
+                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkWebsite}>
                   <WebsiteIcon onClick={(e) => stopProp(e, () => window.open(coin.linkWebsite))} />
-                </Tooltip>
+                </Popover>
               )}
 
               {urlReg.test(coin.linkChineseTg) && (
-                <Tooltip
-                  mouseLeaveDelay={0}
-                  overlayClassName={ss.linkTt}
-                  title={<span onClick={stopProp}>{coin.linkChineseTg}</span>}
-                >
+                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkChineseTg}>
                   <span className={ss.tgIcon} onClick={(e) => stopProp(e, () => window.open(coin.linkChineseTg))}>
                     <TGIcon />
                     <CNIcon />
                   </span>
-                </Tooltip>
+                </Popover>
               )}
 
               {urlReg.test(coin.linkEnglishTg) && (
-                <Tooltip
-                  mouseLeaveDelay={0}
-                  overlayClassName={ss.linkTt}
-                  title={<span onClick={stopProp}>{coin.linkEnglishTg}</span>}
-                >
+                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkEnglishTg}>
                   <span className={ss.tgIcon} onClick={(e) => stopProp(e, () => window.open(coin.linkEnglishTg))}>
                     <TGIcon />
                     <ENIcon />
                   </span>
-                </Tooltip>
+                </Popover>
               )}
 
               {urlReg.test(coin.linkTwitter) && (
-                <Tooltip
-                  mouseLeaveDelay={0}
-                  overlayClassName={ss.linkTt}
-                  title={<span onClick={stopProp}>{coin.linkTwitter}</span>}
-                >
+                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkTwitter}>
                   <TwitterIcon onClick={(e) => stopProp(e, () => window.open(coin.linkTwitter))} />
-                </Tooltip>
+                </Popover>
               )}
 
               {urlReg.test(coin.linkDiscord) && (
-                <Tooltip
-                  mouseLeaveDelay={0}
-                  overlayClassName={ss.linkTt}
-                  title={<span onClick={stopProp}>{coin.linkDiscord}</span>}
-                >
+                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkDiscord}>
                   <DiscordIcon onClick={(e) => stopProp(e, () => window.open(coin.linkDiscord))} />
-                </Tooltip>
+                </Popover>
               )}
 
               {urlReg.test(coin.linkMedium) && (
-                <Tooltip
-                  mouseLeaveDelay={0}
-                  overlayClassName={ss.linkTt}
-                  title={<span onClick={stopProp}>{coin.linkMedium}</span>}
-                >
+                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkMedium}>
                   <MediumIcon onClick={(e) => stopProp(e, () => window.open(coin.linkMedium))} />
-                </Tooltip>
+                </Popover>
               )}
             </div>
 

@@ -94,6 +94,16 @@
   }
 }
 
+.linkPopO {
+  :global {
+    .ant-popover-inner-content {
+      max-width: 300px;
+      padding: 5px 8px;
+      word-break: break-all;
+    }
+  }
+}
+
 .links {
   display: flex;
   align-items: center;
@@ -105,19 +115,6 @@
   > svg {
     width: 30px;
     height: 30px;
-  }
-}
-
-.linkTt {
-  :global {
-    .ant-tooltip-inner {
-      padding: 2px 0;
-      min-height: 0;
-
-      > span {
-        padding: 5px 8px;
-      }
-    }
   }
 }
 
@@ -299,35 +296,6 @@
 
     i {
       margin-left: 0;
-    }
-  }
-}
-
-/* 信息查看弹窗 */
-.infoModal {
-  width: 666px !important;
-
-  :global {
-    .ant-modal-confirm-content {
-      margin-left: 0 !important;
-
-      > div {
-        max-height: 66vh;
-        overflow-y: auto;
-        margin-top: 16px;
-      }
-    }
-
-    textarea {
-      padding: 0;
-      border: none !important;
-      box-shadow: none !important;
-
-      &:hover,
-      &:active {
-        border: none !important;
-        box-shadow: none !important;
-      }
     }
   }
 }

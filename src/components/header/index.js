@@ -78,7 +78,7 @@ function Header() {
           {common.isZH ? '推广' : 'Promote'}
         </CDButton>
         <CDButton
-          className={`${ss.langBtn} ${common.isZH ? ss.bgZ : ss.bgE}`}
+          className={ss.langBtn}
           onClick={() => {
             const lang = common.isZH ? 'en' : 'zh'
             localStorage.setItem('lang', lang)

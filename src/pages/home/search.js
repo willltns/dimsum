@@ -7,7 +7,7 @@ import { observer } from 'mobx-react'
 import { SearchOutlined } from '@ant-design/icons'
 
 import { getCoinTypeList } from './consts'
-import { sourceRef } from '@/assets/xhr'
+import { newSourceRef, sourceRef } from '@/assets/xhr'
 import { useStore } from '@/utils/hooks/useStore'
 import zh from './lang/zh.json'
 import en from './lang/en.json'
@@ -38,7 +38,12 @@ function Search(props) {
   const handleTabClick = (e, item) => {
     if (activeType === item.value) return
 
-    if (!allCoins) return home.getNewCoins(item.value)
+    if (!allCoins) {
+      if (newSourceRef.current) newSourceRef.current.cancel()
+      newSourceRef.current = axios.CancelToken.source()
+      home.getNewCoins(item.value)
+      return
+    }
 
     // prettier-ignore
     home.updateProp({ loadingAdd: window.innerHeight - e.target.getBoundingClientRect().top - 300, })
@@ -48,6 +53,8 @@ function Search(props) {
     home.updateProp({ searchedInputValue: '', value: '' })
   }
 
+  const btnLoading = (type) => (allCoins ? undefined : activeType === type && home.newCoinsLoading)
+
   return (
     <div className={`${ss.searchBar} ${common.isZH ? '' : ss.en}`}>
       <div className={ss.type}>
@@ -56,6 +63,7 @@ function Search(props) {
           .map((item) => (
             <Button
               key={item.value}
+              loading={btnLoading(item.value)}
               type={activeType === item.value ? 'primary' : ''}
               onClick={(e) => handleTabClick(e, item)}
             >

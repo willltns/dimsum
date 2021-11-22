@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { makeAutoObservable, flow } from 'mobx'
 
-import { getCoinList, voteCoin } from '@/assets/xhr'
+import { getCoinList, getNewCoinList, voteCoin } from '@/assets/xhr'
 
 export class HomeStore {
   constructor() {
@@ -13,7 +13,7 @@ export class HomeStore {
   coinList = []
   votingIdList = []
   pageNo = 1
-  pageSize = 10
+  pageSize = 12
   value = ''
   searchedInputValue = ''
   type = 1
@@ -22,6 +22,8 @@ export class HomeStore {
   loadingAdd = 'auto'
   newCoinType = 3
   newCoinsMap = {}
+  newCoinPrevType = null
+  newCoinsLoading = false
 
   updateProp(property) {
     Object.assign(this, property)
@@ -55,14 +57,17 @@ export class HomeStore {
 
   getNewCoins = flow(
     function* (type) {
+      this.newCoinsLoading = true
+      this.newCoinPrevType = this.newCoinType
+      this.newCoinType = type
       const params = { pageNo: 1, pageSize: 15, type }
 
       try {
-        const res = yield getCoinList(params) // 至少 0.7s 左右的 loading 动画效果，交互体验更好
-        this.newCoinType = type
+        const res = yield getNewCoinList(params)
         this.newCoinsMap[type] = res?.list || []
+        this.newCoinsLoading = false
       } catch (error) {
-        // if (!axios.isCancel(error))
+        if (!axios.isCancel(error)) this.newCoinsLoading = false
       }
     }.bind(this)
   )
