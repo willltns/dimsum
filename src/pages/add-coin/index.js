@@ -11,12 +11,13 @@ import { observer } from 'mobx-react'
 import zh from './lang/zh.json'
 import en from './lang/en.json'
 import { tg, urlReg } from '@/consts'
+import { addCoin } from '@/assets/xhr'
+import { useStore } from '@/utils/hooks/useStore'
 import { descPH, additionalLinkPH } from './const'
 
 import Footer from '@/components/footer'
-import { addCoin } from '@/assets/xhr'
 import ImgUpload, { handleFileUpload } from '@/components/img-upload'
-import { useStore } from '@/utils/hooks/useStore'
+// import ExtraLinkAddModal from '@/components/extra-link-add-modal'
 
 // 日期格式校验 2022-22-22 22:22
 const dateReg =
@@ -38,8 +39,8 @@ function AddCoin() {
   const linkTipRef = useRef(null)
   const addSecRef = useRef(null)
 
-  const [state, setState] = useState({ loading: false, presaleDateR: false, wlsDateR: false })
-  const { loading, presaleDateR, wlsDateR } = state
+  const [state, setState] = useState({ loading: false, presaleDateR: false })
+  const { loading, presaleDateR } = state
 
   const tt = common.isZH ? zh : en
 
@@ -187,17 +188,13 @@ function AddCoin() {
 
             {/* prettier-ignore */}
             <Form.Item label={tt.wlsLink} name="coinAirdropInfo" rules={[{ whitespace: true }, { pattern: urlReg }]} validateTrigger="onBlur">
-              <Input placeholder="https://..."  onBlur={e => {
-                const value = e.target?.value?.trim()
-                setState(state => ({...state, wlsDateR: urlReg.test(value)}))
-                if (value === '' || urlReg.test(value)) form.validateFields(['coinAirdropDate'])
-              }}/>
+              <Input placeholder="https://..." />
             </Form.Item>
             <Form.Item
               label={tt.coinWlsDate}
               name="coinAirdropDate"
               validateTrigger="onBlur"
-              rules={[{ required: wlsDateR }, { pattern: dateReg, message: ' ' }]}
+              rules={[{ pattern: dateReg, message: ' ' }]}
             >
               <Input placeholder="YYYY-MM-DD HH:mm" />
             </Form.Item>
@@ -232,6 +229,7 @@ function AddCoin() {
             <Form.Item label={tt.discord} name="linkDiscord" rules={[{ whitespace: true }, { pattern: urlReg }]} validateTrigger="onBlur">
               <Input placeholder="https://..." />
             </Form.Item>
+            {/* prettier-ignore */}
             <Form.Item label={tt.addLinkInfo} name="linkAdditionalInfo" rules={[{ whitespace: true }]}>
               <Input.TextArea
                 autoSize={{ minRows: 6 }}

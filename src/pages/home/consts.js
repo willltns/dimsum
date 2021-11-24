@@ -2,7 +2,7 @@ import { ReactComponent as Hot } from '@/assets/img/hot.svg'
 import { ReactComponent as Best } from '@/assets/img/best.svg'
 import { ReactComponent as New } from '@/assets/img/new.svg'
 import { ReactComponent as Presale } from '@/assets/img/presale.svg'
-import { ReactComponent as Airdrop } from '@/assets/img/airdrop.svg'
+// import { ReactComponent as Airdrop } from '@/assets/img/airdrop.svg'
 
 export const getCoinTypeList = (language) => [
   {
@@ -37,12 +37,12 @@ export const getCoinTypeList = (language) => [
       </>
     ),
   },
-  {
-    value: 5,
-    text: (
-      <>
-        <Airdrop /> {language.s5}
-      </>
-    ),
-  },
+  // {
+  //   value: 5,
+  //   text: (
+  //     <>
+  //       <Airdrop /> {language.s5}
+  //     </>
+  //   ),
+  // },
 ]

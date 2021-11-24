@@ -13,7 +13,7 @@ export class HomeStore {
   coinList = []
   votingIdList = []
   pageNo = 1
-  pageSize = 12
+  pageSize = 15
   value = ''
   searchedInputValue = ''
   type = 1
