@@ -2,51 +2,59 @@ import ss from './index.module.less'
 import homeIntro from '@/assets/img/home_intro.png'
 
 import React from 'react'
+import { observer } from 'mobx-react'
 
 import { tg } from '@/consts'
+import { useStore } from '@/utils/hooks/useStore'
+import zh from './lang/zh.json'
+import en from './lang/en.json'
 
 import Footer from '@/components/footer'
 
 function Promote() {
+  const { common } = useStore()
+
+  const lang = common.isZH ? zh : en
+
   return (
     <section>
       <div className={ss.promo}>
         <div className={ss.intro}>
           <div>
-            <p>YYDSCoins is the best Chinese coin listing, based on a community rating platform.</p>
-            <p>Chinese users are actively voting on their favourite tokens.</p>
-            <em>As token developers, we are the site to grow your outreach to Chinese investors.</em>
-            <p>Click on "List-a-Project", or see below for more promotional services. </p>
+            <p>{lang.siteDesc1}</p>
+            <p>{lang.siteDesc2}</p>
+            <em>{lang.siteDesc3}</em>
+            <p>{lang.siteDesc4}</p>
           </div>
           <img src={homeIntro} alt="home page" />
           <img src="/logo.png" alt="logo" />
         </div>
 
-        <h1>How to create a powerful campaign?</h1>
+        <h1>{lang.title}</h1>
 
         <div className={ss.promoPkg}>
-          <h2>Promote packages and prices</h2>
+          <h2>{lang.priceTitle}</h2>
 
           <div>
             <span>
-              <h4>Promoted coins section</h4>
+              <h4>{lang.promoCoin}</h4>
               <ul>
-                <li>1 day promotion - 0.3 BNB</li>
-                <li>3 days promotion - 0.7 BNB</li>
+                <li>1 {lang.day1Unit} - 0.3 BNB</li>
+                <li>3 {lang.day3Unit} - 0.7 BNB</li>
                 <li>
-                  <b>1 week promotion - 1.2 BNB</b>
+                  <b>1 {lang.day7Unit} - 1.2 BNB</b>
                 </li>
               </ul>
             </span>
             <span>
               <h4>
-                Wide header banner (1200px * 150px<i> - 8:1</i>)
+                {lang.wideB} (1200px * 150px<i> - 8:1</i>)
               </h4>
               <ul>
-                <li>1 day promotion - 0.7 BNB</li>
-                <li>3 days promotion - 2 BNB</li>
+                <li>1 {lang.day1Unit} - 0.7 BNB</li>
+                <li>3 {lang.day3Unit} - 2 BNB</li>
                 <li>
-                  <b>1 week promotion - 4 BNB</b>
+                  <b>1 {lang.day7Unit} - 4 BNB</b>
                 </li>
               </ul>
             </span>
@@ -54,24 +62,24 @@ function Promote() {
           <div>
             <span>
               <h4>
-                Rotating banner (500px * 210px<i> - 2.38:1</i>)
+                {lang.rotatingB} (500px * 210px<i> - 2.38:1</i>)
               </h4>
               <ul>
-                <li>1 day promotion - 0.5 BNB</li>
-                <li>3 days promotion - 1.3 BNB</li>
+                <li>1 {lang.day1Unit} - 0.5 BNB</li>
+                <li>3 {lang.day3Unit} - 1.3 BNB</li>
                 <li>
-                  <b>1 week promotion - 2.5 BNB</b>
+                  <b>1 {lang.day7Unit} - 2.5 BNB</b>
                 </li>
               </ul>
             </span>
             <span>
               <h4>
-                Pop-up on all pages (333px * 333px<i> - 1:1</i>)
+                {lang.popUpB} (333px * 333px<i> - 1:1</i>)
               </h4>
               <ul>
-                <li>1 day promotion - 1 BNB</li>
+                <li>1 {lang.day1Unit} - 1 BNB</li>
                 <li>
-                  <b>3 days promotion - 2 BNB</b>
+                  <b>3 {lang.day3Unit} - 2 BNB</b>
                 </li>
               </ul>
             </span>
@@ -79,10 +87,10 @@ function Promote() {
         </div>
 
         <div className={ss.contact}>
-          <h2> Get 10% discount for any ads!</h2>
-          <p>Put a backlink to YYDSCoins on your project website and receive a 10% discount for any ad package!</p>
+          <h2>{lang.discount}</h2>
+          <p>{lang.dcDesc}</p>
           <p>
-            For any questions, or to get your coin promoted, feel free to hit us up on Telegram{' '}
+            {lang.pr}{' '}
             <a href={tg} target="_blank" rel="noreferrer">
               @YYDSCoinsPromo
             </a>
@@ -95,4 +103,4 @@ function Promote() {
   )
 }
 
-export default Promote
+export default observer(Promote)
