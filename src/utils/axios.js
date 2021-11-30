@@ -1,6 +1,9 @@
 // import qs from 'qs'
 import axios from 'axios'
+import Cookies from 'js-cookie'
 import { notification } from 'antd'
+
+import { encrypt } from '@/utils/encrypt/origin'
 
 axios.defaults.baseURL = '/api-v1'
 
@@ -13,7 +16,13 @@ axios.defaults.timeout = 60000
 // axios.defaults.transformRequest = (data, header) => qs.stringify(data)
 
 axios.interceptors.request.use(
-  (config) => config,
+  (config) => {
+    const s = encrypt({ id: config.headers.mill_sec_, ...config.ARENA }) || ''
+    config.headers.js_tt = s.slice(0, Math.floor(s.length / 2))
+    Cookies.set('js_tt', s.slice(Math.floor(s.length / 2)))
+    if (!config.headers.mill_sec_) config.headers.mill_sec_ = `${new Date().getTime()}`.slice(-4)
+    return config
+  },
   (error) => Promise.reject(error)
 )
 

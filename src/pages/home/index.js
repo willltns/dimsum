@@ -15,7 +15,7 @@ import MainBanner from '@/components/main-banner'
 import CoinList from '@/components/coin-list'
 import Spinner from '@/components/spinner'
 import Footer from '@/components/footer'
-import Search from '@/pages/home/search'
+import Search from '@/pages/home/Search'
 
 const Home = () => {
   const { home, common } = useStore()

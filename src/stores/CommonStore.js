@@ -92,4 +92,14 @@ export class CommonStore {
       this.loading = false
     }.bind(this)
   )
+
+  mixUp({ id, strArr, i, aA, hH, indexes, final }) {
+    if (strArr.length - i + 1 >= `${id}`.length) {
+      let digit = `${indexes.length}`.length + ''
+      digit = digit.replace(/1/g, aA[Math.round(Math.random() * (aA.length - 1))])
+      digit = digit.replace(/2/g, hH[Math.round(Math.random() * (hH.length - 1))])
+      return digit + indexes.length + final
+    }
+    return final
+  }
 }

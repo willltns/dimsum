@@ -10,6 +10,7 @@ import zh from './lang/zh.json'
 import en from './lang/en.json'
 
 import Footer from '@/components/footer'
+import ReferralForm from './ReferralForm'
 
 function Promote() {
   const { common } = useStore()
@@ -96,6 +97,10 @@ function Promote() {
             </a>
           </p>
         </div>
+
+        {/*<div className={ss.line} />
+
+        <ReferralForm />*/}
       </div>
 
       <Footer />

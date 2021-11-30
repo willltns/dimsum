@@ -44,7 +44,7 @@ export class HomeStore {
 
       if (!isLoadMore) this.coinList = []
       try {
-        const [res] = yield Promise.all([getCoinList(params), delay(0.7)]) // 至少 0.7s 左右的 loading 动画效果，交互体验更好
+        const [res] = yield Promise.all([getCoinList(params), delay(this.pageNo === 1 ? 0.7 : 0)]) // 至少 0.7s 左右的 loading 动画效果，交互体验更好
         this.coinList = isLoadMore ? this.coinList.concat(res?.list || []) : res?.list || []
         this.noMore = !res?.list?.length
         this.loading = false
