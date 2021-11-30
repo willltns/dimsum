@@ -35,6 +35,7 @@ const Home = () => {
   const handleScroll = throttle(() => {
     if (home.loading || home.noMore) return
 
+    if (!listBotRef.current) return
     const listBotTop = listBotRef.current.getBoundingClientRect().top
     if (listBotTop - 180 > window.innerHeight) {
       blockLoad.current = false

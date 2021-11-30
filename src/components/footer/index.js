@@ -1,15 +1,24 @@
 import ss from './index.module.less'
 
 import React from 'react'
-
-import { tg } from '@/consts'
+import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 
+import { tg } from '@/consts'
+import { useStore } from '@/utils/hooks/useStore'
+
 function Footer() {
+  const { common } = useStore()
+
   return (
     <footer className={ss.footer}>
       <img src="/logo.png" alt="logo" />
-      <Link to="/disclaimer">Disclaimer</Link>
+
+      <nav>
+        <Link to="/about-us">{common.isZH ? '关于我们' : 'About Us'}</Link>
+        <Link to="/disclaimer">{common.isZH ? '免责声明' : 'Disclaimer'}</Link>
+      </nav>
+
       <p>
         YYDSCoins © 2021 -{' '}
         <a href={tg} target="_blank" rel="noreferrer">
@@ -20,4 +29,4 @@ function Footer() {
   )
 }
 
-export default React.memo(Footer)
+export default React.memo(observer(Footer))

@@ -30,6 +30,10 @@
     transform: scale(1.05);
     background-color: #fff !important;
   }
+
+  * {
+    pointer-events: none;
+  }
 }
 
 .langTog {
@@ -71,6 +75,19 @@
   > div:first-child {
     transform: scale(0.88);
     color: #545454;
+  }
+}
+
+.bouncing {
+  animation: bouncing 500ms ease-in 0s infinite alternate;
+}
+
+@keyframes bouncing {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.15);
   }
 }
 

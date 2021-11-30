@@ -2,7 +2,7 @@ import ss from './index.module.less'
 import { ReactComponent as CNIcon } from '@/assets/img/link-icon/cn.svg'
 import { ReactComponent as ENIcon } from '@/assets/img/link-icon/en.svg'
 
-import React, { useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { Divider, notification, Space } from 'antd'
 import { observer } from 'mobx-react'
 import { MenuOutlined } from '@ant-design/icons'
@@ -20,12 +20,20 @@ function Header() {
 
   const { common, home } = useStore()
 
+  const headerRef = useRef(null)
+
   useEffect(() => {
     home.getCoins({ value: '', type: 1, pageNo: 1 })
     home.getNewCoins(3)
     common.getAdvert()
     // prettier-ignore
     getChainList().then((res) => common.updateProp({ coinChainList: res?.list || [] })).catch(() => {})
+
+    // 未切换过语言的用户进入时，以动画突出切换按钮
+    if (localStorage.getItem('lang')) return
+    const langToggleEl = headerRef.current?.querySelector(`.${ss.langBtn}`)
+    langToggleEl?.classList?.add(ss.bouncing)
+    setTimeout(() => langToggleEl?.classList?.remove(ss.bouncing), 10000)
   }, [home, common])
 
   useEffect(() => {
@@ -68,7 +76,7 @@ function Header() {
   }
 
   return (
-    <header className={ss.header}>
+    <header className={ss.header} ref={headerRef}>
       <Link to="/">
         <img src="/logo.png" alt="YYDSCoins" style={{ height: 40 }} />
       </Link>
@@ -79,10 +87,17 @@ function Header() {
         </CDButton>
         <CDButton
           className={ss.langBtn}
-          onClick={() => {
+          onClick={(e) => {
+            if (!localStorage.getItem('lang')) {
+              const aboutUsEl = document.getElementById('aboutUs')
+              aboutUsEl?.classList?.add('about-us-bouncing')
+              setTimeout(() => aboutUsEl?.classList?.remove('about-us-bouncing'), 20000)
+            }
+
             const lang = common.isZH ? 'en' : 'zh'
             localStorage.setItem('lang', lang)
             common.updateProp({ language: lang })
+            e.target?.classList?.remove(ss.bouncing)
           }}
         >
           <Space

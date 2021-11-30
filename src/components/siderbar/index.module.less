@@ -45,6 +45,25 @@
         background-color: rgba(255, 130, 0, 0.07);
       }
     }
+
+    .aboutUs {
+      * {
+        pointer-events: none;
+      }
+    }
+
+    :global(.about-us-bouncing) {
+      animation: aboutUsBoun 500ms ease-in 0ms infinite alternate;
+    }
+  }
+}
+
+@keyframes aboutUsBoun {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.2);
   }
 }
 

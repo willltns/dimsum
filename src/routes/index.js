@@ -26,6 +26,11 @@ const routes = [
     component: loadableWithSpinner(() => import('../pages/promote')),
   },
   {
+    path: '/about-us',
+    exact: true,
+    component: loadableWithSpinner(() => import('../pages/about-us')),
+  },
+  {
     path: '/disclaimer',
     exact: true,
     component: loadableWithSpinner(() => import('../pages/disclaimer')),

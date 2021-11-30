@@ -11,13 +11,17 @@
     margin-bottom: 16px;
   }
 
-  p {
-    margin-top: 16px;
+  > p {
+    margin-top: 16px !important;
     white-space: nowrap;
 
     a:hover {
       text-decoration: underline;
       color: rgba(0, 0, 0, 0.85) !important;
     }
+  }
+
+  > nav > a ~ a {
+    margin-left: 18px;
   }
 }

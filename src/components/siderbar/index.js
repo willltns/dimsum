@@ -30,7 +30,12 @@ function Sidebar() {
           <Link to="/promote" style={{ right: 1 }}>
             推广｜Promote
           </Link>
-          <Link to="/yyds-intro">
+          <Link
+            to="/about-us"
+            id="aboutUs"
+            className={ss.aboutUs}
+            onClick={(e) => e.target?.classList?.remove('about-us-bouncing')}
+          >
             {common.isZH ? '什么是' : 'What is'}
             <span>YYDS</span>?
           </Link>
