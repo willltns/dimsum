@@ -13,11 +13,11 @@ import en from './lang/en.json'
 import { tg, urlReg } from '@/consts'
 import { addCoin } from '@/assets/xhr'
 import { useStore } from '@/utils/hooks/useStore'
-import { descPH, additionalLinkPH } from './const'
+import { descPH } from './const'
 
 import Footer from '@/components/footer'
+import ExtraLinkAdd from '@/components/extra-link-add'
 import ImgUpload, { handleFileUpload } from '@/components/img-upload'
-// import ExtraLinkAddModal from '@/components/extra-link-add-modal'
 
 // 日期格式校验 2022-22-22 22:22
 const dateReg =
@@ -230,13 +230,8 @@ function AddCoin() {
               <Input placeholder="https://..." />
             </Form.Item>
             {/* prettier-ignore */}
-            <Form.Item label={tt.addLinkInfo} name="linkAdditionalInfo" rules={[{ whitespace: true }]}>
-              <Input.TextArea
-                autoSize={{ minRows: 6 }}
-                placeholder={additionalLinkPH}
-                allowClear
-                className={ss.addiInfo}
-              />
+            <Form.Item label={tt.addLinkInfo} name="linkAdditionalInfo" >
+              <ExtraLinkAdd />
             </Form.Item>
 
             <Form.Item noStyle>
