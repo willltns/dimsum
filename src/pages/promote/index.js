@@ -98,9 +98,9 @@ function Promote() {
           </p>
         </div>
 
-        {/*<div className={ss.line} />
+        <div className={ss.line} />
 
-        <ReferralForm />*/}
+        <ReferralForm />
       </div>
 
       <Footer />

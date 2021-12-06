@@ -1,20 +1,31 @@
 import ss from './index.module.less'
+import { ReactComponent as RocketIcon } from '@/assets/img/link-icon/rocket.svg'
 
 import React from 'react'
 import qs from 'qs'
+import { observer } from 'mobx-react'
 import ClipboardJS from 'clipboard'
 import { CopyOutlined } from '@ant-design/icons'
-import { AutoComplete, Button, Form, Input, Modal, notification, Radio, Space } from 'antd'
+import { Button, Form, Input, Modal, notification, Radio, Space } from 'antd'
+
+import { applyReferrer, applyPromo } from '@/assets/xhr'
+import { useStore } from '@/utils/hooks/useStore'
+import zh from './lang/zh.json'
+import en from './lang/en.json'
+import { tg } from '@/consts'
 
 function ReferralForm() {
+  const { common } = useStore()
+  const language = common.isZH ? zh : en
+
   const [values, setV] = React.useState({
-    contactName: '',
+    username: '',
     contactTg: '',
-    coin: '',
+    coinInfo: '',
     services: ['', '', '', ''],
     source: '',
     otherSource: '',
-    referrer: '',
+    referralCode: '',
     errorField: '',
     modalVisible: false,
     refRes: null,
@@ -23,13 +34,13 @@ function ReferralForm() {
   })
 
   const {
-    contactName,
+    username,
     contactTg,
-    coin,
+    coinInfo,
     services,
     source,
     otherSource,
-    referrer,
+    referralCode,
     errorField,
     modalVisible,
     refRes,
@@ -42,7 +53,7 @@ function ReferralForm() {
   React.useEffect(() => {
     const { search } = window.location
     const query = qs.parse(search, { ignoreQueryPrefix: true })
-    setValues({ referrer: query?.referralCode?.toUpperCase() || '' })
+    setValues({ referralCode: query?.referralCode?.toUpperCase() || '' })
   }, [])
 
   const referralFormRef = React.useRef(null)
@@ -63,7 +74,7 @@ function ReferralForm() {
 
     const clipboard = new ClipboardJS(referralResRef.current?.querySelectorAll('.copy-btn'))
     clipboard.on('success', () => {
-      notification.success({ message: 'xx', description: 'fxx', duration: 2.5 })
+      notification.success({ message: language.prf36, description: '', duration: 1 })
     })
 
     return () => clipboard.destroy()
@@ -82,61 +93,65 @@ function ReferralForm() {
     }
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setValues({ reValidate: reValidate + 1 })
-    if (!contactName.trim()) return setValues({ errorField: 'name-error' })
+    if (!username.trim()) return setValues({ errorField: 'name-error' })
     if (!contactTg.trim()) return setValues({ errorField: 'tg-error' })
-    if (!coin) return setValues({ errorField: 'coin-error' })
+    if (!coinInfo) return setValues({ errorField: 'coin-error' })
     if (services?.every((s) => !s)) return setValues({ errorField: 'ser-error' })
-    if (!source.trim()) return setValues({ errorField: 'source-error' })
+    if (!source) return setValues({ errorField: 'source-error' })
     setValues({ errorField: '', loading: true })
 
-    // xhr after success
+    try {
+      const promoService = services.filter((i) => !!i).join('$$$')
+      const params = { username, contactTg, coinInfo, promoService, referralCode }
+      params.source = source === 'Others' ? source + (otherSource ? `: ${otherSource}` : '') : source
 
-    setValues({
-      contactName: '',
-      contactTg: '',
-      coin: '',
-      services: ['', '', '', ''],
-      source: '',
-      otherSource: '',
-      loading: false,
-    })
-    Modal.success({
-      icon: null,
-      width: 520,
-      centered: true,
-      closable: false,
-      autoFocusButton: null,
-      content: 'aaa',
-    })
+      await applyPromo(params)
+
+      setValues({
+        username: '',
+        contactTg: '',
+        coinInfo: '',
+        services: ['', '', '', ''],
+        source: '',
+        otherSource: '',
+        loading: false,
+      })
+
+      afterSubmit(language)
+    } catch (err) {
+      setValues({ loading: false })
+    }
   }
 
   return (
     <>
-      <h2 style={{ padding: '0 calc((100% - 1016px) / 2)', fontWeight: 'bold', fontSize: 28 }}>
-        Promotion Request Form
+      <h2 style={{ padding: '0 calc((100% - 1016px) / 2)', fontWeight: 'bold', fontSize: 28, color: '#545454' }}>
+        {language.prf}
       </h2>
       <div className={ss.referralForm} ref={referralFormRef}>
         <p>
           <span>
-            Start your journey as a <b>advert-partner</b> and reach thousands of Chinese investors overnight.
+            {language.prf0}
+            <b>{language.prf1}</b>
+            {language.prf2}
           </span>{' '}
-          Help us to give you a more personalized experience by filling in this. Takes only 1 minute!
+          {language.prf3}
         </p>
 
         <div>
-          <label {...(errorField === 'name-error' ? { className: ss.error } : {})}>1. Name:</label>
+          <label {...(errorField === 'name-error' ? { className: ss.error } : {})}>1. {language.prf4}:</label>
           <Input
             bordered={false}
             spellCheck={false}
-            value={contactName}
-            onChange={(e) => setValues({ contactName: e.target.value })}
+            value={username}
+            onChange={(e) => setValues({ username: e.target.value })}
           />
         </div>
 
         <div>
-          <label {...(errorField === 'tg-error' ? { className: ss.error } : {})}>2. Telegram contact:</label>
+          <label {...(errorField === 'tg-error' ? { className: ss.error } : {})}>2. {language.prf5}:</label>
           <Input
             bordered={false}
             spellCheck={false}
@@ -146,72 +161,68 @@ function ReferralForm() {
         </div>
 
         <div>
-          <label {...(errorField === 'coin-error' ? { className: ss.error } : {})}>3. Coin for Promotion:</label>
-          <AutoComplete
-            size="small"
-            value={coin}
+          <label {...(errorField === 'coin-error' ? { className: ss.error } : {})}>3. {language.prf6}:</label>
+          <Input
             bordered={false}
-            className={ss.acpl}
-            onChange={(coin) => setValues({ coin })}
-            getPopupContainer={(tri) => tri.parentNode}
+            spellCheck={false}
+            value={coinInfo}
+            onChange={(e) => setValues({ coinInfo: e.target.value })}
           />
         </div>
 
         <div className={ss.services}>
-          <label {...(errorField === 'ser-error' ? { className: ss.error } : {})}>
-            4. Promotion services of Interest (You may check at least 1):
-          </label>
+          <label {...(errorField === 'ser-error' ? { className: ss.error } : {})}>4. {language.prf7}:</label>
           <ul>
             <li>
-              <span>Promoted coins section: </span>
+              <span>{language.prf8}: </span>
               <Radio.Group value={services[0]} onChange={(e) => handleServicesChange(e.target.value, 0)}>
                 <Radio value={'Promoted coins section - 1 day'} onClick={(e) => handleRadioClick(e.target.checked, 0)}>
-                  1 day
+                  1 {language.prf12}
                 </Radio>
                 <Radio value={'Promoted coins section - 3 day'} onClick={(e) => handleRadioClick(e.target.checked, 0)}>
-                  3 day
+                  3 {language.prf13}
                 </Radio>
                 <Radio value={'Promoted coins section - 1 week'} onClick={(e) => handleRadioClick(e.target.checked, 0)}>
-                  1 week
+                  1 {language.prf14}
                 </Radio>
               </Radio.Group>
             </li>
             <li>
-              <span>Wide header banner: </span>
+              <span>{language.prf9}: </span>
               <Radio.Group value={services[1]} onChange={(e) => handleServicesChange(e.target.value, 1)}>
                 <Radio value={'Wide header banner - 1 day'} onClick={(e) => handleRadioClick(e.target.checked, 1)}>
-                  1 day
+                  1 {language.prf12}
                 </Radio>
                 <Radio value={'Wide header banner - 3 day'} onClick={(e) => handleRadioClick(e.target.checked, 1)}>
-                  3 day
+                  3 {language.prf13}
                 </Radio>
                 <Radio value={'Wide header banner - 1 week'} onClick={(e) => handleRadioClick(e.target.checked, 1)}>
-                  1 week
+                  1 {language.prf14}
                 </Radio>
               </Radio.Group>
             </li>
             <li>
-              <span>Rotating banner: </span>
+              <span>{language.prf10}: </span>
               <Radio.Group value={services[2]} onChange={(e) => handleServicesChange(e.target.value, 2)}>
                 <Radio value={'Rotating banner - 1 day'} onClick={(e) => handleRadioClick(e.target.checked, 2)}>
-                  1 day
+                  1 {language.prf12}
                 </Radio>
                 <Radio value={'Rotating banner - 3 day'} onClick={(e) => handleRadioClick(e.target.checked, 2)}>
-                  3 day
+                  3 {language.prf13}
                 </Radio>
                 <Radio value={'Rotating banner - 1 week'} onClick={(e) => handleRadioClick(e.target.checked, 2)}>
-                  1 week
+                  1 {language.prf14}
                 </Radio>
               </Radio.Group>
             </li>
             <li>
-              <span>Pop-up on all pages: </span>
+              <span>{language.prf11}: </span>
               <Radio.Group value={services[3]} onChange={(e) => handleServicesChange(e.target.value, 3)}>
                 <Radio value={'Pop-up banner - 1 day'} onClick={(e) => handleRadioClick(e.target.checked, 3)}>
-                  1 day
+                  1 {language.prf12}
                 </Radio>
                 <Radio value={'Pop-up banner - 3 day'} onClick={(e) => handleRadioClick(e.target.checked, 3)}>
-                  3 day
+                  3 {language.prf13}
                 </Radio>
               </Radio.Group>
             </li>
@@ -219,23 +230,21 @@ function ReferralForm() {
         </div>
 
         <div>
-          <label {...(errorField === 'source-error' ? { className: ss.error } : {})}>
-            5. How did you hear about YYDSCoins?
-          </label>
+          <label {...(errorField === 'source-error' ? { className: ss.error } : {})}>5. {language.prf15}</label>
           <Radio.Group
             style={{ display: 'block', marginTop: 4, marginLeft: 16 }}
             value={source}
             onChange={(e) => setValues({ source: e.target.value, otherSource: '' })}
           >
             <Space direction="vertical">
-              <Radio value="From a friend/developer">a. From a friend/developer</Radio>
-              <Radio value="Google Search">b. Google Search</Radio>
-              <Radio value="News website">c. News Website</Radio>
-              <Radio value="Chinese Telegram communities">d. Chinese Telegram Communities</Radio>
-              <Radio value="English Telegram communities">e. English Telegram Communities</Radio>
-              <Radio value="Twitter">f. Twitter</Radio>
+              <Radio value="From a friend/developer">{language.prf16}</Radio>
+              <Radio value="Google Search">{language.prf17}</Radio>
+              <Radio value="News website">{language.prf18}</Radio>
+              <Radio value="Chinese Telegram communities">{language.prf19}</Radio>
+              <Radio value="English Telegram communities">{language.prf20}</Radio>
+              <Radio value="Twitter">{language.prf21}</Radio>
               <Radio value="Others">
-                <span>g. Others</span>
+                <span>{language.prf22}</span>
                 <Input
                   size="small"
                   bordered={false}
@@ -243,7 +252,7 @@ function ReferralForm() {
                   value={otherSource}
                   onChange={(e) => setValues({ otherSource: e.target.value })}
                   onClick={(e) => !e.target.parentNode.click() && e.target.focus()}
-                  style={{ borderBottom: '1px solid #d9d9d9', borderRadius: 0, marginLeft: 11 }}
+                  style={{ borderBottom: '1px solid #d9d9d9', borderRadius: 0 }}
                 />
               </Radio>
             </Space>
@@ -252,30 +261,27 @@ function ReferralForm() {
 
         <div className={ss.referral}>
           <div>
-            <label>6. Referral Code (optional):</label>
+            <label>6. {language.prf23}:</label>
             <Input
               bordered={false}
-              value={referrer}
+              value={referralCode}
               spellCheck={false}
-              onChange={(e) => setValues({ referrer: e.target.value?.trim()?.toUpperCase() })}
+              placeholder="YYDS-XXXXXXXX"
+              onChange={(e) => setValues({ referralCode: e.target.value?.trim()?.toUpperCase() })}
             />
           </div>
           <p>
-            *By inputting this field, your referrer gets rewarded accordingly.{' '}
-            <span>
-              Forgot or don’t have a referral code, <i onClick={() => setValues({ modalVisible: true })}>click here</i>{' '}
-              to get your referral code.
-            </span>
+            {language.prf24} <i onClick={() => setValues({ modalVisible: true })}>{language.prf25}</i> {language.prf26}
           </p>
         </div>
 
         <Button type="primary" onClick={handleSubmit} loading={modalVisible ? false : loading}>
-          Submit Promotion Request
+          {language.prf27}
         </Button>
 
         <Modal
           visible={modalVisible}
-          title="获取您的推荐码"
+          title={language.prf28}
           destroyOnClose
           footer={null}
           width={626}
@@ -288,43 +294,51 @@ function ReferralForm() {
               layout="vertical"
               onFinish={(values) => {
                 setValues({ loading: true })
-                setValues({ refRes: { code: 'YYDS-66COINSW' } })
-                setValues({ loading: false })
+                applyReferrer(values)
+                  .then((res) => setValues({ refRes: res, loading: false }))
+                  .catch(() => setValues({ loading: false }))
               }}
               validateMessages={{ required: ` `, whitespace: ` ` }}
             >
-              <Form.Item label="称呼" name="username" rules={[{ required: true, whitespace: true }]}>
+              <Form.Item label={language.prf29} name="username" rules={[{ required: true, whitespace: true }]}>
                 <Input spellCheck={false} style={{ maxWidth: 400 }} />
               </Form.Item>
-              <Form.Item label="联系电报" name="contactTg" rules={[{ required: true, whitespace: true }]}>
+              <Form.Item label={language.prf30} name="contactTg" rules={[{ required: true, whitespace: true }]}>
                 <Input spellCheck={false} style={{ maxWidth: 400 }} />
               </Form.Item>
-              <Form.Item label="BSC 钱包地址" name="walletAddr" rules={[{ required: true, whitespace: true }]}>
+              <Form.Item
+                label={language.prf31}
+                name="bscAddress"
+                rules={[
+                  { required: true, whitespace: true },
+                  { pattern: /^0x[0-9A-Za-z]{40}$/i, message: language.prf32 },
+                ]}
+              >
                 <Input placeholder="0x..." spellCheck={false} style={{ maxWidth: 400 }} />
               </Form.Item>
 
               <Form.Item noStyle>
                 <Button htmlType="submit" type="primary" loading={loading}>
-                  获取
+                  {language.prf33}
                 </Button>
               </Form.Item>
             </Form>
           ) : (
             <div className={ss.refRes} ref={referralResRef}>
               <div>
-                <label>您的推荐码: </label>
+                <label>{language.prf34}: </label>
                 <span>
-                  {refRes.code}
-                  <CopyOutlined className="copy-btn" data-clipboard-text={refRes.code} />
+                  {refRes}
+                  <CopyOutlined className="copy-btn" data-clipboard-text={refRes} />
                 </span>
               </div>
               <div>
-                <label>您的推荐链接: </label>
+                <label>{language.prf35}: </label>
                 <span>
-                  {process.env.REACT_APP_DOMAIN}/promote?referralCode={refRes.code}
+                  {process.env.REACT_APP_DOMAIN}/promote?referralCode={refRes}
                   <CopyOutlined
                     className="copy-btn"
-                    data-clipboard-text={`${process.env.REACT_APP_DOMAIN}/promote?referralCode=${refRes.code}`}
+                    data-clipboard-text={`${process.env.REACT_APP_DOMAIN}/promote?referralCode=${refRes}`}
                   />
                 </span>
               </div>
@@ -336,4 +350,37 @@ function ReferralForm() {
   )
 }
 
-export default ReferralForm
+export default observer(ReferralForm)
+
+// 推广申请提交成功提示
+function afterSubmit(language) {
+  Modal.success({
+    icon: null,
+    width: 520,
+    centered: true,
+    closable: false,
+    destroyOnClose: true,
+    autoFocusButton: null,
+    okText: language.prf41,
+    className: ss.sucSubmitModal,
+    okButtonProps: { type: 'default' },
+    maskStyle: { backgroundColor: 'rgba(0, 0, 0, 0.8)' },
+    content: (
+      <div>
+        <h2>
+          {language.prf37}
+          <RocketIcon />
+        </h2>
+        <img src="/logo.png" alt="logo" />
+        <p>{language.prf38}</p>
+        <p>
+          {language.prf39}{' '}
+          <a href={tg} target="_blank" rel="noreferrer">
+            @YYDSCoinsPromo
+          </a>{' '}
+          {language.prf40}
+        </p>
+      </div>
+    ),
+  })
+}

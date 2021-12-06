@@ -34,3 +34,8 @@ export const getChamp = () => axios.post('/promo-vote/champ', {})
 export const getSearchPromo = () => axios.post('/search/promo', {})
 
 export const uploadFile = (params) => axios.post('/file/upload', params, { headers: { mill_sec_: get4digits() } })
+
+// promo-request
+export const applyReferrer = (params) => axios.post('/referrer/apply', params, { headers: { mill_sec_: get4digits() } })
+
+export const applyPromo = (params) => axios.post('/promotion/apply', params, { headers: { mill_sec_: get4digits() } })
