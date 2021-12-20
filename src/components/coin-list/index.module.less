@@ -94,19 +94,14 @@
   }
 }
 
-.linkPopO {
-  :global {
-    .ant-popover-inner-content {
-      max-width: 300px;
-      padding: 5px 8px;
-      word-break: break-all;
-    }
-  }
-}
-
 .links {
   display: flex;
   align-items: center;
+  width: 180px;
+
+  > * {
+    flex: none;
+  }
 
   > *:nth-child(n + 1) {
     margin-left: 2px;
@@ -115,6 +110,12 @@
   > svg {
     width: 30px;
     height: 30px;
+  }
+
+  > img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
   }
 }
 
@@ -135,6 +136,11 @@
     width: 14px;
     height: 14px;
   }
+}
+
+.apeSvg {
+  width: 26px !important;
+  height: 26px !important;
 }
 
 .upvote {
@@ -227,6 +233,10 @@
   .tRow {
     grid-template-columns: 20% 10% 18% 9% 9% 18% 16%;
   }
+
+  .links {
+    width: auto;
+  }
 }
 
 @media screen and (max-width: 888px) {
@@ -301,6 +311,12 @@
 }
 
 // 链接列部分隐藏
+@media screen and (max-width: 1555px) {
+  .links > *:nth-child(n + 7) {
+    display: none;
+  }
+}
+
 @media screen and (max-width: 1222px) {
   .links > *:nth-child(n + 6) {
     display: none;
@@ -324,6 +340,11 @@
       height: 28px;
     }
 
+    > img {
+      width: 24px;
+      height: 24px;
+    }
+
     .tgIcon {
       width: 28px;
       height: 28px;
@@ -337,6 +358,11 @@
           height: 12px;
         }
       }
+    }
+
+    .apeSvg {
+      width: 25px !important;
+      height: 25px !important;
     }
   }
 }

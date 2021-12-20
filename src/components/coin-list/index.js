@@ -8,19 +8,24 @@ import { ReactComponent as DiscordIcon } from '@/assets/img/link-icon/discord.sv
 import { ReactComponent as MediumIcon } from '@/assets/img/link-icon/medium.svg'
 import { ReactComponent as Rocket } from '@/assets/img/link-icon/rocket.svg'
 import { ReactComponent as Diamond } from '@/assets/img/diamond.svg'
+import { ReactComponent as ApeSwapIcon } from '@/assets/img/link-icon/apeswap.svg'
+import pancakeLogo from '@/assets/img/link-icon/pancakeswap.png'
+import uniswapLogo from '@/assets/img/link-icon/uniswap.png'
 
 import React from 'react'
 import dayjs from 'dayjs'
-import { Image, Popover } from 'antd'
+import { Image } from 'antd'
 import { observer } from 'mobx-react'
 import { Link } from 'react-router-dom'
 
-import { useStore } from '@/utils/hooks/useStore'
-import { fileDomain, urlReg } from '@/consts'
 import zh from './lang/zh.json'
 import en from './lang/en.json'
+import { fileDomain, urlReg } from '@/consts'
+import { useStore } from '@/utils/hooks/useStore'
+import { findExtraLinkByName } from '@/utils/findExtraLinkByName'
 
 import CDButton from '@/components/cd-button'
+import YYPopover from '@/components/yy-popover'
 
 const lang = { zh, en }
 
@@ -112,11 +117,11 @@ function CoinList(props) {
 
             <div className={ss.btnCol}>
               {urlReg.test(coin.coinPresaleInfo) ? (
-                <Popover overlayClassName={ss.linkPopO} content={coin.coinPresaleInfo} mouseLeaveDelay={0}>
+                <YYPopover content={coin.coinPresaleInfo}>
                   <CDButton onClick={(e) => stopProp(e, () => window.open(coin.coinPresaleInfo))}>
                     {language.check}
                   </CDButton>
-                </Popover>
+                </YYPopover>
               ) : (
                 '---'
               )}
@@ -124,11 +129,11 @@ function CoinList(props) {
 
             <div className={ss.btnCol}>
               {urlReg.test(coin.coinAirdropInfo) ? (
-                <Popover overlayClassName={ss.linkPopO} content={coin.coinAirdropInfo} mouseLeaveDelay={0}>
+                <YYPopover content={coin.coinAirdropInfo}>
                   <CDButton onClick={(e) => stopProp(e, () => window.open(coin.coinAirdropInfo))}>
                     {language.check}
                   </CDButton>
-                </Popover>
+                </YYPopover>
               ) : (
                 '---'
               )}
@@ -136,46 +141,77 @@ function CoinList(props) {
 
             <div className={ss.links}>
               {urlReg.test(coin.linkWebsite) && (
-                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkWebsite}>
+                <YYPopover content={coin.linkWebsite}>
                   <WebsiteIcon onClick={(e) => stopProp(e, () => window.open(coin.linkWebsite))} />
-                </Popover>
+                </YYPopover>
               )}
 
               {urlReg.test(coin.linkChineseTg) && (
-                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkChineseTg}>
+                <YYPopover content={coin.linkChineseTg}>
                   <span className={ss.tgIcon} onClick={(e) => stopProp(e, () => window.open(coin.linkChineseTg))}>
                     <TGIcon />
                     <CNIcon />
                   </span>
-                </Popover>
+                </YYPopover>
               )}
 
               {urlReg.test(coin.linkEnglishTg) && (
-                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkEnglishTg}>
+                <YYPopover content={coin.linkEnglishTg}>
                   <span className={ss.tgIcon} onClick={(e) => stopProp(e, () => window.open(coin.linkEnglishTg))}>
                     <TGIcon />
                     <ENIcon />
                   </span>
-                </Popover>
+                </YYPopover>
               )}
 
               {urlReg.test(coin.linkTwitter) && (
-                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkTwitter}>
+                <YYPopover content={coin.linkTwitter}>
                   <TwitterIcon onClick={(e) => stopProp(e, () => window.open(coin.linkTwitter))} />
-                </Popover>
+                </YYPopover>
               )}
 
               {urlReg.test(coin.linkDiscord) && (
-                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkDiscord}>
+                <YYPopover content={coin.linkDiscord}>
                   <DiscordIcon onClick={(e) => stopProp(e, () => window.open(coin.linkDiscord))} />
-                </Popover>
+                </YYPopover>
               )}
 
               {urlReg.test(coin.linkMedium) && (
-                <Popover mouseLeaveDelay={0} overlayClassName={ss.linkPopO} content={coin.linkMedium}>
+                <YYPopover content={coin.linkMedium}>
                   <MediumIcon onClick={(e) => stopProp(e, () => window.open(coin.linkMedium))} />
-                </Popover>
+                </YYPopover>
               )}
+
+              {(() => {
+                const pancake = findExtraLinkByName(coin.linkAdditionalInfo, 'pancakeswap buy')
+                if (urlReg.test(pancake?.[1])) {
+                  return (
+                    <YYPopover content={pancake[1]}>
+                      <img src={pancakeLogo} alt="P" onClick={(e) => stopProp(e, () => window.open(pancake[1]))} />
+                    </YYPopover>
+                  )
+                }
+              })()}
+
+              {(() => {
+                const apeSwap = findExtraLinkByName(coin.linkAdditionalInfo, 'apeswap buy')
+                if (!urlReg.test(apeSwap?.[1])) return null
+                return (
+                  <YYPopover content={apeSwap[1]}>
+                    <ApeSwapIcon className={ss.apeSvg} onClick={(e) => stopProp(e, () => window.open(apeSwap[1]))} />
+                  </YYPopover>
+                )
+              })()}
+
+              {(() => {
+                const uniSwap = findExtraLinkByName(coin.linkAdditionalInfo, 'uniswap buy')
+                if (!urlReg.test(uniSwap?.[1])) return null
+                return (
+                  <YYPopover content={uniSwap[1]}>
+                    <img src={uniswapLogo} alt="U" onClick={(e) => stopProp(e, () => window.open(uniSwap[1]))} />
+                  </YYPopover>
+                )
+              })()}
             </div>
 
             <div className={ss.upvote}>

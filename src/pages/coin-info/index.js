@@ -182,9 +182,9 @@ function CoinInfo() {
               ?.split('\n')
               .map((s) => {
                 const [name, link] = s.split('$$$')
+                if (!name?.trim() || !urlReg.test(link)) return null
                 // prettier-ignore
-                if (name?.trim() && urlReg.test(link)) {return (<Popover overlayClassName={ss.linkPop} content={link} mouseLeaveDelay={0} key={link}><CDButton data-link={link} onClick={openWeb}>{name}</CDButton></Popover>)}
-                return null
+                return (<Popover overlayClassName={ss.linkPop} content={link} mouseLeaveDelay={0} key={link}><CDButton data-link={link} onClick={openWeb}>{name}</CDButton></Popover>)
               })
               .filter(Boolean)}
 

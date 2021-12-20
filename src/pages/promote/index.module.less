@@ -8,7 +8,7 @@
     text-align: center;
     color: #545454;
     font-weight: bold;
-    margin: 48px 0 32px;
+    margin: 66px 0 32px;
     position: relative;
 
     &::after {
@@ -69,6 +69,32 @@
     object-fit: cover;
     width: 16%;
     height: 100%;
+  }
+}
+
+.homeImgPop {
+  :global {
+    .ant-popover-inner-content {
+      color: #999;
+      padding: 5px 8px;
+      user-select: none;
+    }
+  }
+}
+
+.homeImg {
+  & + div {
+    background: transparent;
+
+    * {
+      display: none;
+    }
+  }
+}
+
+:global {
+  .ant-image-preview-operations > li:not(:first-child) {
+    display: none;
   }
 }
 

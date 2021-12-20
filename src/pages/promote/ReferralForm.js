@@ -78,6 +78,7 @@ function ReferralForm() {
     })
 
     return () => clipboard.destroy()
+    // eslint-disable-next-line
   }, [refRes])
 
   const handleServicesChange = (value, index) => {

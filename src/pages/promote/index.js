@@ -2,6 +2,7 @@ import ss from './index.module.less'
 import homeIntro from '@/assets/img/home_intro.png'
 
 import React from 'react'
+import { Image, Popover } from 'antd'
 import { observer } from 'mobx-react'
 
 import { tg } from '@/consts'
@@ -27,7 +28,10 @@ function Promote() {
             <em>{lang.siteDesc3}</em>
             <p>{lang.siteDesc4}</p>
           </div>
-          <img src={homeIntro} alt="home page" />
+          <Popover visible placement="bottom" content={lang.clickZoom} overlayClassName={ss.homeImgPop}>
+            <Image src={homeIntro} alt="home page" className={ss.homeImg} />
+          </Popover>
+
           <img src="/logo.png" alt="logo" />
         </div>
 
