@@ -59,6 +59,23 @@
     color: @primary-color;
     font-weight: 500;
   }
+
+  :global {
+    .ant-image {
+      display: block;
+      max-width: 520px;
+    }
+
+    .ant-image-mask {
+      display: none;
+    }
+  }
+}
+
+:global {
+  .ant-image-preview-operations > li:not(:first-child) {
+    display: none;
+  }
 }
 
 .tgLink {

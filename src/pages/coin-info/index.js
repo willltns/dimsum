@@ -3,7 +3,7 @@ import { ReactComponent as RocketIcon } from '@/assets/img/link-icon/rocket.svg'
 
 import React, { useRef, useState, useEffect } from 'react'
 import ClipboardJS from 'clipboard'
-import { Divider, Input, notification, Popover } from 'antd'
+import { Divider, Input, notification } from 'antd'
 import { CopyOutlined } from '@ant-design/icons'
 import { useParams } from 'react-router-dom'
 import { observer } from 'mobx-react'
@@ -19,6 +19,7 @@ import CoinList from '@/components/coin-list'
 import Footer from '@/components/footer'
 import CDButton from '@/components/cd-button'
 import ShareBtns from './ShareBtns'
+import YYPopover from '@/components/yy-popover'
 
 const copiedTitle = { current: null }
 
@@ -131,51 +132,51 @@ function CoinInfo() {
 
           <div className={ss.links}>
             {coinInfo.linkWebsite && (
-              <Popover content={coinInfo.linkWebsite} mouseLeaveDelay={0} overlayClassName={ss.linkPop}>
+              <YYPopover content={coinInfo.linkWebsite}>
                 <CDButton data-link={coinInfo.linkWebsite} onClick={openWeb}>
                   {lang.oSite}
                 </CDButton>
-              </Popover>
+              </YYPopover>
             )}
 
             {coinInfo.linkChineseTg && (
-              <Popover content={coinInfo.linkChineseTg} mouseLeaveDelay={0} overlayClassName={ss.linkPop}>
+              <YYPopover content={coinInfo.linkChineseTg}>
                 <CDButton data-link={coinInfo.linkChineseTg} onClick={openWeb}>
                   {lang.cnTG}
                 </CDButton>
-              </Popover>
+              </YYPopover>
             )}
 
             {coinInfo.linkEnglishTg && (
-              <Popover content={coinInfo.linkEnglishTg} mouseLeaveDelay={0} overlayClassName={ss.linkPop}>
+              <YYPopover content={coinInfo.linkEnglishTg}>
                 <CDButton data-link={coinInfo.linkEnglishTg} onClick={openWeb}>
                   {lang.enTG}
                 </CDButton>
-              </Popover>
+              </YYPopover>
             )}
 
             {coinInfo.linkTwitter && (
-              <Popover content={coinInfo.linkTwitter} mouseLeaveDelay={0} overlayClassName={ss.linkPop}>
+              <YYPopover content={coinInfo.linkTwitter}>
                 <CDButton data-link={coinInfo.linkTwitter} onClick={openWeb}>
                   {lang.tt}
                 </CDButton>
-              </Popover>
+              </YYPopover>
             )}
 
             {coinInfo.linkDiscord && (
-              <Popover content={coinInfo.linkDiscord} mouseLeaveDelay={0} overlayClassName={ss.linkPop}>
+              <YYPopover content={coinInfo.linkDiscord}>
                 <CDButton data-link={coinInfo.linkDiscord} onClick={openWeb}>
                   {lang.discord}
                 </CDButton>
-              </Popover>
+              </YYPopover>
             )}
 
             {coinInfo.linkMedium && (
-              <Popover content={coinInfo.linkMedium} mouseLeaveDelay={0} overlayClassName={ss.linkPop}>
+              <YYPopover content={coinInfo.linkMedium}>
                 <CDButton data-link={coinInfo.linkMedium} onClick={openWeb}>
                   {lang.medium}
                 </CDButton>
-              </Popover>
+              </YYPopover>
             )}
 
             {coinInfo.linkAdditionalInfo
@@ -184,28 +185,28 @@ function CoinInfo() {
                 const [name, link] = s.split('$$$')
                 if (!name?.trim() || !urlReg.test(link)) return null
                 // prettier-ignore
-                return (<Popover overlayClassName={ss.linkPop} content={link} mouseLeaveDelay={0} key={link}><CDButton data-link={link} onClick={openWeb}>{name}</CDButton></Popover>)
+                return (<YYPopover content={link} key={link}><CDButton data-link={link} onClick={openWeb}>{name}</CDButton></YYPopover>)
               })
               .filter(Boolean)}
 
             {(coinInfo.coinPresaleInfo || coinInfo.coinAirdropInfo) && <Divider />}
 
             {urlReg.test(coinInfo.coinPresaleInfo) && (
-              <Popover content={coinInfo.coinPresaleInfo} mouseLeaveDelay={0} overlayClassName={ss.linkPop}>
+              <YYPopover content={coinInfo.coinPresaleInfo}>
                 <CDButton className={ss.presBtn} data-link={coinInfo.coinPresaleInfo} onClick={openWeb}>
                   {lang.presaleI}
                   {coinInfo.coinPresaleDate && <i>{coinInfo.coinPresaleDate.slice(0, -3)}</i>}
                 </CDButton>
-              </Popover>
+              </YYPopover>
             )}
 
             {urlReg.test(coinInfo.coinAirdropInfo) && (
-              <Popover content={coinInfo.coinAirdropInfo} mouseLeaveDelay={0} overlayClassName={ss.linkPop}>
+              <YYPopover content={coinInfo.coinAirdropInfo}>
                 <CDButton className={ss.wlsBtn} data-link={coinInfo.coinAirdropInfo} onClick={openWeb}>
                   {lang.wlsI}
                   {coinInfo.coinAirdropDate && <i>{coinInfo.coinAirdropDate.slice(0, -3)}</i>}
                 </CDButton>
-              </Popover>
+              </YYPopover>
             )}
           </div>
         </div>

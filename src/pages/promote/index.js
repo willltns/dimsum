@@ -1,11 +1,12 @@
 import ss from './index.module.less'
-import homeIntro from '@/assets/img/home_intro.png'
+// import promoEn from '@/assets/img/yy-promo-en.png'
+// import promoZh from '@/assets/img/yy-promo-zh.png'
 
 import React from 'react'
 import { Image, Popover } from 'antd'
 import { observer } from 'mobx-react'
 
-import { tg } from '@/consts'
+import { fileDomain, tg } from '@/consts'
 import { useStore } from '@/utils/hooks/useStore'
 import zh from './lang/zh.json'
 import en from './lang/en.json'
@@ -29,7 +30,11 @@ function Promote() {
             <p>{lang.siteDesc4}</p>
           </div>
           <Popover visible placement="bottom" content={lang.clickZoom} overlayClassName={ss.homeImgPop}>
-            <Image src={homeIntro} alt="home page" className={ss.homeImg} />
+            <Image
+              src={`${fileDomain}images/${common.isZH ? 'yy-promo-zh.png' : 'yy-promo-en.png'}`}
+              alt="promo-intro"
+              className={ss.homeImg}
+            />
           </Popover>
 
           <img src="/logo.png" alt="logo" />

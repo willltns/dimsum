@@ -1,16 +1,15 @@
 import ss from './index.module.less'
 import { ReactComponent as TgIcon } from '@/assets/img/link-icon/tg.svg'
-// import { ReactComponent as TWIcon } from '@/assets/img/link-icon/twitter.svg'
 
 import React from 'react'
 import dayjs from 'dayjs'
-import { Space } from 'antd'
 import { Link } from 'react-router-dom'
 import { observer, Observer } from 'mobx-react'
 
-import { tg /*twitter*/ } from '@/consts'
+import { tg } from '@/consts'
 import PromoVote from '@/components/promo-vote'
 import { useStore } from '@/utils/hooks/useStore'
+import YYPopover from '@/components/yy-popover'
 
 function Sidebar() {
   const { common } = useStore()
@@ -40,13 +39,14 @@ function Sidebar() {
             <span>YYDS</span>?
           </Link>
         </nav>
-        <Space>
+
+        <YYPopover content="@YYDSCoinsPromo" placement="right">
           <TgIcon
-            style={{ width: 32, cursor: 'pointer', position: 'relative', right: 14, top: 5 }}
+            style={{ width: 32, cursor: 'pointer', position: 'relative', top: 5 }}
             onClick={() => window.open(tg)}
           />
-          {/*<TWIcon style={{ width: 32, cursor: 'pointer' }} onClick={() => window.open(twitter)} />*/}
-        </Space>
+        </YYPopover>
+
         <PromoVote />
       </div>
 

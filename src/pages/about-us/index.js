@@ -1,11 +1,18 @@
 import ss from './index.module.less'
 import { ReactComponent as TGIcon } from '@/assets/img/link-icon/tg.svg'
 import { ReactComponent as CNIcon } from '@/assets/img/link-icon/cn.svg'
+// import aboutZh from '@/assets/img/yy-about-zh.png'
+// import aboutEn from '@/assets/img/yy-about-en.png'
+// import promoZh from '@/assets/img/yy-promo-full-zh.png'
+// import promoEn from '@/assets/img/yy-promo-full-en.png'
+// import packageZh from '@/assets/img/yy-package-zh.png'
+// import packageEn from '@/assets/img/yy-package-en.png'
 
 import React from 'react'
-import { Popover } from 'antd'
+import { Image, Popover } from 'antd'
 import { observer } from 'mobx-react'
 
+import { fileDomain } from '@/consts'
 import { useStore } from '@/utils/hooks/useStore'
 
 import Footer from '@/components/footer'
@@ -123,6 +130,12 @@ function AboutUs() {
               YYDSCoins 将使用能够为其投资者带来最佳投资回报的营销组合。
             </p>
           </div>
+
+          <Image.PreviewGroup>
+            <Image src={`${fileDomain}images/yy-about-zh.png`} />
+            <Image src={`${fileDomain}images/yy-promo-full-zh.png`} />
+            <Image src={`${fileDomain}images/yy-package-zh.png`} />
+          </Image.PreviewGroup>
         </div>
 
         <Footer />
@@ -193,6 +206,12 @@ function AboutUs() {
             YYDSCoins will be using a marketing mix that will bring the best ROI to its investors.
           </p>
         </div>
+
+        <Image.PreviewGroup>
+          <Image src={`${fileDomain}images/yy-about-en.png`} />
+          <Image src={`${fileDomain}images/yy-promo-full-en.png`} />
+          <Image src={`${fileDomain}images/yy-package-en.png`} />
+        </Image.PreviewGroup>
       </div>
 
       <Footer />
