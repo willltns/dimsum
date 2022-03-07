@@ -5,7 +5,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import ClipboardJS from 'clipboard'
 import { Divider, Input, notification } from 'antd'
 import { CopyOutlined } from '@ant-design/icons'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import { observer } from 'mobx-react'
 
 import { fileDomain, urlReg } from '@/consts'
@@ -30,22 +30,27 @@ function CoinInfo() {
 
   copiedTitle.current = lang.copied
 
+  const history = useHistory()
   const { coinId } = useParams()
   const [state, setState] = useState({ coinInfo: {}, loading: true })
   const { coinInfo, loading } = state
 
-  const key = /^[1-9]\d*$/.test(coinId) ? 'id' : 'coinUniqueUrl'
+  const isIdInt = /^[1-9]\d*$/.test(coinId)
+
+  const key = isIdInt ? 'id' : 'coinUniqueUrl'
   useEffect(() => {
-    const key = /^[1-9]\d*$/.test(coinId) ? 'id' : 'coinUniqueUrl'
+    const key = isIdInt ? 'id' : 'coinUniqueUrl'
 
     const params = { [key]: coinId }
     getCoinDetail(params)
       .then((coinInfo) => {
         setState((state) => ({ ...state, coinInfo, loading: false }))
+        isIdInt && coinInfo.coinUniqueUrl && history.replace(`/coin/${coinInfo.coinUniqueUrl}`)
         document.title = `${coinInfo.coinName} (${coinInfo.coinSymbol}) | YYDSCoins - 中国社区加密货币收录平台 | Best Chinese Community Coin Listing`
       })
       .catch(() => setState((state) => ({ ...state, loading: false })))
     return () => setState((state) => ({ ...state, coinInfo: {}, loading: true }))
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [coinId])
 
   useEffect(() => {

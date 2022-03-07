@@ -7,6 +7,7 @@ const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 const packageJSON = require('./package.json')
+const getLessModuleLocalIdent = require('./src/utils/getLessModuleLocalIdent')
 
 const shouldUseSourceMap = process.env.GENERATE_SOURCEMAP !== 'false'
 
@@ -62,7 +63,7 @@ module.exports = function (defaultConfig, webpackEnv) {
   cssLoader.options = {
     ...cssLoader.options,
     importLoaders: 2,
-    modules: { ...cssLoader.options.modules, auto: /\.module\.less/ },
+    modules: { ...cssLoader.options.modules, auto: /\.module\.less/, getLocalIdent: getLessModuleLocalIdent },
   }
   cssModuleLoaders[1] = cssLoader // replace css-loader
   oneOfList.unshift({

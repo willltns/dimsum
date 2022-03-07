@@ -112,7 +112,7 @@ function AddCoin() {
           if (!atLeastOne.includes(Object.keys(changedValue)[0])) return
           linkTipRef.current.style.opacity = atLeastOne.every((key) => !allValues[key]) ? 1 : 0
         }}
-        initialValues={{ coinLaunchDate: '2021-00-00 00:00' }}
+        initialValues={{ coinLaunchDate: '2022-00-00 00:00' }}
       >
         <Row className={common.isZH ? ss.zhMode : ss.enMode}>
           <Col>
@@ -123,10 +123,7 @@ function AddCoin() {
               <Input placeholder="e.g. Bitcoin" />
             </Form.Item>
             <Form.Item label={tt.symbol} name="coinSymbol" rules={[{ required: true, whitespace: true }]}>
-              <Input
-                placeholder="e.g. BTC"
-                onChange={(e) => form.setFieldsValue({ coinSymbol: e.target?.value?.trim() || '' })}
-              />
+              <Input placeholder="e.g. BTC" />
             </Form.Item>
             <Form.Item
               label={tt.logo}

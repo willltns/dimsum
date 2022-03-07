@@ -20,7 +20,7 @@ function Footer() {
       </nav>
 
       <p>
-        YYDSCoins © 2021 -{' '}
+        YYDSCoins © 2022 -{' '}
         <a href={tg} target="_blank" rel="noreferrer">
           @YYDSCoinsPromo
         </a>
