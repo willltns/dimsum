@@ -81,7 +81,7 @@ function Search(props) {
           ref={searchInputRef}
           onSearch={handleInputSearch}
           placeholder={common.searchPromo || language.s6}
-          prefix={<SearchOutlined onClick={handleInputSearch} />}
+          prefix={<SearchOutlined style={{ color: '#eee' }} onClick={handleInputSearch} />}
           onChange={(e) => home.updateProp({ value: e.target.value })}
         />
       )}

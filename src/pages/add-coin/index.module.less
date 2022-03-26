@@ -37,7 +37,7 @@
 
 .form {
   padding: 24px 40px;
-  background-color: #fff;
+  background-color: #272c30;
   border-radius: 16px;
   margin: 0 8px;
 
@@ -45,6 +45,12 @@
     font-weight: 600;
     position: relative;
     right: 11px;
+    color: #eee;
+  }
+
+  input,
+  textarea {
+    background: #424c55 !important;
   }
 
   &:global {
@@ -72,6 +78,30 @@
       flex: none;
     }
 
+    .ant-form-item-label > label {
+      color: #eee;
+    }
+
+    .ant-upload {
+      overflow: hidden;
+      background: #424c55 !important;
+    }
+
+    .ant-select-selector,
+    .ant-select-dropdown {
+      background: #424c55 !important;
+    }
+
+    .ant-select-item-option-active,
+    .ant-select-item-option-selected {
+      background: #16171c !important;
+    }
+
+    .ant-select-selection-placeholder {
+      z-index: 2;
+      color: #bdbdbd;
+    }
+
     // prettier-ignore
     .ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input, .ant-form-item-has-error :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper, .ant-form-item-has-error :not(.ant-input-disabled):not(.ant-input-borderless).ant-input:hover, .ant-form-item-has-error :not(.ant-input-affix-wrapper-disabled):not(.ant-input-affix-wrapper-borderless).ant-input-affix-wrapper:hover, .ant-form-item-has-error .ant-select:not(.ant-select-disabled):not(.ant-select-customize-input) .ant-select-selector {
       box-shadow: 0 0 2px #ff4d4f;
@@ -96,9 +126,13 @@
   font-weight: 600;
   height: auto;
   padding: 5px 30px;
+  background: linear-gradient(135deg, #cb663a, #272c30);
   transition: all 200ms;
+  border: none;
 
-  &:hover {
+  &:hover,
+  &:active,
+  &:focus {
     background: @primary-color;
     color: #fff;
   }
@@ -120,6 +154,7 @@
   h2 {
     text-align: center;
     position: relative;
+    color: #eee;
 
     svg {
       width: 48px;
@@ -160,10 +195,19 @@
   }
 
   :global {
+    .ant-modal-content {
+      background-color: #272c30;
+    }
+
     .ant-modal-confirm-btns {
       display: flex;
       justify-content: center;
       float: none;
+
+      > button {
+        border: none;
+        background: linear-gradient(135deg, #cb663a, #272c30);
+      }
     }
 
     .contact-add {

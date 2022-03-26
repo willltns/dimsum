@@ -1,16 +1,16 @@
 .tTable {
-  background-color: #fff;
+  background-color: #272c30;
   border-radius: 10px;
   margin-top: 16px;
   overflow: hidden;
   font-size: 14px;
-  box-shadow: 0 0 3px #eaeaea !important;
+  box-shadow: 0 0 3px #272c30 !important;
 }
 
 .tHead {
-  color: #fff;
+  color: #eee;
   font-weight: bold;
-  background-color: @primary-color;
+  background: linear-gradient(135deg, #cb663a, #272c30);
   padding: 10px 0;
   text-align: center;
 }
@@ -40,7 +40,6 @@
   transition: background-color 100ms;
 
   &:hover {
-    color: #333 !important;
     background-color: rgba(255, 130, 0, 0.07);
   }
 }
@@ -139,6 +138,10 @@
   }
 }
 
+.mediumIcon {
+  background: radial-gradient(10px at center, #fff, #fff 100%, transparent);
+}
+
 .apeSvg {
   padding: 2px;
 }
@@ -153,7 +156,7 @@
     &:hover,
     &:active {
       color: #fff;
-      background-color: #ff8200;
+      background-color: #cb663a;
     }
 
     > svg {

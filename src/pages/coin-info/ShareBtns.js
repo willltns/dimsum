@@ -104,6 +104,7 @@ function ShareBtns(props) {
         zIndex={1011}
         footer={null}
         visible={visible}
+        className={ss.shareModal}
         onCancel={() => setVisible(false)}
         title={common.isZH ? '复制分享' : 'Copy & Share'}
       >

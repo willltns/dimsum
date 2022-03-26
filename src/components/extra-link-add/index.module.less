@@ -33,3 +33,17 @@
     pointer-events: inherit;
   }
 }
+
+input.warn {
+  background-color: rgba(255, 77, 79, 0.05) !important;
+}
+
+:global {
+  .ant-select-selector:local(.warn) {
+    background-color: rgba(255, 77, 79, 0.05) !important;
+  }
+
+  :local(.warn) input {
+    background-color: transparent !important;
+  }
+}

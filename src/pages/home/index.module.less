@@ -27,8 +27,8 @@
         height: 40px !important;
         border: none !important;
         border-radius: 10px !important;
-        box-shadow: 0 0 3px #eaeaea !important;
         padding-right: 32px;
+        background-color: #424c55;
 
         &:focus,
         &-focused {
@@ -39,6 +39,7 @@
           font-size: 14px !important;
           position: relative;
           bottom: 1px;
+          background-color: #424c55;
         }
       }
 
@@ -133,10 +134,14 @@
     border: none !important;
     height: 40px !important;
     padding: 0 14px !important;
-    box-shadow: 0 0 3px #eaeaea !important;
-    transition: all 200ms;
+    transition: all 100ms;
+    background-color: #272c30;
 
     &:global {
+      &.ant-btn-primary {
+        background: linear-gradient(135deg, #cb663a, #272c30);
+      }
+
       &.ant-btn-primary:hover,
       &.ant-btn-primary:focus {
         background-color: @primary-color;

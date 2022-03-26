@@ -9,17 +9,19 @@ import { ReactComponent as CNIcon } from '@/assets/img/link-icon/cn.svg'
 // import packageEn from '@/assets/img/yy-package-en.png'
 
 import React from 'react'
-import { Image, Popover } from 'antd'
+import { Image } from 'antd'
 import { observer } from 'mobx-react'
 
 import { fileDomain } from '@/consts'
 import { useStore } from '@/utils/hooks/useStore'
 
 import Footer from '@/components/footer'
+import YYPopover from '@/components/yy-popover'
 
 const weibo1 = (
-  <Popover
+  <YYPopover
     mouseEnterDelay={0}
+    mouseLeaveDelay={0.1}
     content={
       <a href="https://weibo.com/u/5803009508" target="_blank" rel="noreferrer">
         https://weibo.com/u/5803009508
@@ -30,12 +32,13 @@ const weibo1 = (
     <a href="https://weibo.com/u/5803009508" target="_blank" rel="noreferrer">
       kongtoubifeizai｜空投币费仔
     </a>
-  </Popover>
+  </YYPopover>
 )
 
 const weibo2 = (
-  <Popover
+  <YYPopover
     mouseEnterDelay={0}
+    mouseLeaveDelay={0.1}
     content={
       <a href="https://weibo.com/5976209911" target="_blank" rel="noreferrer">
         https://weibo.com/5976209911
@@ -46,12 +49,13 @@ const weibo2 = (
     <a href="https://weibo.com/5976209911" target="_blank" rel="noreferrer">
       biquanniyuge｜币圈你宇哥
     </a>
-  </Popover>
+  </YYPopover>
 )
 
 const telegram1 = (
-  <Popover
+  <YYPopover
     mouseEnterDelay={0}
+    mouseLeaveDelay={0.1}
     content={
       <a href="https://t.me/liangjianshequ" target="_blank" rel="noreferrer">
         https://t.me/liangjianshequ
@@ -66,7 +70,7 @@ const telegram1 = (
       </span>
       亮剑社区｜@liangjianshequ
     </a>
-  </Popover>
+  </YYPopover>
 )
 
 function AboutUs() {
@@ -126,7 +130,7 @@ function AboutUs() {
               合作，简化您推广代币的过程，无需寻找不同的推广服务。通过多方合作，我们的服务业务包括中文社区置顶帖（
               {telegram1} 等其他合作社区）、AMA、社区建设与管理、活动策划、微博推广和 Bilibili 广告服务。
             </p>
-            <p style={{ color: '#ff8200', fontWeight: 600 }}>
+            <p style={{ color: '#cb663a', fontWeight: 600 }}>
               YYDSCoins 将使用能够为其投资者带来最佳投资回报的营销组合。
             </p>
           </div>
@@ -202,7 +206,7 @@ function AboutUs() {
             pinned post (with {telegram1} and others), AMA, community building, shilling, modding, Weibo and Bilibili
             advert services.
           </p>
-          <p style={{ color: '#ff8200', fontWeight: 600 }}>
+          <p style={{ color: '#cb663a', fontWeight: 600 }}>
             YYDSCoins will be using a marketing mix that will bring the best ROI to its investors.
           </p>
         </div>

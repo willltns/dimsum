@@ -128,7 +128,7 @@ function ReferralForm() {
 
   return (
     <>
-      <h2 style={{ padding: '0 calc((100% - 1016px) / 2)', fontWeight: 'bold', fontSize: 28, color: '#545454' }}>
+      <h2 style={{ padding: '0 calc((100% - 1016px) / 2)', fontWeight: 'bold', fontSize: 28, color: '#eee' }}>
         {language.prf}
       </h2>
       <div className={ss.referralForm} ref={referralFormRef}>
@@ -293,6 +293,7 @@ function ReferralForm() {
           {!refRes ? (
             <Form
               layout="vertical"
+              className={ss.referrerApp}
               onFinish={(values) => {
                 setValues({ loading: true })
                 applyReferrer(values)

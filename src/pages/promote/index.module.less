@@ -1,12 +1,12 @@
 .promo {
   padding: 32px 24px;
-  background-color: #fff;
+  background-color: #272c30;
   border-radius: 10px;
 
   > h1 {
     font-size: 35px;
     text-align: center;
-    color: #545454;
+    color: #eee;
     font-weight: bold;
     margin: 66px 0 32px;
     position: relative;
@@ -16,7 +16,7 @@
       display: block;
       width: 60%;
       height: 4px;
-      background-color: #545454;
+      background-color: #eee;
       position: absolute;
       top: -16px;
       right: 0;
@@ -37,7 +37,7 @@
   > div {
     width: 36%;
     font-size: 16px;
-    color: #545454;
+    color: #eee;
     font-weight: bold;
 
     p {
@@ -49,11 +49,11 @@
       display: block;
       font-weight: 800;
       font-style: normal;
-      background-image: -webkit-linear-gradient(#ff8200, #c1771b, #ff8200); /* For Chrome and Safari */
-      background-image: -moz-linear-gradient(#ff8200, #c1771b, #ff8200); /* For old Fx (3.6 to 15) */
-      background-image: -ms-linear-gradient(#ff8200, #c1771b, #ff8200); /* For pre-releases of IE 10*/
-      background-image: -o-linear-gradient(#ff8200, #c1771b, #ff8200); /* For old Opera (11.1 to 12.0) */
-      background-image: linear-gradient(#ff8200, #c1771b, #ff8200); /* Standard syntax; must be last */
+      background-image: -webkit-linear-gradient(#cb663a, #c1771b, #cb663a); /* For Chrome and Safari */
+      background-image: -moz-linear-gradient(#cb663a, #c1771b, #cb663a); /* For old Fx (3.6 to 15) */
+      background-image: -ms-linear-gradient(#cb663a, #c1771b, #cb663a); /* For pre-releases of IE 10*/
+      background-image: -o-linear-gradient(#cb663a, #c1771b, #cb663a); /* For old Opera (11.1 to 12.0) */
+      background-image: linear-gradient(#cb663a, #c1771b, #cb663a); /* Standard syntax; must be last */
       color: transparent;
       background-clip: text;
       -webkit-background-clip: text;
@@ -105,7 +105,7 @@
 
   > h2 {
     font-size: 22px;
-    color: #545454;
+    color: #eee;
     font-weight: 600;
     margin-bottom: 24px;
     text-align: center;
@@ -139,7 +139,7 @@
 
   h2 {
     font-size: 22px;
-    color: #545454;
+    color: #eee;
     font-weight: 600;
     margin-bottom: 24px;
   }
@@ -164,7 +164,7 @@
     display: block;
     width: 100%;
     height: 4px;
-    background: linear-gradient(90deg, #545454, transparent 30%);
+    background: linear-gradient(90deg, #eee, transparent 30%);
     margin-bottom: 16px;
   }
 
@@ -173,7 +173,7 @@
     display: block;
     width: 100%;
     height: 4px;
-    background: linear-gradient(270deg, #545454, transparent 60%);
+    background: linear-gradient(270deg, #eee, transparent 60%);
     margin-bottom: 16px;
   }
 }
@@ -280,6 +280,12 @@
   color: #ff4d4f;
 }
 
+.referrerApp {
+  input {
+    color: rgba(0, 0, 0, 0.85);
+  }
+}
+
 .refRes {
   height: 290px;
   display: flex;
@@ -290,6 +296,10 @@
     margin-bottom: 48px;
     display: flex;
     flex-direction: column;
+
+    > label {
+      color: rgba(0, 0, 0, 0.85);
+    }
 
     > span {
       color: @primary-color;
@@ -320,6 +330,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    color: #eee;
 
     svg {
       width: 48px;
@@ -352,10 +363,19 @@
   }
 
   :global {
+    .ant-modal-content {
+      background-color: #272c30;
+    }
+
     .ant-modal-confirm-btns {
       display: flex;
       justify-content: center;
       float: none;
+
+      > button {
+        border: none;
+        background: linear-gradient(135deg, #cb663a, #272c30);
+      }
     }
   }
 }

@@ -1,7 +1,7 @@
 .wrapper {
   padding: 32px;
   border-radius: @border-radius-base;
-  background-color: #fff;
+  background-color: #272c30;
   position: relative;
 }
 
@@ -22,15 +22,13 @@
     justify-content: center;
     margin-top: 8px;
     margin-right: 8px;
-    box-shadow: 0 0 3px #cccccc;
-    background-color: #fff;
+    background-color: #16171c;
     cursor: pointer;
     user-select: none;
     transition: transform 200ms ease-out;
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 3px #c1c1c1;
     }
 
     > * {
@@ -115,11 +113,11 @@
 
 .symbol {
   font-size: 24px;
-  background-color: #8d83e0;
+  background: linear-gradient(315deg, #5aa517, #5aa517);
   padding: 1px 8px;
   border-radius: 10px;
   font-weight: bold;
-  color: #fff;
+  color: #eee;
   display: inline-block;
 }
 
@@ -219,6 +217,7 @@
   border: none !important;
   box-shadow: none !important;
   border-radius: 0;
+  background-color: #272c30;
 
   &:hover,
   &:active {
@@ -257,7 +256,7 @@
     position: absolute;
     bottom: -14px;
     right: 4px;
-    color: #ec9b23;
+    color: @primary-color;
     pointer-events: none;
   }
 }
@@ -274,7 +273,7 @@
   &:hover,
   &:active {
     color: #fff;
-    background-color: #ff8200;
+    background-color: @primary-color;
   }
 
   + p {
@@ -390,13 +389,27 @@
   }
 }
 
+.shareModal {
+  :global {
+    .ant-modal-header,
+    .ant-modal-content {
+      background: #272c30;
+    }
+
+    .ant-modal-title,
+    .ant-modal-close-x {
+      color: #eee;
+    }
+  }
+}
+
 .cpsMo {
   display: flex;
   flex-direction: column;
   align-items: center;
 
   > i {
-    color: #545454;
+    color: #eee;
     font-style: normal;
     font-weight: 500;
     margin-top: 32px;

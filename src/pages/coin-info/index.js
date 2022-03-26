@@ -20,6 +20,7 @@ import Footer from '@/components/footer'
 import CDButton from '@/components/cd-button'
 import ShareBtns from './ShareBtns'
 import YYPopover from '@/components/yy-popover'
+import { findExtraLinkByName } from '@/utils/findExtraLinkByName'
 
 const copiedTitle = { current: null }
 
@@ -243,6 +244,13 @@ function CoinInfo() {
             coinInfo={coinInfo}
             chainAbbr={(common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}).symbol}
           />
+        )}
+
+        {findExtraLinkByName(coinInfo.linkAdditionalInfo, 'dex screener') && (
+          <div id="dexscreener-embed">
+            {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
+            <iframe src={`${findExtraLinkByName(coinInfo.linkAdditionalInfo, 'dex screener')[1]}?embed=1&theme=dark`} />
+          </div>
         )}
       </div>
 

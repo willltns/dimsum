@@ -105,7 +105,7 @@ function CoinList(props) {
               const dateStr = listType === 4 ? coin.coinPresaleDate : coin.coinLaunchDate
               if (!dateStr) return <div className={ss.date}>--</div>
               const djDate = dayjs(dateStr)
-              const style = djDate.isAfter(common.serverDateStr) ? { color: '#ff8200' } : undefined
+              const style = djDate.isAfter(common.serverDateStr) ? { color: '#cb663a' } : undefined
               return (
                 <div className={ss.date} style={style}>
                   <span>{djDate.format('YYYY-')}</span>
@@ -178,7 +178,10 @@ function CoinList(props) {
 
               {urlReg.test(coin.linkMedium) && (
                 <YYPopover content={coin.linkMedium}>
-                  <MediumIcon onClick={(e) => stopProp(e, () => window.open(coin.linkMedium))} />
+                  <MediumIcon
+                    className={ss.mediumIcon}
+                    onClick={(e) => stopProp(e, () => window.open(coin.linkMedium))}
+                  />
                 </YYPopover>
               )}
 

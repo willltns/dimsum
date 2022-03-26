@@ -3,7 +3,7 @@ import ss from './index.module.less'
 // import promoZh from '@/assets/img/yy-promo-zh.png'
 
 import React from 'react'
-import { Image, Popover } from 'antd'
+import { Image } from 'antd'
 import { observer } from 'mobx-react'
 
 import { fileDomain, tg } from '@/consts'
@@ -13,6 +13,7 @@ import en from './lang/en.json'
 
 import Footer from '@/components/footer'
 import ReferralForm from './ReferralForm'
+import YYPopover from '@/components/yy-popover'
 
 function Promote() {
   const { common } = useStore()
@@ -29,13 +30,13 @@ function Promote() {
             <em>{lang.siteDesc3}</em>
             <p>{lang.siteDesc4}</p>
           </div>
-          <Popover visible placement="bottom" content={lang.clickZoom} overlayClassName={ss.homeImgPop}>
+          <YYPopover visible placement="bottom" content={lang.clickZoom}>
             <Image
               src={`${fileDomain}images/${common.isZH ? 'yy-promo-zh.png' : 'yy-promo-en.png'}`}
               alt="promo-intro"
               className={ss.homeImg}
             />
-          </Popover>
+          </YYPopover>
 
           <img src="/logo.png" alt="logo" />
         </div>

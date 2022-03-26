@@ -75,7 +75,8 @@ module.exports = function (defaultConfig, webpackEnv) {
         options: {
           lessOptions: {
             modifyVars: {
-              'primary-color': '#ff8200',
+              'text-color': '#eee',
+              'primary-color': '#cb663a',
               'border-radius-base': '10px',
               'font-size-base': '14px',
               'height-base': '32px',

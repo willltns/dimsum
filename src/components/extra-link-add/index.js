@@ -58,10 +58,8 @@ const ExtraLinkAdd = (props) => {
               setLinks(newLinks)
             }}
             filterOption={(inputValue, option) => option.value.toLowerCase().indexOf(inputValue.toLowerCase()) !== -1}
-            onFocus={(e) => (e.target.parentNode.parentNode.style.backgroundColor = '#fff')}
-            onBlur={(e) =>
-              !e.target.value && (e.target.parentNode.parentNode.style.backgroundColor = 'rgba(255,77,79, 0.05)')
-            }
+            onFocus={(e) => e.target.parentNode?.parentNode?.classList.remove(ss.warn)}
+            onBlur={(e) => !e.target.value && e.target.parentNode?.parentNode?.classList.add(ss.warn)}
           />
           &nbsp;:&nbsp;
           <Input
@@ -74,8 +72,8 @@ const ExtraLinkAdd = (props) => {
               newLinks.splice(index, 1, newLink)
               setLinks(newLinks)
             }}
-            onFocus={(e) => (e.target.style.backgroundColor = '#fff')}
-            onBlur={(e) => !urlReg.test(e.target.value) && (e.target.style.backgroundColor = 'rgba(255,77,79, 0.05)')}
+            onFocus={(e) => e.target.classList.remove(ss.warn)}
+            onBlur={(e) => !urlReg.test(e.target.value) && e.target.classList.add(ss.warn)}
           />
           <MinusCircleOutlined
             className={ss.delBtn}

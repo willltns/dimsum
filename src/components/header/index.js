@@ -82,9 +82,7 @@ function Header() {
       </Link>
       <div className={ss.headerBtn}>
         <CDButton onClick={() => history.push('/add-coin')}>{common.isZH ? '添加代币' : 'List a Project'}</CDButton>
-        <CDButton primary onClick={() => history.push('/promote')}>
-          {common.isZH ? '推广' : 'Promote'}
-        </CDButton>
+        <CDButton onClick={() => history.push('/promote')}>{common.isZH ? '推广' : 'Promote'}</CDButton>
         <CDButton
           className={ss.langBtn}
           onClick={(e) => {
