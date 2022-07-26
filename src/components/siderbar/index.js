@@ -39,14 +39,22 @@ function Sidebar() {
             <span>YYDS</span>?
           </Link>
         </nav>
-
-        <YYPopover content="@YYDSCoinsPromo" placement="right">
+        <YYPopover content="@yydscoins" placement="top">
           <TgIcon
-            style={{ width: 32, cursor: 'pointer', position: 'relative', top: 5 }}
+            style={{ width: 32, height: 32, cursor: 'pointer', position: 'relative', top: 5 }}
             onClick={() => window.open(tg)}
           />
         </YYPopover>
-
+        &emsp;
+        <YYPopover content="@yydscoinsofficial" placement="top">
+          <span className={ss.tgChannel}>
+            <TgIcon
+              style={{ width: 32, height: 32, cursor: 'pointer' }}
+              onClick={() => window.open('https://t.me/yydscoinsofficial')}
+            />
+            <i>C</i>
+          </span>
+        </YYPopover>
         <PromoVote />
       </div>
 

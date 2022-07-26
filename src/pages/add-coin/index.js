@@ -302,7 +302,15 @@ function afterAdd(tt, history, container) {
           <span>
             <TgIcon />
             <a href={tg} target="_blank" rel="noreferrer">
-              @YYDSCoinsPromo
+              @yydscoins
+            </a>
+          </span>
+        </div>
+        <div className="contact-add">
+          <span className="channel">
+            <TgIcon />
+            <a href="https://t.me/yydscoinsofficial" target="_blank" rel="noreferrer">
+              @yydscoinsofficial
             </a>
           </span>
         </div>

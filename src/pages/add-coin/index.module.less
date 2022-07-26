@@ -214,16 +214,17 @@
       display: flex;
       align-items: center;
       justify-content: space-around;
-      margin: 24px 0 32px;
+      margin: 0 0 24px;
 
       > span {
         display: flex;
         align-items: center;
+        position: relative;
       }
 
       svg {
-        width: 28px;
-        height: 28px;
+        width: 32px;
+        height: 32px;
         margin-right: 8px;
       }
 
@@ -237,6 +238,20 @@
         &:hover {
           color: lighten(@primary-color, 10%) !important;
         }
+      }
+
+      .channel::before {
+        content: 'C';
+        display: block;
+        position: absolute;
+        bottom: 7px;
+        left: 20px;
+        line-height: 0;
+        font-weight: bold;
+        font-size: 12px;
+        font-style: italic;
+        color: ghostwhite;
+        user-select: none;
       }
     }
   }

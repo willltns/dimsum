@@ -22,7 +22,7 @@ function Footer() {
       <p>
         YYDSCoins © 2022 -{' '}
         <a href={tg} target="_blank" rel="noreferrer">
-          @YYDSCoinsPromo
+          @yydscoins
         </a>
       </p>
     </footer>

@@ -378,7 +378,7 @@ function afterSubmit(language) {
         <p>
           {language.prf39}{' '}
           <a href={tg} target="_blank" rel="noreferrer">
-            @YYDSCoinsPromo
+            @yydscoins
           </a>{' '}
           {language.prf40}
         </p>

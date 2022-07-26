@@ -103,7 +103,7 @@ function Promote() {
           <p>
             {lang.pr}{' '}
             <a href={tg} target="_blank" rel="noreferrer">
-              @YYDSCoinsPromo
+              @yydscoins
             </a>
           </p>
         </div>
