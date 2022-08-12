@@ -28,7 +28,7 @@ function App() {
           <RouteWithSubRoutes routes={routes} />
         </div>
 
-        <PromoVoteModal />
+        {/*<PromoVoteModal />*/}
       </BrowserRouter>
     </MobXProviderContext.Provider>
   )
@@ -40,12 +40,12 @@ export default App
 rootStore.common.getVotedList()
 
 // 获取推广投票数据
-;(async () => {
-  try {
-    const [champ, promoInfo] = await Promise.all([getChamp(), getPromoVote()])
-    rootStore.common.updatePromoVote({ champ, promoInfo })
-  } catch (err) {}
-})()
+// ;(async () => {
+//   try {
+//     const [champ, promoInfo] = await Promise.all([getChamp(), getPromoVote()])
+//     rootStore.common.updatePromoVote({ champ, promoInfo })
+//   } catch (err) {}
+// })()
 
 // 页面可见时获取服务器时间，校准页面时钟
 document.addEventListener('visibilitychange', function () {

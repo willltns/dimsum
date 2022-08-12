@@ -14,6 +14,8 @@ import { fileDomain } from '@/consts'
 const cookieKey = 'vi'
 
 function PromoVote() {
+  return null
+
   const history = useHistory()
   const { common } = useStore()
 
