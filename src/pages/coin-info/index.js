@@ -21,6 +21,7 @@ import CDButton from '@/components/cd-button'
 import ShareBtns from './ShareBtns'
 import YYPopover from '@/components/yy-popover'
 import { findExtraLinkByName } from '@/utils/findExtraLinkByName'
+import { useDexscreener } from '@/utils/hooks/useDexscreener'
 
 const copiedTitle = { current: null }
 
@@ -66,6 +67,10 @@ function CoinInfo() {
 
     return () => clipboard.destroy()
   }, [coinInfo.coinAddress])
+
+  const dexSLink = findExtraLinkByName(coinInfo.linkAdditionalInfo, 'dex screener')?.[1]
+  const coinContract = dexSLink ? 0x0 : coinInfo.coinAddress
+  const chartUrl = useDexscreener(coinContract, coinInfo.coinChain)
 
   const openWeb = (e) => {
     const { link } = e.target.dataset
@@ -245,11 +250,10 @@ function CoinInfo() {
             chainAbbr={(common.coinChainList.find((c) => +c.id === coinInfo.coinChain) || {}).symbol}
           />
         )}
-
-        {findExtraLinkByName(coinInfo.linkAdditionalInfo, 'dex screener') && (
+        {(dexSLink || chartUrl) && (
           <div id="dexscreener-embed">
             {/* eslint-disable-next-line jsx-a11y/iframe-has-title */}
-            <iframe src={`${findExtraLinkByName(coinInfo.linkAdditionalInfo, 'dex screener')[1]}?embed=1&theme=dark`} />
+            <iframe src={`${dexSLink || chartUrl}?embed=1&theme=dark`} />
           </div>
         )}
       </div>

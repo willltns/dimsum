@@ -1,4 +1,5 @@
 export * from './webContact'
 export * from './chainType'
+export * from './dexSwap'
 export * from './regexp'
 export * from './env'

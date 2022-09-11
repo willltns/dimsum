@@ -12,7 +12,7 @@ import { applyReferrer, applyPromo } from '@/assets/xhr'
 import { useStore } from '@/utils/hooks/useStore'
 import zh from './lang/zh.json'
 import en from './lang/en.json'
-import { tg } from '@/consts'
+import { contractReg, tg } from '@/consts'
 
 function ReferralForm() {
   const { common } = useStore()
@@ -313,7 +313,7 @@ function ReferralForm() {
                 name="bscAddress"
                 rules={[
                   { required: true, whitespace: true },
-                  { pattern: /^0x[0-9A-Za-z]{40}$/i, message: language.prf32 },
+                  { pattern: contractReg, message: language.prf32 },
                 ]}
               >
                 <Input placeholder="0x..." spellCheck={false} style={{ maxWidth: 400 }} />
